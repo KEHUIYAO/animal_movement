@@ -14,7 +14,10 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 class AnimalMovement():
     def __init__(self):
-        df = pd.read_csv(os.path.join(current_dir, 'Female/Processed/deer_movement_all.csv'))
+        # df = pd.read_csv(os.path.join(current_dir,
+        # 'Female/Processed/deer_movement_all.csv'))
+        df = pd.read_csv(os.path.join(current_dir,
+                                      'Female/Processed/LowTag5016.csv'))
         y = df.loc[:, ['X', 'Y']].values
 
         L = y.shape[0]
