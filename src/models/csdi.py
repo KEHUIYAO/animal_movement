@@ -108,6 +108,11 @@ class CsdiModel(nn.Module):
         # x: [batches steps nodes features]
         x = x * mask + noisy_data * (1-mask)
         x = torch.cat([x, mask], dim=-1)
+
+        # convert x to float32
+        x = x.float()
+
+
         x = self.input_projection(x)
 
         if side_info is not None:
@@ -118,11 +123,13 @@ class CsdiModel(nn.Module):
         # space encoding
         B, L, K, C = x.shape
         spatial_emb = self.spatial_embedding_layer(B, L)
+
         spatial_emb = spatial_emb.permute(0, 3, 2, 1)  # (B, C, K, L)
         x = x + spatial_emb
 
         # diffusion embedding
         diffusion_emb = self.diffusion_embedding(diffusion_step)
+
         x = x + diffusion_emb.unsqueeze(1).unsqueeze(2)
 
 
