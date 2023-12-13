@@ -26,8 +26,6 @@ class AnimalMovement():
         # y = y.reshape(L, 1, C)
         y = y.reshape(L, C, 1)
 
-
-
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)

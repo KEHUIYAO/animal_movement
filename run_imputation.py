@@ -20,8 +20,8 @@ from tsl.utils import parser_utils, numpy_metrics
 
 from src.models.brits import BRITS
 from src.models.stat_method import MeanModel, InterpolationModel
-from src.models import CsdiModel
-from src.imputers import BRITSImputer, MeanImputer, InterpolationImputer, CsdiImputer
+from src.models import CsdiModel, TransformerModel
+from src.imputers import BRITSImputer, MeanImputer, InterpolationImputer, CsdiImputer, TransformerImputer
 from scheduler import CosineSchedulerWithRestarts
 
 
@@ -31,9 +31,9 @@ def parse_args():
     # Argument parser
     ########################################
     parser = ArgParser()
-    parser.add_argument("--model-name", type=str, default='csdi')
+    parser.add_argument("--model-name", type=str, default='transformer')
     parser.add_argument("--dataset-name", type=str, default='animal_movement')
-    parser.add_argument("--config", type=str, default='csdi.yaml')
+    parser.add_argument("--config", type=str, default='transformer.yaml')
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--check-val-every-n-epoch', type=int, default=1)
     parser.add_argument('--batch-inference', type=int, default=32)
@@ -89,6 +89,8 @@ def get_model_classes(model_str):
         model, filler = MeanModel, MeanImputer
     elif model_str == 'csdi':
         model, filler = CsdiModel, CsdiImputer
+    elif model_str == 'transformer':
+        model, filler = TransformerModel, TransformerImputer
     else:
         raise ValueError(f'Model {model_str} not available.')
     return model, filler
@@ -160,7 +162,7 @@ def run_experiment(args):
     # data module                          #
     ########################################
 
-    if args.model_name in ['brits', 'csdi'] and 'covariates' in dataset.attributes:
+    if args.model_name in ['brits', 'csdi', 'transformer'] and 'covariates' in dataset.attributes:
         exog_map = {'covariates': dataset.attributes['covariates']}
         input_map = {
             'u': 'covariates',
