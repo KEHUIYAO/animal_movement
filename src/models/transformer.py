@@ -102,6 +102,8 @@ class TransformerModel(nn.Module):
         # x: [batches steps nodes features]
         # u: [batches steps (nodes) features]
         x = x * mask
+        # convert x to float32
+        x = x.float()
 
         h = self.h_enc(x)
         h = mask * h + (1 - mask) * self.mask_token()
