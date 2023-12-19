@@ -360,15 +360,66 @@ def run_experiment(args):
         y_true.append(output['y'].detach().cpu().numpy())
         eval_mask.append(output['eval_mask'].detach().cpu().numpy())
         observed_mask.append(output['observed_mask'].detach().cpu().numpy())
-
+        st_coords.append(output['st_coords'].detach().cpu().numpy())
+        if enable_multiple_imputation:
+            multiple_imputations.append(output['multiple_imputations'].detach().cpu().numpy())
 
     y_hat = np.concatenate(y_hat, axis=0)
     y_true = np.concatenate(y_true, axis=0)
     eval_mask = np.concatenate(eval_mask, axis=0)
+    observed_mask = np.concatenate(observed_mask, axis=0)
+    st_coords = np.concatenate(st_coords, axis=0)
+
+    y_hat = y_hat.squeeze(-1)
+    y_true = y_true.squeeze(-1)
+    eval_mask = eval_mask.squeeze(-1)
+    observed_mask = observed_mask.squeeze(-1)
+
+    if enable_multiple_imputation:
+        multiple_imputations = np.concatenate(multiple_imputations, axis=0)
+        multiple_imputations = multiple_imputations.squeeze(-1)
+
+    seq_len = dataset.y.shape[0]
+    num_nodes = dataset.y.shape[1]
+    y_true_original = np.zeros([seq_len, num_nodes])
+    y_hat_original = np.zeros([seq_len, num_nodes])
+    if enable_multiple_imputation:
+        y_hat_multiple_imputation = np.zeros([multiple_imputations.shape[1], seq_len, num_nodes])
+    observed_mask_original = np.zeros([seq_len, num_nodes])
+    eval_mask_original = np.zeros([seq_len, num_nodes])
+
+    B, L, K = y_hat.shape
+    for b in range(B):
+        for l in range(L):
+            for k in range(K):
+                ts_pos = st_coords[b, l, k, ::-1]
+                y_true_original[ts_pos[0], ts_pos[1]] = y_true[b, l, k]
+                y_hat_original[ts_pos[0], ts_pos[1]] = y_hat[b, l, k]
+                observed_mask_original[ts_pos[0], ts_pos[1]] = observed_mask[b, l, k]
+                eval_mask_original[ts_pos[0], ts_pos[1]] = eval_mask[b, l, k]
+
+                if enable_multiple_imputation:
+                    y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] = multiple_imputations[b, :, l, k]
+
+    check_mae = numpy_metrics.masked_mae(y_hat_original, y_true_original, eval_mask_original)
+    print(f'Test MAE: {check_mae:.6f}')
+
+    check_mre = numpy_metrics.masked_mre(y_hat_original, y_true_original, eval_mask_original)
+    print(f'Test MRE: {check_mre:.6f}')
+
+    # save output to file
+    output = {}
+    output['y_hat'] = y_hat_original[np.newaxis, :, :, np.newaxis]
+    output['y'] = y_true_original[np.newaxis, :, :, np.newaxis]
+    output['eval_mask'] = eval_mask_original[np.newaxis, :, :, np.newaxis]
+    output['observed_mask'] = observed_mask_original[np.newaxis, :, :, np.newaxis]
+
+    if enable_multiple_imputation:
+        output['imputed_samples'] = y_hat_multiple_imputation[np.newaxis, :, :, :, np.newaxis]
+
+    np.savez(os.path.join(logdir, 'output.npz'), **output)
 
 
-    check_mae = numpy_metrics.masked_mae(y_hat, y_true, eval_mask)
-    print(f'Test MAE: {check_mae:.4f}')
 
 
 if __name__ == '__main__':
