@@ -362,7 +362,7 @@ def run_experiment(args):
         observed_mask.append(output['observed_mask'].detach().cpu().numpy())
         st_coords.append(output['st_coords'].detach().cpu().numpy())
         if enable_multiple_imputation:
-            multiple_imputations.append(output['multiple_imputations'].detach().cpu().numpy())
+            multiple_imputations.append(output['imputed_samples'].detach().cpu().numpy())
 
     y_hat = np.concatenate(y_hat, axis=0)
     y_true = np.concatenate(y_true, axis=0)
