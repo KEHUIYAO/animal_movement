@@ -60,6 +60,8 @@ class AnimalMovement():
         X = pd.get_dummies(X)
         X = X.values
         X = X.reshape(L, 1, X.shape[1])
+        # repeat along the spatial dimension
+        X = np.repeat(X, C, axis=1)
         self.attributes['covariates'] = X
 
 
