@@ -51,16 +51,16 @@ class AnimalMovement():
         self.eval_mask = eval_mask
         self.training_mask = mask & (1-eval_mask)
 
-        # # covariates
-        # X = df.loc[:, 'covariate']
-        # # replace missing values with 0
-        # X = X.fillna('nan')
-        #
-        # # one-hot encoding
-        # X = pd.get_dummies(X)
-        # X = X.values
-        # X = X.reshape(L, 1, X.shape[1])
-        # self.attributes['covariates'] = X
+        # covariates
+        X = df.loc[:, 'covariate']
+        # replace missing values with 0
+        X = X.fillna('nan')
+
+        # one-hot encoding
+        X = pd.get_dummies(X)
+        X = X.values
+        X = X.reshape(L, 1, X.shape[1])
+        self.attributes['covariates'] = X
 
 
 
