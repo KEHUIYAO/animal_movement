@@ -109,6 +109,7 @@ class TransformerModel(nn.Module):
         h = mask * h + (1 - mask) * self.mask_token()
 
         if self.condition_on_u and u is not None:
+            u = u.float()
             h = h + self.u_enc(u)
 
         h = self.pe(h)

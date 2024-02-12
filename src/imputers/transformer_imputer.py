@@ -33,7 +33,30 @@ class TransformerImputer(Imputer):
                                           scheduler_class=scheduler_class,
                                           scheduler_kwargs=scheduler_kwargs)
 
+    def on_after_batch_transfer(self, batch, dataloader_idx):
+        """Rearrange batch for imputation:
+            1. Move :obj:`eval_mask` from :obj:`batch.input` to :obj:`batch`
+            2. Move :obj:`mask` from :obj:`batch` to :obj:`batch.input`
+        """
+        # move eval_mask from batch.input to batch
+        batch.eval_mask = batch.input.pop('eval_mask')
+        # move mask from batch to batch.input
+        batch.input.mask = batch.pop('mask')
+        # whiten missing values
+        if 'x' in batch.input:
+            batch.input.x = batch.input.x * batch.input.mask
 
+        seq_len = batch.input.x.size(1)
+
+        u_additional = batch.input.x.permute(0, 2, 3, 1).repeat(1, 1, seq_len, 1)
+
+        u_additional = u_additional.permute(0, 2, 1, 3)
+
+
+        batch.input.u = torch.concat([u_additional, batch.input.u], dim=-1)
+
+
+        return batch
 
     def on_train_batch_start(self, batch, batch_idx: int,
                              unused: Optional[int] = 0) -> None:
@@ -61,12 +84,16 @@ class TransformerImputer(Imputer):
         # whiten_mask = torch.rand(mask.size(), device=mask.device) < p
         # ####################### missing at random #######################
 
-
-
         batch.input.mask = mask & whiten_mask
         # whiten missing values
         if 'x' in batch.input:
             batch.input.x = batch.input.x * batch.input.mask
+
+        seq_len = batch.input.x.size(1)
+        mask = batch.input.mask.permute(0, 2, 3, 1).repeat(1, 1, seq_len, 1)
+        mask = mask.permute(0, 2, 1, 3)
+        batch.input.u[:, :, :, :seq_len] = batch.input.u[:, :, :, :seq_len] * mask
+
 
     def training_step(self, batch, batch_idx):
         injected_missing = (batch.original_mask - batch.mask)
