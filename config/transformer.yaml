@@ -4,7 +4,7 @@ val_len: 0.2
 test_len: 0.2
 
 window: 36  # [24, 36]
-stride: 36
+stride: 2
 
 #### Training params ##########################################################
 whiten_prob: [0.2, 0.5, 0.8]
@@ -23,5 +23,5 @@ check_val_every_n_epoch: 1
 l2_reg: 0
 
 ### Model params #############################################################
-u_size: 52
-spatial_dim: 2
+u_size: 36
+spatial_dim: 36

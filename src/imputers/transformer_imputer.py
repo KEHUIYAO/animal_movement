@@ -52,8 +52,10 @@ class TransformerImputer(Imputer):
 
         u_additional = u_additional.permute(0, 2, 1, 3)
 
-
-        batch.input.u = torch.concat([u_additional, batch.input.u], dim=-1)
+        if 'u' in batch.input:
+            batch.input.u = torch.concat([u_additional, batch.input.u], dim=-1)
+        else:
+            batch.input.u = u_additional
 
 
         return batch
