@@ -106,13 +106,10 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 #         return parser
 
 class AnimalMovement():
-    similarity_options = {'distance'}
-
     def __init__(self, num_nodes=36, seq_len=5000, seed=42):
         self.original_data = {}
-        df, dist, st_coords, X = self.load(num_nodes, seq_len, seed)
-        # super().__init__(dataframe=df, similarity_score="distance", attributes=dict(dist=dist, st_coords=st_coords, covariates=X))
-        super().__init__(dataframe=df, similarity_score="distance", attributes=dict(dist=dist, st_coords=st_coords))
+        self.load(num_nodes, seq_len, seed)
+
         eval_mask = np.zeros((seq_len, num_nodes))
         p_missing = 0.9
         rng = np.random.RandomState(seed)
@@ -124,6 +121,7 @@ class AnimalMovement():
         mask = mask.astype(int)
         eval_mask = eval_mask.astype(int)
 
+        self.eval_mask = eval_mask
         self.training_mask = mask & (1 - eval_mask)
 
 
@@ -199,6 +197,7 @@ class AnimalMovement():
 
 
         self.original_data['X'] = X
+        self.attributes['covariates'] = X
 
 
         time_coords = np.arange(0, seq_len)
@@ -212,22 +211,44 @@ class AnimalMovement():
         space_coords, time_coords = np.meshgrid(np.arange(df.shape[1]), np.arange(df.shape[0]))
         st_coords = np.stack([space_coords, time_coords], axis=-1)
 
-        return df, dist, st_coords, X
+        self.attributes['st_coords'] = st_coords
+
+    def get_splitter(self, val_len, test_len):
+        return AnimalMovementSplitter(val_len, test_len)
 
 
+class AnimalMovementSplitter(Splitter):
 
-    def compute_similarity(self, method: str, **kwargs):
-        if method == "distance":
-            theta = np.std(self.dist)
-            return gaussian_kernel(self.dist, theta=theta)
+    def __init__(self, val_len: int = None, test_len: int = None):
+        super().__init__()
+        self._val_len = val_len
+        self._test_len = test_len
 
-    def matern_covariance(self, x1, x2, length_scale=1.0, nu=1.5, sigma=1.0):
-        dist = np.linalg.norm(x1 - x2)
-        if dist == 0:
-            return sigma ** 2
-        coeff1 = (2 ** (1 - nu)) / gamma(nu)
-        coeff2 = (np.sqrt(2 * nu) * dist) / length_scale
-        return sigma ** 2 * coeff1 * (coeff2 ** nu) * kv(nu, coeff2)
+    def fit(self, dataset):
+        idx = np.arange(len(dataset))
+        val_len, test_len = self._val_len, self._test_len
+        if test_len < 1:
+            test_len = int(test_len * len(idx))
+        if val_len < 1:
+            val_len = int(val_len * (len(idx) - test_len))
+
+        # randomly split idx into train, val, test
+        np.random.shuffle(idx)
+        val_start = len(idx) - val_len - test_len
+        test_start = len(idx) - test_len
+
+
+        self.set_indices(idx[:val_start - dataset.samples_offset],
+                         idx[val_start:test_start - dataset.samples_offset],
+                         idx[test_start:])
+
+    @staticmethod
+    def add_argparse_args(parser):
+        parser.add_argument('--val-len', type=float or int, default=0.2)
+        parser.add_argument('--test-len', type=float or int, default=0.2)
+        return parser
+
+
 
 
 
@@ -235,7 +256,7 @@ if __name__ == '__main__':
     from tsl.ops.imputation import add_missing_values
 
     num_nodes, seq_len = 5, 4000
-    dataset = Cluster(num_nodes, seq_len)
+    dataset = AnimalMovement(num_nodes, seq_len)
     add_missing_values(dataset, p_fault=0, p_noise=0.25, min_seq=12,
                        max_seq=12 * 4, seed=56789)
 
