@@ -122,6 +122,8 @@ class AnimalMovement(PandasDataset, MissingValuesMixin):
         self.set_eval_mask(eval_mask)
         mask = np.ones_like(eval_mask)
         mask = mask.astype(int)
+        eval_mask = eval_mask.astype(int)
+
         self.training_mask = mask & (1 - eval_mask)
 
 
