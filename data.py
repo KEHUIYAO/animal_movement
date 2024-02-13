@@ -107,6 +107,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 class AnimalMovement():
     def __init__(self, num_nodes=36, seq_len=5000, seed=42):
+        self.attributes = {}
         self.original_data = {}
         self.load(num_nodes, seq_len, seed)
 
