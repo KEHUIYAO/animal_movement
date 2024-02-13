@@ -197,7 +197,7 @@ class AnimalMovement():
 
 
         self.original_data['X'] = X
-        # self.attributes['covariates'] = X
+        self.attributes['covariates'] = X
 
 
         time_coords = np.arange(0, seq_len)
