@@ -46,16 +46,16 @@ class TransformerImputer(Imputer):
         if 'x' in batch.input:
             batch.input.x = batch.input.x * batch.input.mask
 
-        # seq_len = batch.input.x.size(1)
-        #
-        # u_additional = batch.input.x.permute(0, 2, 3, 1).repeat(1, 1, seq_len, 1)
-        #
-        # u_additional = u_additional.permute(0, 2, 1, 3)
-        #
-        # if 'u' in batch.input:
-        #     batch.input.u = torch.concat([u_additional, batch.input.u], dim=-1)
-        # else:
-        #     batch.input.u = u_additional
+        seq_len = batch.input.x.size(1)
+
+        u_additional = batch.input.x.permute(0, 2, 3, 1).repeat(1, 1, seq_len, 1)
+
+        u_additional = u_additional.permute(0, 2, 1, 3)
+
+        if 'u' in batch.input:
+            batch.input.u = torch.concat([u_additional, batch.input.u], dim=-1)
+        else:
+            batch.input.u = u_additional
 
 
         return batch
@@ -91,10 +91,10 @@ class TransformerImputer(Imputer):
         if 'x' in batch.input:
             batch.input.x = batch.input.x * batch.input.mask
 
-        # seq_len = batch.input.x.size(1)
-        # mask = batch.input.mask.permute(0, 2, 3, 1).repeat(1, 1, seq_len, 1)
-        # mask = mask.permute(0, 2, 1, 3)
-        # batch.input.u[:, :, :, :seq_len] = batch.input.u[:, :, :, :seq_len] * mask
+        seq_len = batch.input.x.size(1)
+        mask = batch.input.mask.permute(0, 2, 3, 1).repeat(1, 1, seq_len, 1)
+        mask = mask.permute(0, 2, 1, 3)
+        batch.input.u[:, :, :, :seq_len] = batch.input.u[:, :, :, :seq_len] * mask
 
 
     def training_step(self, batch, batch_idx):
