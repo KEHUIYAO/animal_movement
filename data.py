@@ -105,7 +105,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 #         parser.add_argument('--test-len', type=float or int, default=0.2)
 #         return parser
 
-class AnimalMovement(PandasDataset, MissingValuesMixin):
+class AnimalMovement():
     similarity_options = {'distance'}
 
     def __init__(self, num_nodes=36, seq_len=5000, seed=42):
