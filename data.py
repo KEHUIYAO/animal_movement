@@ -117,7 +117,6 @@ class AnimalMovement():
         time_points_to_eval = rng.choice(seq_len, int(p_missing * seq_len), replace=False)
         eval_mask[time_points_to_eval, :] = 1
         self.original_data['eval_mask'] = eval_mask
-        self.set_eval_mask(eval_mask)
         mask = np.ones_like(eval_mask)
         mask = mask.astype(int)
         eval_mask = eval_mask.astype(int)
