@@ -120,6 +120,9 @@ class AnimalMovement(PandasDataset, MissingValuesMixin):
         eval_mask[time_points_to_eval, :] = 1
         self.original_data['eval_mask'] = eval_mask
         self.set_eval_mask(eval_mask)
+        mask = np.ones_like(eval_mask)
+        self.training_mask = mask & (1 - eval_mask)
+
 
 
 
