@@ -222,6 +222,7 @@ class CsdiModel(nn.Module):
 
         B, inputdim, K, L = x.shape
         x = x.reshape(B, inputdim, K * L)
+        x = x.float()
         x = self.input_projection(x)
         x = F.relu(x)
         x = x.reshape(B, hidden_dim, K, L)

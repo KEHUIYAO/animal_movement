@@ -1,8 +1,8 @@
-epochs: 200
+epochs: 20
 val_len: 0.2
 test_len: 0.2
 window: 36  # [24, 36]
-stride: 2
+stride: 36
 lr_scheduler: magic
 loss_fn: mse_loss
 n_samples: 50
