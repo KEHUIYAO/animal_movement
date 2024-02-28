@@ -374,7 +374,7 @@ def run_experiment(args):
 
     if enable_multiple_imputation:
         multiple_imputations = np.concatenate(multiple_imputations, axis=0)
-        multiple_imputations = multiple_imputations.squeeze(-1)
+
 
     seq_len = dataset.y.shape[0]
     num_nodes = dataset.y.shape[1]
