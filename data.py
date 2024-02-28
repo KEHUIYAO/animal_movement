@@ -8,7 +8,10 @@ import os
 from scipy.special import kv, gamma
 from sklearn.preprocessing import OneHotEncoder
 import matplotlib.pyplot as plt
-
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import rasterio
 
 from tsl.data.datamodule.splitters import Splitter
 
@@ -18,10 +21,11 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 class AnimalMovement():
     def __init__(self):
-        df = pd.read_csv(os.path.join(current_dir,
-        'Female/Processed/deer_movement_all.csv'))
         # df = pd.read_csv(os.path.join(current_dir,
-        #                               'Female/Processed/LowTag5016.csv'))
+        # 'Female/Processed/deer_movement_all.csv'))
+        num = 5016
+        df = self.load_data(num)
+
         y = df.loc[:, ['X', 'Y']].values
 
         L = y.shape[0]
@@ -65,7 +69,59 @@ class AnimalMovement():
         X = X.reshape(L, 1, X.shape[1])
         self.attributes['covariates'] = X
 
+    def load_data(self, num):
 
+        # Load the dataset
+        file_path = 'Female/TagData/LowTag' + str(num) + '.csv'
+        deer_data = pd.read_csv(file_path)
+
+        # load the covariate .tif file
+        covariate_file_path = 'Female/NLCDClip/LowTag' + str(num) + 'NLCDclip.tif'
+        covariate_file = rasterio.open(covariate_file_path)
+
+        row, col = covariate_file.index(deer_data['X'], deer_data['Y'])
+        # Assuming row and col are lists of the same length
+        values = []
+        roi = covariate_file.read(1)
+        for r, c in zip(row, col):
+            if r < roi.shape[0] and c < roi.shape[1]:
+                values.append(covariate_file.read(1)[r, c])
+            else:
+                values.append(None)
+
+        deer_data['covariate'] = values
+
+        start_time, end_time = deer_data['jul'].min(), deer_data['jul'].max()
+        time_interval = 0.16
+        tolerance = 0.08
+
+        T_values = np.arange(start_time, end_time, time_interval)
+        df = pd.DataFrame(T_values, columns=['T'])
+
+        # Function to find nearest row within tolerance
+        def find_nearest_row_within_tolerance(value, tolerance, dataframe, column_name):
+            nearest_idx = (dataframe[column_name] - value).abs().argsort()[:1]
+            nearest_value = dataframe[column_name].iloc[nearest_idx].values[0]
+            if abs(nearest_value - value) <= tolerance:
+                return dataframe.iloc[nearest_idx]
+            return pd.DataFrame(columns=dataframe.columns)
+
+        # Initialize a list to store dictionaries
+        data_list = []
+
+        # Merge data
+        for t_value in df['T']:
+            matched_row = find_nearest_row_within_tolerance(t_value, tolerance, deer_data, 'jul')
+            if not matched_row.empty:
+                row_data = {'T': t_value, **matched_row.iloc[0].to_dict()}
+            else:
+                row_data = {'T': t_value, **{col: np.nan for col in deer_data.columns}}
+            data_list.append(row_data)
+
+        # Create DataFrame from list of dictionaries
+        df_matched = pd.DataFrame(data_list)
+
+        return df_matched
 
     def get_splitter(self, val_len, test_len):
         return AnimalMovementSplitter(val_len, test_len)

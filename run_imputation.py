@@ -370,10 +370,7 @@ def run_experiment(args):
     observed_mask = np.concatenate(observed_mask, axis=0)
     st_coords = np.concatenate(st_coords, axis=0)
 
-    y_hat = y_hat.squeeze(-1)
-    y_true = y_true.squeeze(-1)
-    eval_mask = eval_mask.squeeze(-1)
-    observed_mask = observed_mask.squeeze(-1)
+
 
     if enable_multiple_imputation:
         multiple_imputations = np.concatenate(multiple_imputations, axis=0)
@@ -381,14 +378,15 @@ def run_experiment(args):
 
     seq_len = dataset.y.shape[0]
     num_nodes = dataset.y.shape[1]
-    y_true_original = np.zeros([seq_len, num_nodes])
-    y_hat_original = np.zeros([seq_len, num_nodes])
+    C = 2
+    y_true_original = np.zeros([seq_len, num_nodes, C])
+    y_hat_original = np.zeros([seq_len, num_nodes, C])
     if enable_multiple_imputation:
-        y_hat_multiple_imputation = np.zeros([multiple_imputations.shape[1], seq_len, num_nodes])
-    observed_mask_original = np.zeros([seq_len, num_nodes])
-    eval_mask_original = np.zeros([seq_len, num_nodes])
+        y_hat_multiple_imputation = np.zeros([multiple_imputations.shape[1], seq_len, num_nodes, C])
+    observed_mask_original = np.zeros([seq_len, num_nodes, C])
+    eval_mask_original = np.zeros([seq_len, num_nodes, C])
 
-    B, L, K = y_hat.shape
+    B, L, K, C = y_hat.shape
     for b in range(B):
         for l in range(L):
             for k in range(K):
@@ -409,13 +407,13 @@ def run_experiment(args):
 
     # save output to file
     output = {}
-    output['y_hat'] = y_hat_original[np.newaxis, :, :, np.newaxis]
-    output['y'] = y_true_original[np.newaxis, :, :, np.newaxis]
-    output['eval_mask'] = eval_mask_original[np.newaxis, :, :, np.newaxis]
-    output['observed_mask'] = observed_mask_original[np.newaxis, :, :, np.newaxis]
+    output['y_hat'] = y_hat_original
+    output['y'] = y_true_original
+    output['eval_mask'] = eval_mask_original
+    output['observed_mask'] = observed_mask_original
 
     if enable_multiple_imputation:
-        output['imputed_samples'] = y_hat_multiple_imputation[np.newaxis, :, :, :, np.newaxis]
+        output['imputed_samples'] = y_hat_multiple_imputation
 
     np.savez(os.path.join(logdir, 'output.npz'), **output)
 
