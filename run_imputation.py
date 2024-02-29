@@ -10,7 +10,7 @@ from pytorch_lightning.loggers import TensorBoardLogger
 from torch.optim.lr_scheduler import CosineAnnealingLR
 from tsl import config, logger
 from tsl.data import SpatioTemporalDataModule, ImputationDataset
-from tsl.data.preprocessing import StandardScaler
+from tsl.data.preprocessing import StandardScaler, MinMaxScaler
 from data import AnimalMovement
 
 
@@ -191,7 +191,8 @@ def run_experiment(args):
                                       stride=args.stride)
 
 
-    scalers = {'data': StandardScaler(axis=(0, 1))}
+    # scalers = {'data': StandardScaler(axis=(0, 1))}
+    scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
 
     # get train/val/test indices
     splitter = dataset.get_splitter(val_len=args.val_len,
@@ -307,7 +308,9 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
-    scaler = StandardScaler(axis=(0, 1))
+    # scaler = StandardScaler(axis=(0, 1))
+    scaler = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
+
     scaler.fit(dataset.y, dataset.training_mask)
     scaler.bias = torch.tensor(scaler.bias)
     scaler.scale = torch.tensor(scaler.scale)
