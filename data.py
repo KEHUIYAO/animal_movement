@@ -14,6 +14,7 @@ import matplotlib.pyplot as plt
 import rasterio
 
 from tsl.data.datamodule.splitters import Splitter
+from datetime import datetime, timedelta
 
 
 current_dir = os.path.dirname(os.path.abspath(__file__))
@@ -59,12 +60,22 @@ class AnimalMovement():
         self.training_mask = mask & (1-eval_mask)
 
         # covariates
-        X = df.loc[:, 'covariate']
+        X = df.loc[:, ['month', 'day', 'hour', 'covariate']]
         # replace missing values with 0
-        X = X.fillna('nan')
+        X = X.fillna(0)
 
-        # one-hot encoding
-        X = pd.get_dummies(X)
+        # one-hot encoding for covariates
+        covariates = X['covariate']
+        covariates = pd.get_dummies(covariates)
+
+        # normalize month, day, and hour to [0, 1]
+        month = X['month'] / 12
+        day = X['day'] / 31
+        hour = X['hour'] / 24
+
+        X = pd.concat([month, day, hour, covariates], axis=1)
+
+
         X = X.values
         X = X.reshape(L, 1, X.shape[1])
         self.attributes['covariates'] = X
@@ -120,6 +131,15 @@ class AnimalMovement():
 
         # Create DataFrame from list of dictionaries
         df_matched = pd.DataFrame(data_list)
+
+        base_date = datetime(2017, 1, 1, 0, 0, 0)
+        df_matched['date'] = [base_date + timedelta(days=x) for x in df_matched['T']]
+        df_matched['month'] = [x.month for x in df_matched['date']]
+        df_matched['day'] = [x.day for x in df_matched['date']]
+        df_matched['hour'] = [x.hour for x in df_matched['date']]
+
+
+
 
         return df_matched
 

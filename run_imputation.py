@@ -309,7 +309,7 @@ def run_experiment(args):
     # testing                              #
     ########################################
     # scaler = StandardScaler(axis=(0, 1))
-    scaler = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
+    scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
 
     scaler.fit(dataset.y, dataset.training_mask)
     scaler.bias = torch.tensor(scaler.bias)
