@@ -65,16 +65,16 @@ class AnimalMovement():
         X = X.fillna(0)
 
         # one-hot encoding for covariates
-        # covariates = X['covariate']
-        # covariates = pd.get_dummies(covariates)
+        covariates = X['covariate']
+        covariates = pd.get_dummies(covariates)
 
         # normalize month, day, and hour to [0, 1]
         month = X['month'] / 12
         day = X['day'] / 31
         hour = X['hour'] / 24
 
-        # X = pd.concat([month, day, hour, covariates], axis=1)
-        X = pd.concat([month, day, hour], axis=1)
+        X = pd.concat([month, day, hour, covariates], axis=1)
+        # X = pd.concat([month, day, hour], axis=1)
 
 
         X = X.values
