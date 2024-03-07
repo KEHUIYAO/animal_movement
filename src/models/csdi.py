@@ -156,13 +156,13 @@ class ResidualBlock(nn.Module):
 class CsdiModel(nn.Module):
     def __init__(self,
                  input_dim=1,
-                 hidden_dim=64,
+                 hidden_dim=16,
                  covariate_dim=0,
-                 diffusion_embedding_dim=128,
+                 diffusion_embedding_dim=64,
                  num_steps=50,
-                 nheads=8,
-                 nlayers=4,
-                 spatial_dim=36
+                 nheads=4,
+                 nlayers=2,
+                 spatial_dim=1
                  ):
 
 
