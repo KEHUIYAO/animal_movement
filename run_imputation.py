@@ -388,6 +388,9 @@ def run_experiment(args):
         y_hat_multiple_imputation = np.zeros([multiple_imputations.shape[1], seq_len, num_nodes, C])
     observed_mask_original = np.zeros([seq_len, num_nodes, C])
     eval_mask_original = np.zeros([seq_len, num_nodes, C])
+    y_hat_original_sum = np.zeros([seq_len, num_nodes])
+    count = np.zeros([seq_len, num_nodes])
+
 
     B, L, K, C = y_hat.shape
     for b in range(B):
@@ -395,12 +398,17 @@ def run_experiment(args):
             for k in range(K):
                 ts_pos = st_coords[b, l, k, ::-1]
                 y_true_original[ts_pos[0], ts_pos[1]] = y_true[b, l, k]
-                y_hat_original[ts_pos[0], ts_pos[1]] = y_hat[b, l, k]
+                y_hat_original_sum[ts_pos[0], ts_pos[1]] += y_hat[b, l, k]
+                count[ts_pos[0], ts_pos[1]] += 1
+
                 observed_mask_original[ts_pos[0], ts_pos[1]] = observed_mask[b, l, k]
                 eval_mask_original[ts_pos[0], ts_pos[1]] = eval_mask[b, l, k]
 
                 if enable_multiple_imputation:
                     y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] = multiple_imputations[b, :, l, k]
+
+    # for those positions that count is not 0, we divide the sum by count to get the average
+    y_hat_original[count != 0] = y_hat_original_sum[count != 0] / count[count != 0]
 
     check_mae = numpy_metrics.masked_mae(y_hat_original, y_true_original, eval_mask_original)
     print(f'Test MAE: {check_mae:.6f}')
