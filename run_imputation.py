@@ -145,6 +145,11 @@ def run_experiment(args):
 
     model_cls, imputer_class = get_model_classes(args.model_name)
     dataset = get_dataset(args.dataset_name)
+
+    # covariate dimension
+    if 'covariates' in dataset.attributes:
+        args.u_size = dataset.attributes['covariates'].shape[-1]
+
     logger.info(args)
 
     ########################################
