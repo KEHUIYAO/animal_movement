@@ -203,7 +203,9 @@ def run_experiment(args):
 
     # get train/val/test indices
     splitter = dataset.get_splitter(val_len=args.val_len,
-                                    test_len=args.test_len)
+                                    test_len=args.test_len,
+                                    window=args.window,
+                                    stride=args.stride)
 
     dm = SpatioTemporalDataModule(torch_dataset,
                                   scalers=scalers,
@@ -335,7 +337,9 @@ def run_experiment(args):
 
     # get train/val/test indices
     splitter = dataset.get_splitter(val_len=0,
-                                    test_len=len(torch_dataset))
+                                    test_len=1,
+                                    window=args.window,
+                                    stride=args.stride)
 
     dm = SpatioTemporalDataModule(torch_dataset,
                                   splitter=splitter,
