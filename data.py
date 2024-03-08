@@ -222,6 +222,11 @@ class AnimalMovementSplitter(Splitter):
                     train_index = train_index[train_index != i]
                     continue
 
+        if self._test_len == 1:
+            train_index = []
+            val_index = []
+            test_index = np.arange(len(dataset))
+
 
         self.set_indices(train_index,
                          val_index,
