@@ -24,8 +24,8 @@ class AnimalMovement():
     def __init__(self):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        #num = 5981
-        num = 5016
+        num = 5981
+        # num = 5016
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
@@ -113,8 +113,8 @@ class AnimalMovement():
         idx = deer_data['jul'].diff().idxmin()
 
 
-        time_interval = 0.16
-        tolerance = 0.08
+        time_interval = 0.08
+        tolerance = 0.04
 
         T_values = np.arange(start_time, end_time, time_interval)
         df = pd.DataFrame(T_values, columns=['T'])
