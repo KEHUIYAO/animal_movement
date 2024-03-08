@@ -101,6 +101,10 @@ class TransformerModel(nn.Module):
     def forward(self, x, mask, u=None, **kwargs):
         # x: [batches steps nodes features]
         # u: [batches steps (nodes) features]
+        # mask: [batches steps nodes features]
+
+        # make mask to be (batches, steps, nodes)
+        mask = mask[..., 0].unsqueeze(-1)
         x = x * mask
         # convert x to float32
         x = x.float()
@@ -115,11 +119,11 @@ class TransformerModel(nn.Module):
         h = self.pe(h)
 
 
-        # space encoding
-        B, L, K, C = h.shape
-        spatial_emb = self.spatial_embedding_layer(B, L)
-        spatial_emb = spatial_emb.permute(0, 3, 2, 1)  # (B, C, K, L)
-        h = h + spatial_emb
+        # # space encoding
+        # B, L, K, C = h.shape
+        # spatial_emb = self.spatial_embedding_layer(B, L)
+        # spatial_emb = spatial_emb.permute(0, 3, 2, 1)  # (B, C, K, L)
+        # h = h + spatial_emb
 
         out = []
         for encoder, mlp, layer_norm in zip(self.encoder, self.readout, self.layer_norm):
@@ -140,15 +144,15 @@ class TransformerModel(nn.Module):
                         options=[0., 0.1, 0.25, 0.5])
         parser.add_argument('--condition-on-u', type=str_to_bool, nargs='?',
                             const=True, default=True)
-        parser.opt_list('--axis', type=str, default='both', tunable=True,
+        parser.opt_list('--axis', type=str, default='steps', tunable=True,
                         options=['steps', 'both'])
 
-        parser.add_argument('--input_size', type=int, default=1)
+        parser.add_argument('--input_size', type=int, default=2)
         parser.add_argument('--hidden_size', type=int, default=64)
         parser.add_argument('--output_size', type=int, default=1)
         parser.add_argument('--ff_size', type=int, default=64)
-        parser.add_argument('--u_size', type=int, default=0)
-        parser.add_argument('--spatial_dim', type=int, default=2)
+        parser.add_argument('--u_size', type=int, default=11)
+        parser.add_argument('--spatial_dim', type=int, default=1)
 
 
         return parser
