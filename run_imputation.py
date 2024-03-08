@@ -399,7 +399,7 @@ def run_experiment(args):
         for l in range(L):
             for k in range(K):
                 ts_pos = st_coords[b, l, k, ::-1]
-                # y_true_original[ts_pos[0], ts_pos[1]] = y_true[b, l, k]
+                y_true_original[ts_pos[0], ts_pos[1]] = y_true[b, l, k]
                 y_hat_original_sum[ts_pos[0], ts_pos[1]] = y_hat_original_sum[ts_pos[0], ts_pos[1]] + y_hat[b, l, k]
                 count[ts_pos[0], ts_pos[1]] = count[ts_pos[0], ts_pos[1]] + 1
 
