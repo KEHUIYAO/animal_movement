@@ -25,6 +25,7 @@ class AnimalMovement():
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
         num = 5981
+        #num = 5016
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
