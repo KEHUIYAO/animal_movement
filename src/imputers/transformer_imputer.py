@@ -91,6 +91,10 @@ class TransformerImputer(Imputer):
         if 'x' in batch.input:
             batch.input.x = batch.input.x * batch.input.mask
 
+        if 'u' in batch.input:
+            temp_mask = batch.input.mask[:, :, :, 0].unsqueeze(-1)
+            batch.input.u[:, :, :, 3:] = batch.input.u[:, :, :, 3:] * temp_mask
+
         # seq_len = batch.input.x.size(1)
         # mask = batch.input.mask.permute(0, 2, 3, 1).repeat(1, 1, seq_len, 1)
         # mask = mask.permute(0, 2, 1, 3)

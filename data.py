@@ -67,6 +67,7 @@ class AnimalMovement():
 
         # one-hot encoding for covariates
         covariates = X['covariate']
+
         covariates = pd.get_dummies(covariates)
 
         # normalize month, day, and hour to [0, 1]
@@ -80,6 +81,7 @@ class AnimalMovement():
 
         X = X.values
         X = X.reshape(L, 1, X.shape[1])
+        X[time_points_to_eval, 3:] = 0
         self.attributes['covariates'] = X
 
     def load_data(self, num):
