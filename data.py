@@ -24,8 +24,8 @@ class AnimalMovement():
     def __init__(self):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        num = 5981
-        # num = 5016
+        # num = 5981
+        num = 5016
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
@@ -109,8 +109,8 @@ class AnimalMovement():
         # calculate the smallest time interval
         smallest_time_interval = deer_data['jul'].diff().min()
 
-        # index of the smallest time interval
-        idx = deer_data['jul'].diff().idxmin()
+        # # index of the smallest time interval
+        # idx = deer_data['jul'].diff().idxmin()
 
 
         time_interval = 0.08
@@ -118,6 +118,8 @@ class AnimalMovement():
 
         T_values = np.arange(start_time, end_time, time_interval)
         df = pd.DataFrame(T_values, columns=['T'])
+
+
 
         # Function to find nearest row within tolerance
         def find_nearest_row_within_tolerance(value, tolerance, dataframe, column_name):
@@ -147,6 +149,11 @@ class AnimalMovement():
         df_matched['month'] = [x.month for x in df_matched['date']]
         df_matched['day'] = [x.day for x in df_matched['date']]
         df_matched['hour'] = [x.hour for x in df_matched['date']]
+
+        fig, axs = plt.subplots(2)
+        axs[0].plot(df_matched['X'], 'o', markersize=1)
+        axs[1].plot(df_matched['Y'], 'o', markersize=1)
+        plt.show()
 
 
 
