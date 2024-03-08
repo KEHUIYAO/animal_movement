@@ -24,8 +24,8 @@ class AnimalMovement():
     def __init__(self):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        num = 5981
-        #num = 5016
+        #num = 5981
+        num = 5016
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
@@ -105,6 +105,14 @@ class AnimalMovement():
         deer_data['covariate'] = values
 
         start_time, end_time = deer_data['jul'].min(), deer_data['jul'].max()
+
+        # calculate the smallest time interval
+        smallest_time_interval = deer_data['jul'].diff().min()
+
+        # index of the smallest time interval
+        idx = deer_data['jul'].diff().idxmin()
+
+
         time_interval = 0.16
         tolerance = 0.08
 
