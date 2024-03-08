@@ -211,6 +211,17 @@ class AnimalMovementSplitter(Splitter):
         val_index = idx[val_start:test_start]
         test_index = idx[test_start:]
 
+
+        # validation data augmentation
+        for i in val_index:
+            # consider samples near j
+            for j in np.arange(i-10, i+10):
+                # if j not in val_index, append j to val_index
+                if j not in val_index:
+                    val_index = np.append(val_index, j)
+
+
+
         # combine val_index and test_index
         temp = np.concatenate((val_index, test_index))
 
