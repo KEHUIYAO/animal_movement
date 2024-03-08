@@ -127,7 +127,7 @@ class TransformerImputer(Imputer):
     #     self.log_loss('val', val_loss, batch_size=batch.batch_size)
     #     return val_loss
 
-    def on_valid_batch_start(self, batch, batch_idx: int,
+    def on_validation_batch_start(self, batch, batch_idx: int,
                              unused: Optional[int] = 0) -> None:
         self.on_train_batch_start(batch, batch_idx, unused)
 
