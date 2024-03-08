@@ -24,7 +24,7 @@ class AnimalMovement():
     def __init__(self):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        num = 5000
+        num = 5004
         # num = 5022
         df = self.load_data(num)
 
@@ -111,8 +111,11 @@ class AnimalMovement():
         # calculate the smallest time interval
         smallest_time_interval = deer_data['jul'].diff().min()
 
-        # # index of the smallest time interval
-        # idx = deer_data['jul'].diff().idxmin()
+        # index of the smallest time interval
+        idx = deer_data['jul'].diff().idxmin()
+
+        print('smallest time interval:', smallest_time_interval)
+
 
 
         time_interval = 0.08
