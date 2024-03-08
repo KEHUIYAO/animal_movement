@@ -193,8 +193,8 @@ def run_experiment(args):
                                       stride=args.stride)
 
 
-    # scalers = {'data': StandardScaler(axis=(0, 1))}
-    scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
+    scalers = {'data': StandardScaler(axis=(0, 1))}
+    # scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
 
     # get train/val/test indices
     splitter = dataset.get_splitter(val_len=args.val_len,
@@ -310,8 +310,8 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
-    # scaler = StandardScaler(axis=(0, 1))
-    scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
+    scaler = StandardScaler(axis=(0, 1))
+    # scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
 
     scaler.fit(dataset.y, dataset.training_mask)
     scaler.bias = torch.tensor(scaler.bias)
