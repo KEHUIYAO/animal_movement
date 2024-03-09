@@ -43,6 +43,9 @@ class AnimalMovement():
         p_missing = 0.2
         rng = np.random.RandomState(42)
         time_points_to_test = rng.choice(L, int(p_missing * L), replace=False)
+        test_mask = np.zeros_like(y)
+        test_mask[time_points_to_test, ...] = 1
+        self.test_mask = test_mask
         y[time_points_to_test, :] = np.nan
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
