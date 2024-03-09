@@ -21,7 +21,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class AnimalMovement():
-    def __init__(self):
+    def __init__(self, mode='train'):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
         # num = 5000
@@ -35,44 +35,46 @@ class AnimalMovement():
 
         y = y.reshape(L, 1, C)
 
-        y_true = y.copy()
-        self.y_true = y_true
 
         # randomly set 20% of data to be missing as test data
-        mask = np.ones_like(y_true)
-        mask[np.isnan(y_true)] = 0
-        mask = mask.astype(int)
-        p_missing = 0.2
-        rng = np.random.RandomState(42)
-        time_points_to_test = rng.choice(L, int(p_missing * L), replace=False)
-        test_mask = np.zeros_like(y)
-        test_mask[time_points_to_test, ...] = 1
-        test_mask = test_mask.astype(int)
-        self.test_mask = test_mask & mask
-        y[time_points_to_test, :] = np.nan
-
-
-        # randomly set 20% of data to be missing as val data
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-        # impute missing values with 0
-        y[np.isnan(y)] = 0
-
-        self.y = y
-        self.attributes = {}
-        space_coords, time_coords = np.meshgrid(np.arange(1), np.arange(L))
-        st_coords = np.stack([space_coords, time_coords], axis=-1)
-        self.attributes['st_coords'] = st_coords
-
+        p_missing = 0.2
+        rng = np.random.RandomState(42)
         time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
         eval_mask = np.zeros_like(y)
         eval_mask[time_points_to_eval, ...] = 1
         eval_mask = eval_mask.astype(int)
         eval_mask = eval_mask & mask
 
+
+        if mode == 'train':
+            y[time_points_to_eval, :] = np.nan
+            # randomly set 20% of data to be missing as val data
+            mask = np.ones_like(y)
+            mask[np.isnan(y)] = 0
+            mask = mask.astype(int)
+            # impute missing values with 0
+            y[np.isnan(y)] = 0
+            time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
+            eval_mask = np.zeros_like(y)
+            eval_mask[time_points_to_eval, ...] = 1
+            eval_mask = eval_mask.astype(int)
+            eval_mask = eval_mask & mask
+        else:
+            # impute missing values with 0
+            y[np.isnan(y)] = 0
+
         self.eval_mask = eval_mask
-        self.training_mask = mask & (1-eval_mask)
+        self.training_mask = mask & (1 - eval_mask)
+        self.y = y
+        self.attributes = {}
+        space_coords, time_coords = np.meshgrid(np.arange(1), np.arange(L))
+        st_coords = np.stack([space_coords, time_coords], axis=-1)
+        self.attributes['st_coords'] = st_coords
+
+
 
         # covariates
         X = df.loc[:, ['month', 'day', 'hour', 'covariate']]
@@ -92,10 +94,8 @@ class AnimalMovement():
         X = pd.concat([month, day, hour, covariates], axis=1)
         # X = pd.concat([month, day, hour], axis=1)
 
-
         X = X.values
         X = X.reshape(L, 1, X.shape[1])
-        X[time_points_to_test, 3:] = 0
         X[time_points_to_eval, 3:] = 0
         self.attributes['covariates'] = X
 

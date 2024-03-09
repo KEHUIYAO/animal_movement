@@ -32,10 +32,12 @@ def parse_args():
     ########################################
     parser = ArgParser()
     # parser.add_argument("--model-name", type=str, default='csdi')
-    parser.add_argument("--model-name", type=str, default='transformer')
+    parser.add_argument("--model-name", type=str, default='interpolation')
+    # parser.add_argument("--model-name", type=str, default='transformer')
     parser.add_argument("--dataset-name", type=str, default='animal_movement')
     # parser.add_argument("--config", type=str, default='csdi.yaml')
-    parser.add_argument("--config", type=str, default='transformer.yaml')
+    parser.add_argument("--config", type=str, default='interpolation.yaml')
+    # parser.add_argument("--config", type=str, default='transformer.yaml')
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--check-val-every-n-epoch', type=int, default=1)
     parser.add_argument('--batch-inference', type=int, default=32)
@@ -98,14 +100,6 @@ def get_model_classes(model_str):
     return model, filler
 
 
-def get_dataset(dataset_name: str):
-
-    if dataset_name == 'animal_movement':
-        return AnimalMovement()
-
-    raise ValueError(f"Invalid dataset name: {dataset_name}.")
-
-
 
 def get_scheduler(scheduler_name: str = None, args=None):
     if scheduler_name is None:
@@ -144,7 +138,7 @@ def run_experiment(args):
 
 
     model_cls, imputer_class = get_model_classes(args.model_name)
-    dataset = get_dataset(args.dataset_name)
+    dataset = AnimalMovement(mode='train')
 
     # covariate dimension
     if 'covariates' in dataset.attributes:
@@ -315,6 +309,7 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
+    dataset = AnimalMovement(mode='test')
     scaler = StandardScaler(axis=(0, 1))
     # scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
 
@@ -404,7 +399,6 @@ def run_experiment(args):
         for l in range(L):
             for k in range(K):
                 ts_pos = st_coords[b, l, k, ::-1]
-                y_true_original[ts_pos[0], ts_pos[1]] = y_true[b, l, k]
                 y_hat_original_sum[ts_pos[0], ts_pos[1]] = y_hat_original_sum[ts_pos[0], ts_pos[1]] + y_hat[b, l, k]
                 count[ts_pos[0], ts_pos[1]] = count[ts_pos[0], ts_pos[1]] + 1
 
@@ -419,8 +413,8 @@ def run_experiment(args):
 
 
     # use hold-out test-set
-    y_true_original = dataset.y_true
-    eval_mask_original = dataset.test_mask
+    y_true_original = dataset.y
+    eval_mask_original = dataset.eval_mask
 
 
     check_mae = numpy_metrics.masked_mae(y_hat_original, y_true_original, eval_mask_original)
