@@ -417,6 +417,12 @@ def run_experiment(args):
     # for those positions that count is not 0, we divide the sum by count to get the average
     y_hat_original[count != 0] = y_hat_original_sum[count != 0] / count[count != 0]
 
+
+    # use hold-out test-set
+    y_true_original = dataset.y_true
+    eval_mask_original = dataset.test_mask
+
+
     check_mae = numpy_metrics.masked_mae(y_hat_original, y_true_original, eval_mask_original)
     print(f'Test MAE: {check_mae:.6f}')
 
