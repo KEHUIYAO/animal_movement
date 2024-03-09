@@ -35,11 +35,18 @@ class AnimalMovement():
 
         y = y.reshape(L, 1, C)
 
+        y_true = y.copy()
+        y_true[np.isnan(y_true)] = 0
+        self.y_true = y_true
 
+        # randomly set 20% of data to be missing
+        p_missing = 0.2
+        rng = np.random.RandomState(42)
+        time_points_to_test = rng.choice(L, int(p_missing * L), replace=False)
+        y[time_points_to_test, :] = np.nan
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-
         # impute missing values with 0
         y[np.isnan(y)] = 0
 
@@ -49,8 +56,6 @@ class AnimalMovement():
         st_coords = np.stack([space_coords, time_coords], axis=-1)
         self.attributes['st_coords'] = st_coords
 
-        p_missing = 0.2
-        rng = np.random.RandomState(42)
         time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
         eval_mask = np.zeros_like(y)
         eval_mask[time_points_to_eval, ...] = 1
@@ -81,6 +86,7 @@ class AnimalMovement():
 
         X = X.values
         X = X.reshape(L, 1, X.shape[1])
+        X[time_points_to_test, 3:] = 0
         X[time_points_to_eval, 3:] = 0
         self.attributes['covariates'] = X
 
