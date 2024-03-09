@@ -1,7 +1,7 @@
 #### Dataset params ###########################################################
 #dataset_name: [la_point, bay_point, la_bock, bay_bock, air, air36]
-val_len: 0.2
-test_len: 0.2
+val_len: 0.5
+test_len: 0.5
 
 window: 72  # [24, 36]
 stride: 2
@@ -23,5 +23,5 @@ check_val_every_n_epoch: 1
 l2_reg: 0
 
 ### Model params #############################################################
-u_size: 11
+u_size: 9
 spatial_dim: 1
