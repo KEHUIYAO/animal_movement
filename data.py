@@ -24,8 +24,7 @@ class AnimalMovement():
     def __init__(self):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        # num = 5004
-        # num = 5022
+        # num = 5000
         num = 5016
         df = self.load_data(num)
 
@@ -112,11 +111,8 @@ class AnimalMovement():
         # calculate the smallest time interval
         smallest_time_interval = deer_data['jul'].diff().min()
 
-        # index of the smallest time interval
-        idx = deer_data['jul'].diff().idxmin()
-
-        print('smallest time interval:', smallest_time_interval)
-
+        # # index of the smallest time interval
+        # idx = deer_data['jul'].diff().idxmin()
 
 
         time_interval = 0.08
@@ -166,84 +162,34 @@ class AnimalMovement():
 
         return df_matched
 
-    def get_splitter(self, val_len, test_len, window, stride):
-        return AnimalMovementSplitter(val_len, test_len, window, stride)
+    def get_splitter(self, val_len, test_len):
+        return AnimalMovementSplitter(val_len, test_len)
 
 
 class AnimalMovementSplitter(Splitter):
 
-    def __init__(self, val_len, test_len, window, stride):
+    def __init__(self, val_len: int = None, test_len: int = None):
         super().__init__()
         self._val_len = val_len
         self._test_len = test_len
-        self.window = window
-        self.stride = stride
-
-    # def fit(self, dataset):
-    #     idx = np.arange(len(dataset))
-    #     val_len, test_len = self._val_len, self._test_len
-    #     if test_len < 1:
-    #         test_len = int(test_len * len(idx))
-    #     if val_len < 1:
-    #         val_len = int(val_len * (len(idx) - test_len))
-    #
-    #     # randomly split idx into train, val, test
-    #     np.random.shuffle(idx)
-    #     val_start = len(idx) - val_len - test_len
-    #     test_start = len(idx) - test_len
-    #
-    #
-    #     self.set_indices(idx[:val_start - dataset.samples_offset],
-    #                      idx[val_start:test_start - dataset.samples_offset],
-    #                      idx[test_start:])
 
     def fit(self, dataset):
         idx = np.arange(len(dataset))
-        val_len = int((len(dataset) * self.stride / self.window) * self._val_len)
-        test_len = int((len(dataset) * self.stride / self.window) * self._test_len)
-
+        val_len, test_len = self._val_len, self._test_len
+        if test_len < 1:
+            test_len = int(test_len * len(idx))
+        if val_len < 1:
+            val_len = int(val_len * (len(idx) - test_len))
 
         # randomly split idx into train, val, test
         np.random.shuffle(idx)
         val_start = len(idx) - val_len - test_len
         test_start = len(idx) - test_len
 
-        train_index = idx[:val_start]
-        val_index = idx[val_start:test_start]
-        test_index = idx[test_start:]
 
-
-        # validation data augmentation
-        for i in val_index:
-            # consider samples near j
-            for j in np.arange(i-10, i+10):
-                # if j not in val_index, append j to val_index
-                if j not in val_index:
-                    val_index = np.append(val_index, j)
-
-
-
-        # combine val_index and test_index
-        temp = np.concatenate((val_index, test_index))
-
-
-        for i in train_index:
-            for j in temp:
-                if abs(i-j) * self.stride < self.window:
-                    # remove i from train_index
-                    train_index = train_index[train_index != i]
-                    continue
-
-        if self._test_len == 1:
-            train_index = []
-            val_index = []
-            test_index = np.arange(len(dataset))
-
-
-        self.set_indices(train_index,
-                         val_index,
-                         test_index)
-
+        self.set_indices(idx[:val_start - dataset.samples_offset],
+                         idx[val_start:test_start - dataset.samples_offset],
+                         idx[test_start:])
 
     @staticmethod
     def add_argparse_args(parser):
