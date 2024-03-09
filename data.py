@@ -36,17 +36,23 @@ class AnimalMovement():
         y = y.reshape(L, 1, C)
 
         y_true = y.copy()
-        y_true[np.isnan(y_true)] = 0
         self.y_true = y_true
 
-        # randomly set 20% of data to be missing
+        # randomly set 20% of data to be missing as test data
+        mask = np.ones_like(y_true)
+        mask[np.isnan(y_true)] = 0
+        mask = mask.astype(int)
         p_missing = 0.2
         rng = np.random.RandomState(42)
         time_points_to_test = rng.choice(L, int(p_missing * L), replace=False)
         test_mask = np.zeros_like(y)
         test_mask[time_points_to_test, ...] = 1
-        self.test_mask = test_mask
+        test_mask = test_mask.astype(int)
+        self.test_mask = test_mask & mask
         y[time_points_to_test, :] = np.nan
+
+
+        # randomly set 20% of data to be missing as val data
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
@@ -196,8 +202,11 @@ class AnimalMovementSplitter(Splitter):
         test_start = len(idx) - test_len
 
 
-        self.set_indices(idx[:val_start - dataset.samples_offset],
-                         idx[val_start:test_start - dataset.samples_offset],
+        # self.set_indices(idx[:val_start - dataset.samples_offset],
+        #                  idx[val_start:test_start - dataset.samples_offset],
+        #                  idx[test_start:])
+        self.set_indices(idx[:val_start],
+                         idx[val_start:test_start],
                          idx[test_start:])
 
     @staticmethod
