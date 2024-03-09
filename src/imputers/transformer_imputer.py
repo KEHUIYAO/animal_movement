@@ -117,35 +117,35 @@ class TransformerImputer(Imputer):
             torch.cuda.empty_cache()
         return loss
 
-    # def validation_step(self, batch, batch_idx):
-    #     # batch.input.target_mask = batch.eval_mask
-    #     y_hat, y, val_loss = self.shared_step(batch, batch.eval_mask)
-    #
-    #     # Logging
-    #     self.val_metrics.update(y_hat, y, batch.eval_mask)
-    #     self.log_metrics(self.val_metrics, batch_size=batch.batch_size)
-    #     self.log_loss('val', val_loss, batch_size=batch.batch_size)
-    #     return val_loss
+    def validation_step(self, batch, batch_idx):
+        # batch.input.target_mask = batch.eval_mask
+        y_hat, y, val_loss = self.shared_step(batch, batch.eval_mask)
+
+        # Logging
+        self.val_metrics.update(y_hat, y, batch.eval_mask)
+        self.log_metrics(self.val_metrics, batch_size=batch.batch_size)
+        self.log_loss('val', val_loss, batch_size=batch.batch_size)
+        return val_loss
 
     # def on_validation_batch_start(self, batch, batch_idx: int,
     #                          unused: Optional[int] = 0) -> None:
     #     self.on_train_batch_start(batch, batch_idx, unused)
 
 
-    def validation_step(self, batch, batch_idx):
-        injected_missing = (batch.original_mask - batch.mask)
-        if 'target_nodes' in batch:
-            injected_missing = injected_missing[..., batch.target_nodes, :]
-        # batch.input.target_mask = injected_missing
-        y_hat, y, loss = self.shared_step(batch, mask=injected_missing)
-
-        # Logging
-        self.val_metrics.update(y_hat, y, injected_missing)
-        self.log_metrics(self.val_metrics, batch_size=batch.batch_size)
-        self.log_loss('val', loss, batch_size=batch.batch_size)
-        if 'target_nodes' in batch:
-            torch.cuda.empty_cache()
-        return loss
+    # def validation_step(self, batch, batch_idx):
+    #     injected_missing = (batch.original_mask - batch.mask)
+    #     if 'target_nodes' in batch:
+    #         injected_missing = injected_missing[..., batch.target_nodes, :]
+    #     # batch.input.target_mask = injected_missing
+    #     y_hat, y, loss = self.shared_step(batch, mask=injected_missing)
+    #
+    #     # Logging
+    #     self.val_metrics.update(y_hat, y, injected_missing)
+    #     self.log_metrics(self.val_metrics, batch_size=batch.batch_size)
+    #     self.log_loss('val', loss, batch_size=batch.batch_size)
+    #     if 'target_nodes' in batch:
+    #         torch.cuda.empty_cache()
+    #     return loss
 
     def test_step(self, batch, batch_idx):
         # batch.input.target_mask = batch.eval_mask
