@@ -424,6 +424,10 @@ def run_experiment(args):
     check_mre = numpy_metrics.masked_mre(y_hat_original, y_true_original, eval_mask_original)
     print(f'Test MRE: {check_mre:.6f}')
 
+    # if the results folder does not exist, create it
+    if not os.path.exists('./results'):
+        os.makedirs('./results')
+
     # write the result to a file, name the file as the deer id
     with open(f'./results/{args.deer_id}.txt', 'w') as f:
         f.write(f'Test MAE: {check_mae:.6f}\n')
@@ -452,5 +456,5 @@ if __name__ == '__main__':
     deer_id_list = [5000, 5016]
 
     for i in deer_id_list:
-        args = parse_args(model_name='interpolation', config_file='interpolation.yaml', deer_id=i)
+        args = parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=i)
         run_experiment(args)
