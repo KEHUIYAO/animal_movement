@@ -310,7 +310,7 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
-    dataset = AnimalMovement(mode='test')
+    dataset = AnimalMovement(mode='test', deer_id=args.deer_id)
     scaler = StandardScaler(axis=(0, 1))
     # scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
 
@@ -448,8 +448,9 @@ def run_experiment(args):
 
 if __name__ == '__main__':
 
-    deer_id_list = [5629, 5631, 5633, 5639, 5657]
+    # deer_id_list = [5629, 5631, 5633, 5639, 5657]
+    deer_id_list = [5000, 5016]
 
     for i in deer_id_list:
-        args = parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=i)
+        args = parse_args(model_name='interpolation', config_file='interpolation.yaml', deer_id=i)
         run_experiment(args)
