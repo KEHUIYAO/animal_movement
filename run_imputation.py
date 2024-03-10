@@ -27,7 +27,7 @@ from scheduler import CosineSchedulerWithRestarts
 
 from tqdm import tqdm
 
-def parse_args(model_name='transformer', config='transformer.yaml', deer_id=5004):
+def parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=5004):
     # Argument parser
     ########################################
     parser = ArgParser()
@@ -38,7 +38,7 @@ def parse_args(model_name='transformer', config='transformer.yaml', deer_id=5004
     parser.add_argument("--dataset-name", type=str, default='animal_movement')
     # parser.add_argument("--config", type=str, default='csdi.yaml')
     # parser.add_argument("--config", type=str, default='interpolation.yaml')
-    parser.add_argument("--config", type=str, default=config)
+    parser.add_argument("--config", type=str, default=config_file)
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--check-val-every-n-epoch', type=int, default=1)
     parser.add_argument('--batch-inference', type=int, default=32)
@@ -451,5 +451,5 @@ if __name__ == '__main__':
     deer_id_list = [5629, 5631, 5633, 5639, 5657]
 
     for i in deer_id_list:
-        args = parse_args(model_name='transformer', config='transformer.yaml', deer_id=i)
+        args = parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=i)
         run_experiment(args)
