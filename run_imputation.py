@@ -27,17 +27,18 @@ from scheduler import CosineSchedulerWithRestarts
 
 from tqdm import tqdm
 
-def parse_args():
+def parse_args(model_name='transformer', config='transformer.yaml', deer_id=5004):
     # Argument parser
     ########################################
     parser = ArgParser()
+    parser.add_argument('--deer-id', type=int, default=deer_id)
     # parser.add_argument("--model-name", type=str, default='csdi')
     # parser.add_argument("--model-name", type=str, default='interpolation')
-    parser.add_argument("--model-name", type=str, default='transformer')
+    parser.add_argument("--model-name", type=str, default=model_name)
     parser.add_argument("--dataset-name", type=str, default='animal_movement')
     # parser.add_argument("--config", type=str, default='csdi.yaml')
     # parser.add_argument("--config", type=str, default='interpolation.yaml')
-    parser.add_argument("--config", type=str, default='transformer.yaml')
+    parser.add_argument("--config", type=str, default=config)
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--check-val-every-n-epoch', type=int, default=1)
     parser.add_argument('--batch-inference', type=int, default=32)
@@ -138,7 +139,7 @@ def run_experiment(args):
 
 
     model_cls, imputer_class = get_model_classes(args.model_name)
-    dataset = AnimalMovement(mode='train')
+    dataset = AnimalMovement(mode='train', deer_id=args.deer_id)
 
     # covariate dimension
     if 'covariates' in dataset.attributes:
@@ -423,6 +424,13 @@ def run_experiment(args):
     check_mre = numpy_metrics.masked_mre(y_hat_original, y_true_original, eval_mask_original)
     print(f'Test MRE: {check_mre:.6f}')
 
+    # write the result to a file, name the file as the deer id
+    with open(f'./results/{args.deer_id}.txt', 'w') as f:
+        f.write(f'Test MAE: {check_mae:.6f}\n')
+        f.write(f'Test MRE: {check_mre:.6f}\n')
+
+
+
     # save output to file
     output = {}
     output['y_hat'] = y_hat_original
@@ -439,5 +447,9 @@ def run_experiment(args):
 
 
 if __name__ == '__main__':
-    args = parse_args()
-    run_experiment(args)
+
+    deer_id_list = [5629, 5631, 5633, 5639, 5657]
+
+    for i in deer_id_list:
+        args = parse_args(model_name='transformer', config='transformer.yaml', deer_id=i)
+        run_experiment(args)

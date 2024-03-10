@@ -21,13 +21,10 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class AnimalMovement():
-    def __init__(self, mode='train'):
+    def __init__(self, mode='train', deer_id=5016):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        # num = 5000
-        # num = 5016
-        # num = 5022
-        num = 5004
+        num = deer_id
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
