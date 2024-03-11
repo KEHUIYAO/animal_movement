@@ -138,7 +138,7 @@ class TransformerModel(nn.Module):
     def add_model_specific_args(parser: ArgParser):
         parser.opt_list('--n-layers', type=int, default=1, tunable=True,
                         options=[1, 2, 3, 4])
-        parser.opt_list('--n-heads', type=int, default=1, tunable=True,
+        parser.opt_list('--n-heads', type=int, default=4, tunable=True,
                         options=[1, 2, 3])
         parser.opt_list('--dropout', type=float, default=0., tunable=True,
                         options=[0., 0.1, 0.25, 0.5])
@@ -148,9 +148,9 @@ class TransformerModel(nn.Module):
                         options=['steps', 'both'])
 
         parser.add_argument('--input_size', type=int, default=2)
-        parser.add_argument('--hidden_size', type=int, default=64)
+        parser.add_argument('--hidden_size', type=int, default=128)
         parser.add_argument('--output_size', type=int, default=1)
-        parser.add_argument('--ff_size', type=int, default=64)
+        parser.add_argument('--ff_size', type=int, default=128)
         parser.add_argument('--u_size', type=int, default=11)
         parser.add_argument('--spatial_dim', type=int, default=1)
 

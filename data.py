@@ -171,7 +171,12 @@ class AnimalMovement():
         axs[1].plot(df_matched['Y'], 'o', markersize=1)
         plt.show()
 
+        # create a folder called result to save the figure
+        if not os.path.exists('result'):
+            os.makedirs('result')
 
+        # save fig to file, file name is the deer id
+        fig.savefig('result/' + str(num) + '.png')
 
 
         return df_matched
