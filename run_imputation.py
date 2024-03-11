@@ -460,3 +460,6 @@ if __name__ == '__main__':
     for i in deer_id_list:
         args = parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=i)
         run_experiment(args)
+        # free up memory
+        torch.cuda.empty_cache()
+
