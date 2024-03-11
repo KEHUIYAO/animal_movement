@@ -428,6 +428,10 @@ def run_experiment(args):
     max_residual = np.max(residual)
     print(f'Max residual: {max_residual:.6f}')
 
+    # number of observed data points
+    n_observed = np.sum(observed_mask_original)
+
+
     # create a folder called results/deer_id and save the result
     if not os.path.exists(f'./results/{args.deer_id}/{args.model_name}'):
         os.makedirs(f'./results/{args.deer_id}/{args.model_name}')
@@ -437,6 +441,7 @@ def run_experiment(args):
         f.write(f'Test MAE: {check_mae:.6f}\n')
         f.write(f'Test MRE: {check_mre:.6f}\n')
         f.write(f'Max residual: {max_residual:.6f}\n')
+        f.write(f'Number of observed data points: {n_observed}\n')
 
 
     # save output to file
@@ -502,7 +507,7 @@ if __name__ == '__main__':
 
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5016]
-    for i in sorted(deer_id_list)[2:]:
+    for i in sorted(deer_id_list):
         for model in model_list:
             args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
 
