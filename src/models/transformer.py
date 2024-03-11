@@ -103,6 +103,16 @@ class TransformerModel(nn.Module):
         # u: [batches steps (nodes) features]
         # mask: [batches steps nodes features]
 
+        # normalize x across the steps dimension, and keep track of the mean and std
+        x_mean = x.mean(dim=1, keepdim=True)
+        x_std = x.std(dim=1, keepdim=True)
+
+        x = (x - x_mean) / (x_std + 1e-6)
+
+
+
+
+
         # make mask to be (batches, steps, nodes)
         mask = mask[..., 0].unsqueeze(-1)
         x = x * mask
@@ -132,6 +142,13 @@ class TransformerModel(nn.Module):
             out.append(mlp(h))
 
         x_hat = out.pop(-1)
+
+
+        # transform output and x_hat back to the original scale
+        x_hat = x_hat * (x_std + 1e-6) + x_mean
+        out = [o * (x_std + 1e-6) + x_mean for o in out]
+
+
         return x_hat, out
 
     @staticmethod
