@@ -12,19 +12,16 @@ from tsl import config, logger
 from tsl.data import SpatioTemporalDataModule, ImputationDataset
 from tsl.data.preprocessing import StandardScaler, MinMaxScaler
 from data import AnimalMovement
-
-
 from tsl.nn.metrics import MaskedMetric, MaskedMAE, MaskedMSE, MaskedMRE
 from tsl.utils.parser_utils import ArgParser
 from tsl.utils import parser_utils, numpy_metrics
-
 from src.models.brits import BRITS
 from src.models.stat_method import MeanModel, InterpolationModel
 from src.models import CsdiModel, TransformerModel
 from src.imputers import BRITSImputer, MeanImputer, InterpolationImputer, CsdiImputer, TransformerImputer
 from scheduler import CosineSchedulerWithRestarts
-
-
+import matplotlib.pyplot as plt
+import pandas as pd
 from tqdm import tqdm
 
 def parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=5004):
@@ -424,15 +421,22 @@ def run_experiment(args):
     check_mre = numpy_metrics.masked_mre(y_hat_original, y_true_original, eval_mask_original)
     print(f'Test MRE: {check_mre:.6f}')
 
-    # if the results folder does not exist, create it
-    if not os.path.exists('./results'):
-        os.makedirs('./results')
+    # error diagnostics, find the largest residual
+    residual = y_hat_original - y_true_original
+    residual = residual * eval_mask_original
+    residual = np.abs(residual)
+    max_residual = np.max(residual)
+    print(f'Max residual: {max_residual:.6f}')
+
+    # create a folder called results/deer_id and save the result
+    if not os.path.exists(f'./results/{args.deer_id}/{args.model_name}'):
+        os.makedirs(f'./results/{args.deer_id}/{args.model_name}')
 
     # write the result to a file, name the file as the deer id
-    with open(f'./results/{args.deer_id}.txt', 'w') as f:
+    with open(f'./results/{args.deer_id}/{args.model_name}/mae.txt', 'w') as f:
         f.write(f'Test MAE: {check_mae:.6f}\n')
         f.write(f'Test MRE: {check_mre:.6f}\n')
-
+        f.write(f'Max residual: {max_residual:.6f}\n')
 
 
     # save output to file
@@ -445,7 +449,45 @@ def run_experiment(args):
     if enable_multiple_imputation:
         output['imputed_samples'] = y_hat_multiple_imputation
 
-    np.savez(os.path.join(logdir, 'output.npz'), **output)
+    # save it to a npz file
+    np.savez(f'./results/{args.deer_id}/{args.model_name}/output.npz', **output)
+
+
+    # plot the result and save it
+    all_target_np = y_true_original.squeeze(-2)
+    all_evalpoint_np = eval_mask_original.squeeze(-2)
+    all_observed_np = observed_mask_original.squeeze(-2)
+    samples = y_hat_original
+    qlist = [0.05, 0.25, 0.5, 0.75, 0.95]
+    quantiles_imp = []
+    for q in qlist:
+        tmp = np.quantile(samples, q, axis=1)
+        quantiles_imp.append(tmp * (1 - all_observed_np) + all_target_np * all_observed_np)
+
+
+    #######################################
+    plt.rcParams["font.size"] = 16
+    fig, axes = plt.subplots(nrows=C, ncols=1, figsize=(36, 24.0))
+
+    start = 0
+    end = all_target_np.shape[0] - 1
+
+    for k in range(C):
+        df = pd.DataFrame(
+            {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_evalpoint_np[start:end, k]})
+        df = df[df.y != 0]
+        df2 = pd.DataFrame(
+            {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_observed_np[start:end, k]})
+        df2 = df2[df2.y != 0]
+        axes[k].plot(range(0, end - start), quantiles_imp[2][start:end, k], color='g', linestyle='solid', label='CSDI')
+        axes[k].fill_between(range(0, end - start), quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
+                             color='g', alpha=0.3)
+        axes[k].plot(df2.x, df2.val, color='r', marker='x', linestyle='None')
+        axes[k].plot(df.x, df.val, color='b', marker='o', linestyle='None')
+
+    # save the plot
+    plt.savefig(f'./results/{args.deer_id}/{args.model_name}/prediction.png')
+
 
 
 
@@ -454,11 +496,15 @@ if __name__ == '__main__':
     # make all files under Female/TagData
     deer_id_list = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')]
 
+    model_list = ['interpolation', 'transformer']
+
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5016]
     for i in sorted(deer_id_list):
-        args = parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=i)
-        run_experiment(args)
-        # free up memory
-        torch.cuda.empty_cache()
+        for model in model_list:
+            args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
+            run_experiment(args)
+            # free up memory
+            torch.cuda.empty_cache()
+
 

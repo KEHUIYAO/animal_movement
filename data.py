@@ -172,11 +172,11 @@ class AnimalMovement():
         plt.show()
 
         # create a folder called result to save the figure
-        if not os.path.exists('result'):
-            os.makedirs('result')
+        if not os.path.exists(f'results/{num}'):
+            os.makedirs(f'results/{num}')
 
         # save fig to file, file name is the deer id
-        fig.savefig('result/' + str(num) + '.png')
+        fig.savefig(f'results/{num}/original.png')
 
 
         return df_matched
