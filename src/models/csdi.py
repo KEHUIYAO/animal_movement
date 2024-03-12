@@ -156,12 +156,12 @@ class ResidualBlock(nn.Module):
 class CsdiModel(nn.Module):
     def __init__(self,
                  input_dim=1,
-                 hidden_dim=16,
+                 hidden_dim=64,
                  covariate_dim=0,
-                 diffusion_embedding_dim=64,
+                 diffusion_embedding_dim=128,
                  num_steps=50,
-                 nheads=4,
-                 nlayers=2,
+                 nheads=8,
+                 nlayers=4,
                  spatial_dim=1
                  ):
 
@@ -214,6 +214,17 @@ class CsdiModel(nn.Module):
         return cond_info
 
     def forward(self, x, mask, noisy_data, diffusion_step, u=None, **kwargs):
+
+
+        # normalize x across the steps dimension, and keep track of the mean and std
+        x_mean = x.mean(dim=1, keepdim=True)
+        x_std = x.std(dim=1, keepdim=True)
+
+        x = (x - x_mean) / (x_std + 1e-6)
+
+
+
+
         side_info = u
         hidden_dim = self.hidden_dim
 
@@ -248,7 +259,12 @@ class CsdiModel(nn.Module):
         x = F.relu(x)
         x = self.output_projection2(x)  # (B,input_dim,K*L)
         x = x.reshape(B, -1, K, L)  # (B,input_dim,K,L)
-        x = x.permute(0, 3, 2, 1)  # (B,K,L,input_dim)
+        x = x.permute(0, 3, 2, 1)  # (B,L,K,input_dim)
+
+        # transform x back to the original scale
+        x = x * (x_std + 1e-6) + x_mean
+
+
         return x
 
     @staticmethod
