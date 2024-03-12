@@ -28,7 +28,6 @@ def parse_args(model_name='transformer', config_file='transformer.yaml', deer_id
     # Argument parser
     ########################################
     parser = ArgParser()
-    # type is list or int
     parser.add_argument('--deer-id', type=int, default=deer_id)
     # parser.add_argument("--model-name", type=str, default='csdi')
     # parser.add_argument("--model-name", type=str, default='interpolation')
@@ -191,9 +190,8 @@ def run_experiment(args):
                                       stride=args.stride)
 
 
-    # scalers = {'data': StandardScaler(axis=(0, 1))}
+    scalers = {'data': StandardScaler(axis=(0, 1))}
     # scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
-    scalers = None
 
     # get train/val/test indices
     splitter = dataset.get_splitter(val_len=args.val_len,
@@ -310,14 +308,13 @@ def run_experiment(args):
     # testing                              #
     ########################################
     dataset = AnimalMovement(mode='test', deer_id=args.deer_id)
-    # scaler = StandardScaler(axis=(0, 1))
+    scaler = StandardScaler(axis=(0, 1))
     # scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
 
-    # scaler.fit(dataset.y, dataset.training_mask)
-    # scaler.bias = torch.tensor(scaler.bias)
-    # scaler.scale = torch.tensor(scaler.scale)
-    # scalers = {'data': scaler}
-    scalers = None
+    scaler.fit(dataset.y, dataset.training_mask)
+    scaler.bias = torch.tensor(scaler.bias)
+    scaler.scale = torch.tensor(scaler.scale)
+    scalers = {'data': scaler}
 
     # instantiate dataset
     torch_dataset = ImputationDataset(dataset.y,
@@ -498,31 +495,27 @@ def run_experiment(args):
 
 
 
+
+
 if __name__ == '__main__':
     # make all files under Female/TagData
     deer_id_list = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')]
 
-    model_list = ['interpolation']
+    model_list = ['transformer']
 
-    # for i in sorted(deer_id_list):
-    #     for model in model_list:
-    #         args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
-    #
-    #         try:
-    #             run_experiment(args)
-    #         except:
-    #             pass
-    #         # free up memory
-    #         torch.cuda.empty_cache()
+    # deer_id_list = [5629, 5631, 5633, 5639, 5657]
+    # deer_id_list = [5000, 5016]
+    for i in sorted(deer_id_list):
+        for model in model_list:
+            args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
 
+            run_experiment(args)
 
-    for model in model_list:
-        args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=0)
+            # try:
+            #     run_experiment(args)
+            # except:
+            #     pass
+            # free up memory
+            torch.cuda.empty_cache()
 
-
-        run_experiment(args)
-
-
-        # free up memory
-        torch.cuda.empty_cache()
 

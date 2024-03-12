@@ -21,28 +21,11 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class AnimalMovement():
-    def __init__(self, mode='train', deer_id=0):
+    def __init__(self, mode='train', deer_id=5016):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        # if deer_id is a scalar, convert it to a list
-
-        # deer_id = [5000, 5016]
-        deer_id = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])[:20]
-
-        # concatenate all the dataframes
-        for i in range(len(deer_id)):
-            print('loading deer id:', deer_id[i])
-            if i == 0:
-                df = self.load_data(deer_id[i])
-            else:
-                # add 100 np.nan row to separate the data of different deer
-                try:
-                    temp = self.load_data(deer_id[i])
-                except:
-                    continue
-                df = pd.concat([df, pd.DataFrame(np.nan, index=np.arange(100), columns=df.columns)])
-                df = pd.concat([df, temp])
-
+        num = deer_id
+        df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
         L = y.shape[0]
@@ -119,7 +102,6 @@ class AnimalMovement():
         # if the processed file is already existed, load it
         if os.path.exists(f'./Female/Processed/{num}.csv'):
             return pd.read_csv('Female/Processed/' + str(num) + '.csv')
-
 
         # Load the dataset
         file_path = 'Female/TagData/LowTag' + str(num) + '.csv'
@@ -199,14 +181,12 @@ class AnimalMovement():
         # save fig to file, file name is the deer id
         fig.savefig(f'results/{num}/original.png')
 
-
         # save the dataframe to a csv file
         # if the folder is not existed, create it
         if not os.path.exists(f'Female/Processed'):
             os.makedirs(f'Female/Processed')
 
         df_matched.to_csv(f'Female/Processed/{num}.csv', index=False)
-
 
         return df_matched
 

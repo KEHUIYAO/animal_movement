@@ -103,11 +103,11 @@ class TransformerModel(nn.Module):
         # u: [batches steps (nodes) features]
         # mask: [batches steps nodes features]
 
-        # normalize x across the steps dimension, calculate the statistics only based on mask=1, and keep track of the mean and std
-        x_mean = (x*mask).sum(dim=1, keepdim=True) / (mask.sum(dim=1, keepdim=True) + 1e-6)
-        x_std = torch.sqrt(((x - x_mean) ** 2 * mask).sum(dim=1, keepdim=True) / (mask.sum(dim=1, keepdim=True) + 1e-6))
-
-        x = (x - x_mean) / (x_std + 1e-6)
+        # # normalize x across the steps dimension, calculate the statistics only based on mask=1, and keep track of the mean and std
+        # x_mean = (x*mask).sum(dim=1, keepdim=True) / (mask.sum(dim=1, keepdim=True) + 1e-6)
+        # x_std = torch.sqrt(((x - x_mean) ** 2 * mask).sum(dim=1, keepdim=True) / (mask.sum(dim=1, keepdim=True) + 1e-6))
+        #
+        # x = (x - x_mean) / (x_std + 1e-6)
 
 
 
@@ -143,9 +143,9 @@ class TransformerModel(nn.Module):
         x_hat = out.pop(-1)
 
 
-        # transform output and x_hat back to the original scale
-        x_hat = x_hat * (x_std + 1e-6) + x_mean
-        out = [o * (x_std + 1e-6) + x_mean for o in out]
+        # # transform output and x_hat back to the original scale
+        # x_hat = x_hat * (x_std + 1e-6) + x_mean
+        # out = [o * (x_std + 1e-6) + x_mean for o in out]
 
 
         return x_hat, out

@@ -4,7 +4,7 @@ val_len: 0.8
 test_len: 0.8
 
 window: 72  # [24, 36]
-stride: 12
+stride: 2
 
 #### Training params ##########################################################
 whiten_prob: [0.2, 0.5]
@@ -16,7 +16,7 @@ batch_inference: 16
 loss_fn: l1_loss
 lr_scheduler: magic
 lr: 0.001
-patience: 40
+patience: 1
 precision: 16
 batches_epoch: 300
 check_val_every_n_epoch: 1
