@@ -166,6 +166,11 @@ class TransformerImputer(Imputer):
             y_hat = y_hat[0]
 
         y, eval_mask = batch.y, batch.eval_mask
+
+        # calculate the missingness of each sample, if the missingness is too high, then skip the sample
+        samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
+        eval_mask = (eval_mask * samples_keep).int()
+
         test_loss = self.loss_fn(y_hat, y, eval_mask)
 
         # Logging
