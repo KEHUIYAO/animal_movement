@@ -216,13 +216,11 @@ class CsdiModel(nn.Module):
     def forward(self, x, mask, noisy_data, diffusion_step, u=None, **kwargs):
 
 
-        # normalize x across the steps dimension, and keep track of the mean and std
-        x_mean = x.mean(dim=1, keepdim=True)
-        x_std = x.std(dim=1, keepdim=True)
-
-        x = (x - x_mean) / (x_std + 1e-6)
-
-
+        # # normalize x across the steps dimension, and keep track of the mean and std
+        # x_mean = x.mean(dim=1, keepdim=True)
+        # x_std = x.std(dim=1, keepdim=True)
+        #
+        # x = (x - x_mean) / (x_std + 1e-6)
 
 
         side_info = u
@@ -261,8 +259,8 @@ class CsdiModel(nn.Module):
         x = x.reshape(B, -1, K, L)  # (B,input_dim,K,L)
         x = x.permute(0, 3, 2, 1)  # (B,L,K,input_dim)
 
-        # transform x back to the original scale
-        x = x * (x_std + 1e-6) + x_mean
+        # # transform x back to the original scale
+        # x = x * (x_std + 1e-6) + x_mean
 
 
         return x
