@@ -104,7 +104,7 @@ class TransformerModel(nn.Module):
         # mask: [batches steps nodes features]
 
         # normalize x across the steps dimension, calculate the statistics only based on mask=1, and keep track of the mean and std
-        x_mean = (x*mask).sum(dim=1, keepdim=True) / mask.sum(dim=1, keepdim=True)
+        x_mean = (x*mask).sum(dim=1, keepdim=True) / (mask.sum(dim=1, keepdim=True) + 1e-6)
         x_std = torch.sqrt(((x - x_mean)**2 * mask).sum(dim=1, keepdim=True) / (mask.sum(dim=1, keepdim=True)) + 1e-6)
 
         x = (x - x_mean) / (x_std + 1e-6)
