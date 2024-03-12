@@ -1,6 +1,6 @@
 epochs: 200
-val_len: 0.2
-test_len: 0.2
+val_len: 0.5
+test_len: 0.5
 window: 72  # [24, 36]
 stride: 2
 lr_scheduler: magic
