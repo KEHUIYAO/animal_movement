@@ -21,11 +21,23 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class AnimalMovement():
-    def __init__(self, mode='train', deer_id=5016):
+    def __init__(self, mode='train', deer_id=0):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        num = deer_id
-        df = self.load_data(num)
+        # if deer_id is a scalar, convert it to a list
+
+        deer_id = [5000, 5016]
+
+        # concatenate all the dataframes
+        for i in range(len(deer_id)):
+            print('loading deer id:', deer_id[i])
+            if i == 0:
+                df = self.load_data(deer_id[i])
+            else:
+                # add 100 np.nan row to separate the data of different deer
+                df = pd.concat([df, pd.DataFrame(np.nan, index=np.arange(100), columns=df.columns)])
+                df = pd.concat([df, self.load_data(deer_id[i])])
+
 
         y = df.loc[:, ['X', 'Y']].values
         L = y.shape[0]
@@ -98,6 +110,11 @@ class AnimalMovement():
         self.attributes['covariates'] = X
 
     def load_data(self, num):
+
+        # if the processed file is already existed, load it
+        if os.path.exists(f'./Female/Processed/{num}.csv'):
+            return pd.read_csv('Female/Processed/' + str(num) + '.csv')
+
 
         # Load the dataset
         file_path = 'Female/TagData/LowTag' + str(num) + '.csv'
@@ -176,6 +193,10 @@ class AnimalMovement():
 
         # save fig to file, file name is the deer id
         fig.savefig(f'results/{num}/original.png')
+
+
+        # save the dataframe to a csv file
+        df_matched.to_csv(f'Female/Processed/{num}.csv', index=False)
 
 
         return df_matched
