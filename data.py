@@ -204,7 +204,8 @@ class AnimalMovement():
         # if the folder is not existed, create it
         if not os.path.exists(f'Female/Processed'):
             os.makedirs(f'Female/Processed')
-            df_matched.to_csv(f'Female/Processed/{num}.csv', index=False)
+
+        df_matched.to_csv(f'Female/Processed/{num}.csv', index=False)
 
 
         return df_matched
