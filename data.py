@@ -48,7 +48,7 @@ class AnimalMovement():
         eval_mask = eval_mask & mask
 
 
-        if mode == 'train':
+        if mode == '':
             y[time_points_to_eval, :] = np.nan
             # randomly set 20% of data to be missing as val data
             mask = np.ones_like(y)
