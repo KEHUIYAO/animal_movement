@@ -4,7 +4,7 @@ val_len: 0.8
 test_len: 0.8
 
 window: 72  # [24, 36]
-stride: 2
+stride: 1
 
 #### Training params ##########################################################
 whiten_prob: [0.2, 0.5]
