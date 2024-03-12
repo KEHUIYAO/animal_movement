@@ -106,6 +106,13 @@ class TransformerImputer(Imputer):
         if 'target_nodes' in batch:
             injected_missing = injected_missing[..., batch.target_nodes, :]
         # batch.input.target_mask = injected_missing
+
+
+        # calculate the missingness of each sample, if the missingness is too high, then skip the sample
+        samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
+        injected_missing = (injected_missing * samples_keep).int()
+
+
         y_hat, y, loss = self.shared_step(batch, mask=injected_missing)
 
         # Logging
@@ -118,8 +125,11 @@ class TransformerImputer(Imputer):
         return loss
 
     def validation_step(self, batch, batch_idx):
-        # batch.input.target_mask = batch.eval_mask
-        y_hat, y, val_loss = self.shared_step(batch, batch.eval_mask)
+        # calculate the missingness of each sample, if the missingness is too high, then skip the sample
+        samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
+        eval_mask = batch.eval_mask
+        eval_mask = (eval_mask * samples_keep).int()
+        y_hat, y, val_loss = self.shared_step(batch, eval_mask)
 
         # Logging
         self.val_metrics.update(y_hat, y, batch.eval_mask)
