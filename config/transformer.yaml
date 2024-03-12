@@ -7,7 +7,7 @@ window: 72  # [24, 36]
 stride: 2
 
 #### Training params ##########################################################
-whiten_prob: [0.2]
+whiten_prob: [0.2，0.5]
 scale_target: True
 epochs: 200
 batch_size: 16

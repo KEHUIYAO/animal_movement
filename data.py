@@ -21,10 +21,10 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class AnimalMovement():
-    def __init__(self):
+    def __init__(self, mode='train', deer_id=5016):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        num = 5016
+        num = deer_id
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
@@ -35,19 +35,10 @@ class AnimalMovement():
         y = y.reshape(L, 1, C)
 
 
+        # randomly set 20% of data to be missing as test data
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-
-        # impute missing values with 0
-        y[np.isnan(y)] = 0
-
-        self.y = y
-        self.attributes = {}
-        space_coords, time_coords = np.meshgrid(np.arange(1), np.arange(L))
-        st_coords = np.stack([space_coords, time_coords], axis=-1)
-        self.attributes['st_coords'] = st_coords
-
         p_missing = 0.2
         rng = np.random.RandomState(42)
         time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
@@ -56,8 +47,33 @@ class AnimalMovement():
         eval_mask = eval_mask.astype(int)
         eval_mask = eval_mask & mask
 
+
+        if mode == 'train':
+            y[time_points_to_eval, :] = np.nan
+            # randomly set 20% of data to be missing as val data
+            mask = np.ones_like(y)
+            mask[np.isnan(y)] = 0
+            mask = mask.astype(int)
+            # impute missing values with 0
+            y[np.isnan(y)] = 0
+            time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
+            eval_mask = np.zeros_like(y)
+            eval_mask[time_points_to_eval, ...] = 1
+            eval_mask = eval_mask.astype(int)
+            eval_mask = eval_mask & mask
+        else:
+            # impute missing values with 0
+            y[np.isnan(y)] = 0
+
         self.eval_mask = eval_mask
-        self.training_mask = mask & (1-eval_mask)
+        self.training_mask = mask & (1 - eval_mask)
+        self.y = y
+        self.attributes = {}
+        space_coords, time_coords = np.meshgrid(np.arange(1), np.arange(L))
+        st_coords = np.stack([space_coords, time_coords], axis=-1)
+        self.attributes['st_coords'] = st_coords
+
+
 
         # covariates
         X = df.loc[:, ['month', 'day', 'hour', 'covariate']]
@@ -66,6 +82,7 @@ class AnimalMovement():
 
         # one-hot encoding for covariates
         covariates = X['covariate']
+
         covariates = pd.get_dummies(covariates)
 
         # normalize month, day, and hour to [0, 1]
@@ -76,9 +93,9 @@ class AnimalMovement():
         X = pd.concat([month, day, hour, covariates], axis=1)
         # X = pd.concat([month, day, hour], axis=1)
 
-
         X = X.values
         X = X.reshape(L, 1, X.shape[1])
+        X[time_points_to_eval, 3:] = 0
         self.attributes['covariates'] = X
 
     def load_data(self, num):
@@ -104,11 +121,21 @@ class AnimalMovement():
         deer_data['covariate'] = values
 
         start_time, end_time = deer_data['jul'].min(), deer_data['jul'].max()
-        time_interval = 0.16
-        tolerance = 0.08
+
+        # calculate the smallest time interval
+        smallest_time_interval = deer_data['jul'].diff().min()
+
+        # # index of the smallest time interval
+        # idx = deer_data['jul'].diff().idxmin()
+
+
+        time_interval = 0.08
+        tolerance = 0.04
 
         T_values = np.arange(start_time, end_time, time_interval)
         df = pd.DataFrame(T_values, columns=['T'])
+
+
 
         # Function to find nearest row within tolerance
         def find_nearest_row_within_tolerance(value, tolerance, dataframe, column_name):
@@ -139,7 +166,17 @@ class AnimalMovement():
         df_matched['day'] = [x.day for x in df_matched['date']]
         df_matched['hour'] = [x.hour for x in df_matched['date']]
 
+        fig, axs = plt.subplots(2)
+        axs[0].plot(df_matched['X'], 'o', markersize=1)
+        axs[1].plot(df_matched['Y'], 'o', markersize=1)
+        plt.show()
 
+        # create a folder called result to save the figure
+        if not os.path.exists(f'results/{num}'):
+            os.makedirs(f'results/{num}')
+
+        # save fig to file, file name is the deer id
+        fig.savefig(f'results/{num}/original.png')
 
 
         return df_matched
@@ -169,8 +206,11 @@ class AnimalMovementSplitter(Splitter):
         test_start = len(idx) - test_len
 
 
-        self.set_indices(idx[:val_start - dataset.samples_offset],
-                         idx[val_start:test_start - dataset.samples_offset],
+        # self.set_indices(idx[:val_start - dataset.samples_offset],
+        #                  idx[val_start:test_start - dataset.samples_offset],
+        #                  idx[test_start:])
+        self.set_indices(idx[:val_start],
+                         idx[val_start:test_start],
                          idx[test_start:])
 
     @staticmethod

@@ -12,28 +12,30 @@ from tsl import config, logger
 from tsl.data import SpatioTemporalDataModule, ImputationDataset
 from tsl.data.preprocessing import StandardScaler, MinMaxScaler
 from data import AnimalMovement
-
-
 from tsl.nn.metrics import MaskedMetric, MaskedMAE, MaskedMSE, MaskedMRE
 from tsl.utils.parser_utils import ArgParser
 from tsl.utils import parser_utils, numpy_metrics
-
 from src.models.brits import BRITS
 from src.models.stat_method import MeanModel, InterpolationModel
 from src.models import CsdiModel, TransformerModel
 from src.imputers import BRITSImputer, MeanImputer, InterpolationImputer, CsdiImputer, TransformerImputer
 from scheduler import CosineSchedulerWithRestarts
-
-
+import matplotlib.pyplot as plt
+import pandas as pd
 from tqdm import tqdm
 
-def parse_args():
+def parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=5004):
     # Argument parser
     ########################################
     parser = ArgParser()
-    parser.add_argument("--model-name", type=str, default='csdi')
+    parser.add_argument('--deer-id', type=int, default=deer_id)
+    # parser.add_argument("--model-name", type=str, default='csdi')
+    # parser.add_argument("--model-name", type=str, default='interpolation')
+    parser.add_argument("--model-name", type=str, default=model_name)
     parser.add_argument("--dataset-name", type=str, default='animal_movement')
-    parser.add_argument("--config", type=str, default='csdi.yaml')
+    # parser.add_argument("--config", type=str, default='csdi.yaml')
+    # parser.add_argument("--config", type=str, default='interpolation.yaml')
+    parser.add_argument("--config", type=str, default=config_file)
     parser.add_argument('--epochs', type=int, default=200)
     parser.add_argument('--check-val-every-n-epoch', type=int, default=1)
     parser.add_argument('--batch-inference', type=int, default=32)
@@ -96,14 +98,6 @@ def get_model_classes(model_str):
     return model, filler
 
 
-def get_dataset(dataset_name: str):
-
-    if dataset_name == 'animal_movement':
-        return AnimalMovement()
-
-    raise ValueError(f"Invalid dataset name: {dataset_name}.")
-
-
 
 def get_scheduler(scheduler_name: str = None, args=None):
     if scheduler_name is None:
@@ -142,7 +136,12 @@ def run_experiment(args):
 
 
     model_cls, imputer_class = get_model_classes(args.model_name)
-    dataset = get_dataset(args.dataset_name)
+    dataset = AnimalMovement(mode='train', deer_id=args.deer_id)
+
+    # covariate dimension
+    if 'covariates' in dataset.attributes:
+        args.u_size = dataset.attributes['covariates'].shape[-1]
+
     logger.info(args)
 
     ########################################
@@ -191,8 +190,8 @@ def run_experiment(args):
                                       stride=args.stride)
 
 
-    # scalers = {'data': StandardScaler(axis=(0, 1))}
-    scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
+    scalers = {'data': StandardScaler(axis=(0, 1))}
+    # scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
 
     # get train/val/test indices
     splitter = dataset.get_splitter(val_len=args.val_len,
@@ -308,8 +307,9 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
-    # scaler = StandardScaler(axis=(0, 1))
-    scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
+    dataset = AnimalMovement(mode='test', deer_id=args.deer_id)
+    scaler = StandardScaler(axis=(0, 1))
+    # scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
 
     scaler.fit(dataset.y, dataset.training_mask)
     scaler.bias = torch.tensor(scaler.bias)
@@ -388,25 +388,61 @@ def run_experiment(args):
         y_hat_multiple_imputation = np.zeros([multiple_imputations.shape[1], seq_len, num_nodes, C])
     observed_mask_original = np.zeros([seq_len, num_nodes, C])
     eval_mask_original = np.zeros([seq_len, num_nodes, C])
+    y_hat_original_sum = np.zeros([seq_len, num_nodes, C])
+    count = np.zeros([seq_len, num_nodes, C])
+
 
     B, L, K, C = y_hat.shape
     for b in range(B):
         for l in range(L):
             for k in range(K):
                 ts_pos = st_coords[b, l, k, ::-1]
-                y_true_original[ts_pos[0], ts_pos[1]] = y_true[b, l, k]
-                y_hat_original[ts_pos[0], ts_pos[1]] = y_hat[b, l, k]
+                y_hat_original_sum[ts_pos[0], ts_pos[1]] = y_hat_original_sum[ts_pos[0], ts_pos[1]] + y_hat[b, l, k]
+                count[ts_pos[0], ts_pos[1]] = count[ts_pos[0], ts_pos[1]] + 1
+
                 observed_mask_original[ts_pos[0], ts_pos[1]] = observed_mask[b, l, k]
                 eval_mask_original[ts_pos[0], ts_pos[1]] = eval_mask[b, l, k]
 
                 if enable_multiple_imputation:
                     y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] = multiple_imputations[b, :, l, k]
 
+    # for those positions that count is not 0, we divide the sum by count to get the average
+    y_hat_original[count != 0] = y_hat_original_sum[count != 0] / count[count != 0]
+
+
+    # use hold-out test-set
+    y_true_original = dataset.y
+    eval_mask_original = dataset.eval_mask
+
+
     check_mae = numpy_metrics.masked_mae(y_hat_original, y_true_original, eval_mask_original)
     print(f'Test MAE: {check_mae:.6f}')
 
     check_mre = numpy_metrics.masked_mre(y_hat_original, y_true_original, eval_mask_original)
     print(f'Test MRE: {check_mre:.6f}')
+
+    # error diagnostics, find the largest residual
+    residual = y_hat_original - y_true_original
+    residual = residual * eval_mask_original
+    residual = np.abs(residual)
+    max_residual = np.max(residual)
+    print(f'Max residual: {max_residual:.6f}')
+
+    # number of observed data points
+    n_observed = np.sum(observed_mask_original)
+
+
+    # create a folder called results/deer_id and save the result
+    if not os.path.exists(f'./results/{args.deer_id}/{args.model_name}'):
+        os.makedirs(f'./results/{args.deer_id}/{args.model_name}')
+
+    # write the result to a file, name the file as the deer id
+    with open(f'./results/{args.deer_id}/{args.model_name}/mae.txt', 'w') as f:
+        f.write(f'Test MAE: {check_mae:.6f}\n')
+        f.write(f'Test MRE: {check_mre:.6f}\n')
+        f.write(f'Max residual: {max_residual:.6f}\n')
+        f.write(f'Number of observed data points: {n_observed}\n')
+
 
     # save output to file
     output = {}
@@ -418,11 +454,66 @@ def run_experiment(args):
     if enable_multiple_imputation:
         output['imputed_samples'] = y_hat_multiple_imputation
 
-    np.savez(os.path.join(logdir, 'output.npz'), **output)
+    # save it to a npz file
+    np.savez(f'./results/{args.deer_id}/{args.model_name}/output.npz', **output)
+
+
+    # plot the result and save it
+    all_target_np = y_true_original.squeeze(-2)
+    all_evalpoint_np = eval_mask_original.squeeze(-2)
+    all_observed_np = observed_mask_original.squeeze(-2)
+    samples = y_hat_original
+    qlist = [0.05, 0.25, 0.5, 0.75, 0.95]
+    quantiles_imp = []
+    for q in qlist:
+        tmp = np.quantile(samples, q, axis=1)
+        quantiles_imp.append(tmp * (1 - all_observed_np) + all_target_np * all_observed_np)
+
+
+    #######################################
+    plt.rcParams["font.size"] = 16
+    fig, axes = plt.subplots(nrows=C, ncols=1, figsize=(36, 24.0))
+
+    start = 0
+    end = all_target_np.shape[0] - 1
+
+    for k in range(C):
+        df = pd.DataFrame(
+            {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_evalpoint_np[start:end, k]})
+        df = df[df.y != 0]
+        df2 = pd.DataFrame(
+            {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_observed_np[start:end, k]})
+        df2 = df2[df2.y != 0]
+        axes[k].plot(range(0, end - start), quantiles_imp[2][start:end, k], color='g', linestyle='solid', label='CSDI')
+        axes[k].fill_between(range(0, end - start), quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
+                             color='g', alpha=0.3)
+        axes[k].plot(df2.x, df2.val, color='r', marker='x', linestyle='None')
+        axes[k].plot(df.x, df.val, color='b', marker='o', linestyle='None')
+
+    # save the plot
+    plt.savefig(f'./results/{args.deer_id}/{args.model_name}/prediction.png')
+
 
 
 
 
 if __name__ == '__main__':
-    args = parse_args()
-    run_experiment(args)
+    # make all files under Female/TagData
+    deer_id_list = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')]
+
+    model_list = ['interpolation', 'transformer']
+
+    # deer_id_list = [5629, 5631, 5633, 5639, 5657]
+    # deer_id_list = [5000, 5016]
+    for i in sorted(deer_id_list):
+        for model in model_list:
+            args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
+
+            try:
+                run_experiment(args)
+            except:
+                pass
+            # free up memory
+            torch.cuda.empty_cache()
+
+
