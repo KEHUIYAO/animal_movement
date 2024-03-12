@@ -28,11 +28,30 @@ class AnimalMovement():
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
-
         L = y.shape[0]
         C = y.shape[1]
-
         y = y.reshape(L, 1, C)
+
+        # covariates
+        X = df.loc[:, ['month', 'day', 'hour', 'covariate']]
+        # replace missing values with 0
+        X = X.fillna(0)
+
+        # one-hot encoding for covariates
+        covariates = X['covariate']
+
+        covariates = pd.get_dummies(covariates)
+
+        # normalize month, day, and hour to [0, 1]
+        month = X['month'] / 12
+        day = X['day'] / 31
+        hour = X['hour'] / 24
+
+        X = pd.concat([month, day, hour, covariates], axis=1)
+        # X = pd.concat([month, day, hour], axis=1)
+
+        X = X.values
+        X = X.reshape(L, 1, X.shape[1])
 
 
         # randomly set 20% of data to be missing as test data
@@ -50,6 +69,8 @@ class AnimalMovement():
 
         if mode == 'train':
             y[time_points_to_eval, :] = np.nan
+            X[time_points_to_eval, 3:] = 0
+
             # randomly set 20% of data to be missing as val data
             mask = np.ones_like(y)
             mask[np.isnan(y)] = 0
@@ -73,28 +94,6 @@ class AnimalMovement():
         st_coords = np.stack([space_coords, time_coords], axis=-1)
         self.attributes['st_coords'] = st_coords
 
-
-
-        # covariates
-        X = df.loc[:, ['month', 'day', 'hour', 'covariate']]
-        # replace missing values with 0
-        X = X.fillna(0)
-
-        # one-hot encoding for covariates
-        covariates = X['covariate']
-
-        covariates = pd.get_dummies(covariates)
-
-        # normalize month, day, and hour to [0, 1]
-        month = X['month'] / 12
-        day = X['day'] / 31
-        hour = X['hour'] / 24
-
-        X = pd.concat([month, day, hour, covariates], axis=1)
-        # X = pd.concat([month, day, hour], axis=1)
-
-        X = X.values
-        X = X.reshape(L, 1, X.shape[1])
         X[time_points_to_eval, 3:] = 0
         self.attributes['covariates'] = X
 
