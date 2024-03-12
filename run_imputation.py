@@ -502,7 +502,7 @@ if __name__ == '__main__':
     # make all files under Female/TagData
     deer_id_list = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')]
 
-    model_list = ['transformer']
+    model_list = ['interpolation']
 
     # for i in sorted(deer_id_list):
     #     for model in model_list:
