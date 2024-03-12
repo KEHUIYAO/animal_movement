@@ -26,7 +26,8 @@ class AnimalMovement():
         # 'Female/Processed/deer_movement_all.csv'))
         # if deer_id is a scalar, convert it to a list
 
-        deer_id = [5000, 5016]
+        # deer_id = [5000, 5016]
+        deer_id = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')][:20]
 
         # concatenate all the dataframes
         for i in range(len(deer_id)):
