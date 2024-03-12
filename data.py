@@ -27,7 +27,7 @@ class AnimalMovement():
         # if deer_id is a scalar, convert it to a list
 
         # deer_id = [5000, 5016]
-        deer_id = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')][:20]
+        deer_id = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])[:20]
 
         # concatenate all the dataframes
         for i in range(len(deer_id)):
@@ -36,8 +36,12 @@ class AnimalMovement():
                 df = self.load_data(deer_id[i])
             else:
                 # add 100 np.nan row to separate the data of different deer
+                try:
+                    temp = self.load_data(deer_id[i])
+                except:
+                    continue
                 df = pd.concat([df, pd.DataFrame(np.nan, index=np.arange(100), columns=df.columns)])
-                df = pd.concat([df, self.load_data(deer_id[i])])
+                df = pd.concat([df, temp])
 
 
         y = df.loc[:, ['X', 'Y']].values
