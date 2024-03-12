@@ -132,7 +132,7 @@ class TransformerImputer(Imputer):
         y_hat, y, val_loss = self.shared_step(batch, eval_mask)
 
         # Logging
-        self.val_metrics.update(y_hat, y, batch.eval_mask)
+        self.val_metrics.update(y_hat, y, eval_mask)
         self.log_metrics(self.val_metrics, batch_size=batch.batch_size)
         self.log_loss('val', val_loss, batch_size=batch.batch_size)
         return val_loss
