@@ -196,7 +196,10 @@ class AnimalMovement():
 
 
         # save the dataframe to a csv file
-        df_matched.to_csv(f'Female/Processed/{num}.csv', index=False)
+        # if the folder is not existed, create it
+        if not os.path.exists(f'Female/Processed'):
+            os.makedirs(f'Female/Processed')
+            df_matched.to_csv(f'Female/Processed/{num}.csv', index=False)
 
 
         return df_matched
