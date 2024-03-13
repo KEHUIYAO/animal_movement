@@ -308,6 +308,7 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
+    imputer.freeze()
     if args.model_name in ['csdi', 'diffgrin']:
         enable_multiple_imputation = True
     else:
