@@ -142,6 +142,9 @@ def run_experiment(args):
     if 'covariates' in dataset.attributes:
         args.u_size = dataset.attributes['covariates'].shape[-1]
         args.covariate_dim = args.u_size
+    else:
+        args.u_size = 0
+        args.covariate_dim = 0
 
     logger.info(args)
 
