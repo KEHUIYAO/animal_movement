@@ -528,11 +528,11 @@ if __name__ == '__main__':
         for model in model_list:
             args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
 
-            # try:
-            #     run_experiment(args)
-            # except:
-            #     pass
-            run_experiment(args)
+            try:
+                run_experiment(args)
+            except:
+                pass
+
             torch.cuda.empty_cache()
 
 
