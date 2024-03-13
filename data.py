@@ -28,6 +28,50 @@ class AnimalMovement():
         df = self.load_data(num)
 
         y = df.loc[:, ['X', 'Y']].values
+
+        # how many non-missing rows
+        non_missing = np.sum(~np.isnan(y), axis=0)
+
+        # remove outliers using IQR
+        # set those values that are outside of the range to be nan
+        y = y.astype(float)
+        Q1 = np.nanpercentile(y, 25, axis=0)
+        Q3 = np.nanpercentile(y, 75, axis=0)
+        IQR = Q3 - Q1
+        lower_bound = Q1 - 1.5 * IQR
+        upper_bound = Q3 + 1.5 * IQR
+
+
+        for i in range(y.shape[1]):
+            y[(y[:, i] < lower_bound[i]) | (y[:, i] > upper_bound[i]), :] = np.nan
+
+
+        # count how many outliers are removed
+        removed = non_missing - np.sum(~np.isnan(y), axis=0)
+
+
+        print('Removed outliers:', removed[0])
+
+        # write the print message to a file
+        with open(f'results/{num}/outlier_removed.txt', 'w') as f:
+            f.write(f'Removed outliers: {removed[0]}\n')
+            f.write(f'Original data shape: {non_missing[0]}\n')
+            f.write(f'After removing outliers: {np.sum(~np.isnan(y), axis=0)[0]}\n')
+
+
+        fig, axs = plt.subplots(2)
+        axs[0].plot(y[:, 0], 'o', markersize=1)
+        axs[1].plot(y[:, 1], 'o', markersize=1)
+        plt.show()
+
+        # create a folder called result to save the figure
+        if not os.path.exists(f'results/{num}'):
+            os.makedirs(f'results/{num}')
+
+        # save fig to file, file name is the deer id
+        fig.savefig(f'results/{num}/outlier_removed.png')
+
+
         L = y.shape[0]
         C = y.shape[1]
         y = y.reshape(L, 1, C)
