@@ -298,16 +298,22 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
-    if require_training:
-        imputer.load_model(checkpoint_callback.best_model_path)
-    imputer.freeze()
-    trainer.test(imputer, dataloaders=dm.test_dataloader(
-        batch_size=args.batch_inference))
+    # if require_training:
+    #     imputer.load_model(checkpoint_callback.best_model_path)
+    # imputer.freeze()
+    # trainer.test(imputer, dataloaders=dm.test_dataloader(
+    #     batch_size=args.batch_inference))
 
 
     ########################################
     # testing                              #
     ########################################
+    if args.model_name in ['csdi', 'diffgrin']:
+        enable_multiple_imputation = True
+    else:
+        enable_multiple_imputation = False
+
+
     dataset = AnimalMovement(mode='test', deer_id=args.deer_id)
     # scaler = StandardScaler(axis=(0, 1))
     scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
@@ -318,13 +324,17 @@ def run_experiment(args):
     scalers = {'data': scaler}
 
     # instantiate dataset
+    if enable_multiple_imputation:
+        stride = int(args.window / 2)
+    else:
+        stride = args.stride
     torch_dataset = ImputationDataset(dataset.y,
                                       training_mask=dataset.training_mask,
                                       eval_mask=dataset.eval_mask,
                                       exogenous=exog_map,
                                       input_map=input_map,
                                       window=args.window,
-                                      stride=args.stride,
+                                      stride=stride,
                                       scalers=scalers)
 
     # get train/val/test indices
@@ -342,10 +352,7 @@ def run_experiment(args):
     observed_mask = []
     st_coords = []
 
-    if args.model_name in ['csdi', 'diffgrin']:
-        enable_multiple_imputation = True
-    else:
-        enable_multiple_imputation = False
+
 
     if enable_multiple_imputation:
         multiple_imputations = []
@@ -387,9 +394,9 @@ def run_experiment(args):
     y_hat_original = np.zeros([seq_len, num_nodes, C])
     if enable_multiple_imputation:
         y_hat_multiple_imputation = np.zeros([multiple_imputations.shape[1], seq_len, num_nodes, C])
+        count_multiple_imputation = np.zeros([multiple_imputations.shape[1], seq_len, num_nodes, C])
     observed_mask_original = np.zeros([seq_len, num_nodes, C])
     eval_mask_original = np.zeros([seq_len, num_nodes, C])
-    y_hat_original_sum = np.zeros([seq_len, num_nodes, C])
     count = np.zeros([seq_len, num_nodes, C])
 
 
@@ -398,22 +405,29 @@ def run_experiment(args):
         for l in range(L):
             for k in range(K):
                 ts_pos = st_coords[b, l, k, ::-1]
-                y_hat_original_sum[ts_pos[0], ts_pos[1]] = y_hat_original_sum[ts_pos[0], ts_pos[1]] + y_hat[b, l, k]
+                y_hat_original[ts_pos[0], ts_pos[1]] = y_hat_original[ts_pos[0], ts_pos[1]] + y_hat[b, l, k]
                 count[ts_pos[0], ts_pos[1]] = count[ts_pos[0], ts_pos[1]] + 1
 
                 observed_mask_original[ts_pos[0], ts_pos[1]] = observed_mask[b, l, k]
                 eval_mask_original[ts_pos[0], ts_pos[1]] = eval_mask[b, l, k]
 
                 if enable_multiple_imputation:
-                    y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] = multiple_imputations[b, :, l, k]
+                    y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] = y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] + multiple_imputations[b, :, l, k]
+                    count_multiple_imputation[0, ts_pos[0], ts_pos[1]] = count_multiple_imputation[0, ts_pos[0], ts_pos[1]] + 1
 
     # for those positions that count is not 0, we divide the sum by count to get the average
-    y_hat_original[count != 0] = y_hat_original_sum[count != 0] / count[count != 0]
+    y_hat_original[count != 0] = y_hat_original[count != 0] / count[count != 0]
+
+    if enable_multiple_imputation:
+        y_hat_multiple_imputation[count_multiple_imputation != 0] = y_hat_multiple_imputation[count_multiple_imputation != 0] / count_multiple_imputation[count_multiple_imputation != 0]
+
 
 
     # use hold-out test-set
     y_true_original = dataset.y
     eval_mask_original = dataset.eval_mask
+
+    eval_mask_original = eval_mask_original & (count != 0)
 
 
     check_mae = numpy_metrics.masked_mae(y_hat_original, y_true_original, eval_mask_original)
@@ -463,11 +477,14 @@ def run_experiment(args):
     all_target_np = y_true_original.squeeze(-2)
     all_evalpoint_np = eval_mask_original.squeeze(-2)
     all_observed_np = observed_mask_original.squeeze(-2)
-    samples = y_hat_original
+    if enable_multiple_imputation:
+        samples = y_hat_multiple_imputation.squeeze(-2)
+    else:
+        samples = y_hat_original.squezze(-2).unsqueeze(0)
     qlist = [0.05, 0.25, 0.5, 0.75, 0.95]
     quantiles_imp = []
     for q in qlist:
-        tmp = np.quantile(samples, q, axis=1)
+        tmp = np.quantile(samples, q, axis=0)
         quantiles_imp.append(tmp * (1 - all_observed_np) + all_target_np * all_observed_np)
 
 
