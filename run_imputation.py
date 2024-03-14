@@ -311,6 +311,8 @@ def run_experiment(args):
     ########################################
     # testing                              #
     ########################################
+    if require_training:
+        imputer.load_model(checkpoint_callback.best_model_path)
     imputer.freeze()
     if args.model_name in ['csdi', 'diffgrin']:
         enable_multiple_imputation = True
