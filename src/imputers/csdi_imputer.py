@@ -90,9 +90,9 @@ class CsdiImputer(Imputer):
             batch.input.x = batch.input.x * batch.input.mask
 
 
-    def on_validation_batch_start(self, batch, batch_idx: int,
-                             unused: Optional[int] = 0) -> None:
-        self.on_train_batch_start(batch, batch_idx, unused)
+    # def on_validation_batch_start(self, batch, batch_idx: int,
+    #                          unused: Optional[int] = 0) -> None:
+    #     self.on_train_batch_start(batch, batch_idx, unused)
 
 
 
@@ -135,7 +135,7 @@ class CsdiImputer(Imputer):
         if not self.scale_target:
             observed_data = batch.transform['y'].transform(observed_data)
 
-        observed_data[batch.original_mask==0] = 0
+        observed_data[batch.input.mask == 0] = 0
         B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
         device = self.device
         val_loss_sum = 0
