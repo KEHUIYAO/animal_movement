@@ -134,6 +134,8 @@ class CsdiImputer(Imputer):
         # scale target
         if not self.scale_target:
             observed_data = batch.transform['y'].transform(observed_data)
+
+        observed_data[batch.original_mask==0] = 0
         B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
         device = self.device
         val_loss_sum = 0
