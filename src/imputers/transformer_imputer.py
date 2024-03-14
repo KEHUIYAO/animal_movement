@@ -91,6 +91,7 @@ class TransformerImputer(Imputer):
         if 'x' in batch.input:
             batch.input.x = batch.input.x * batch.input.mask
 
+        # also whiten the exogenous variables
         if 'u' in batch.input:
             temp_mask = batch.input.mask[:, :, :, 0].unsqueeze(-1)
             batch.input.u[:, :, :, 3:] = batch.input.u[:, :, :, 3:] * temp_mask
