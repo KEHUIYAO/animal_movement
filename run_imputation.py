@@ -528,7 +528,7 @@ if __name__ == '__main__':
     model_list = ['interpolation', 'csdi']
 
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
-    deer_id_list = [5004, 5006, 5016, 5022, 5037, 5043]
+    deer_id_list = [5016, 5022, 5037, 5043]
     for i in sorted(deer_id_list):
         for model in model_list:
             args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
