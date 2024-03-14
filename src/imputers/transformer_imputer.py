@@ -108,9 +108,9 @@ class TransformerImputer(Imputer):
         # batch.input.target_mask = injected_missing
 
 
-        # calculate the missingness of each sample, if the missingness is too high, then skip the sample
-        samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
-        injected_missing = (injected_missing * samples_keep).int()
+        # # calculate the missingness of each sample, if the missingness is too high, then skip the sample
+        # samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
+        # injected_missing = (injected_missing * samples_keep).int()
 
 
         y_hat, y, loss = self.shared_step(batch, mask=injected_missing)
@@ -125,10 +125,11 @@ class TransformerImputer(Imputer):
         return loss
 
     def validation_step(self, batch, batch_idx):
-        # calculate the missingness of each sample, if the missingness is too high, then skip the sample
-        samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
+        # # calculate the missingness of each sample, if the missingness is too high, then skip the sample
+        # samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
+        # eval_mask = batch.eval_mask
+        # eval_mask = (eval_mask * samples_keep).int()
         eval_mask = batch.eval_mask
-        eval_mask = (eval_mask * samples_keep).int()
         y_hat, y, val_loss = self.shared_step(batch, eval_mask)
 
         # Logging
@@ -167,9 +168,9 @@ class TransformerImputer(Imputer):
 
         y, eval_mask = batch.y, batch.eval_mask
 
-        # calculate the missingness of each sample, if the missingness is too high, then skip the sample
-        samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
-        eval_mask = (eval_mask * samples_keep).int()
+        # # calculate the missingness of each sample, if the missingness is too high, then skip the sample
+        # samples_keep = (batch.mask.sum(dim=1, keepdims=True) > 2).int()
+        # eval_mask = (eval_mask * samples_keep).int()
 
         test_loss = self.loss_fn(y_hat, y, eval_mask)
 
