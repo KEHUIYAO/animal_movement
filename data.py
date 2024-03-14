@@ -29,6 +29,15 @@ class AnimalMovement():
 
         y = df.loc[:, ['X', 'Y']].values
 
+        L = y.shape[0]
+        C = y.shape[1]
+
+
+        # covariates
+        X = df.loc[:, ['month', 'day', 'hour', 'covariate']].values
+        # replace missing values with 0
+        X[np.isnan(X)] = 0
+
         # how many non-missing rows
         non_missing = np.sum(~np.isnan(y), axis=0)
 
@@ -44,6 +53,7 @@ class AnimalMovement():
 
         for i in range(y.shape[1]):
             y[(y[:, i] < lower_bound[i]) | (y[:, i] > upper_bound[i]), :] = np.nan
+            X[(y[:, i] < lower_bound[i]) | (y[:, i] > upper_bound[i]), 3] = 0
 
 
         # count how many outliers are removed
@@ -71,30 +81,21 @@ class AnimalMovement():
         # save fig to file, file name is the deer id
         fig.savefig(f'results/{num}/outlier_removed.png')
 
-
-        L = y.shape[0]
-        C = y.shape[1]
+        # reshape y
         y = y.reshape(L, 1, C)
 
-        # covariates
-        X = df.loc[:, ['month', 'day', 'hour', 'covariate']]
-        # replace missing values with 0
-        X = X.fillna(0)
-
         # one-hot encoding for covariates
-        covariates = X['covariate']
-
-        covariates = pd.get_dummies(covariates)
+        covariates = X[:, 3]
+        covariates = pd.get_dummies(covariates).values
 
         # normalize month, day, and hour to [0, 1]
-        month = X['month'] / 12
-        day = X['day'] / 31
-        hour = X['hour'] / 24
+        month = X[:, 0] / 12
+        day = X[:, 1] / 31
+        hour = X[:, 2] / 24
 
-        X = pd.concat([month, day, hour, covariates], axis=1)
-        # X = pd.concat([month, day, hour], axis=1)
+        # concatenate month, day, hour and covariates
+        X = np.concatenate([month.reshape(-1, 1), day.reshape(-1, 1), hour.reshape(-1, 1), covariates], axis=1)
 
-        X = X.values
         X = X.reshape(L, 1, X.shape[1])
 
 
