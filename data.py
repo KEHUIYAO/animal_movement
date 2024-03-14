@@ -121,6 +121,7 @@ class AnimalMovement():
             mask = mask.astype(int)
             # impute missing values with 0
             y[np.isnan(y)] = 0
+            p_missing = 0.1
             time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
             eval_mask = np.zeros_like(y)
             eval_mask[time_points_to_eval, ...] = 1
