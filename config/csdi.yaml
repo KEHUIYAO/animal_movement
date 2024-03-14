@@ -15,4 +15,5 @@ covariate_dim: 11
 spatial_dim: 1
 diffusion_embedding_dim: 128
 l2_reg: 0
+lr: 0.0005
 batches_epoch: 300
