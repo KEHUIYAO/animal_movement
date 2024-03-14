@@ -146,7 +146,7 @@ def run_experiment(args):
         args.u_size = 0
         args.covariate_dim = 0
 
-    logger.info(args)
+    # logger.info(args)
 
     ########################################
     # create logdir and save configuration #
@@ -532,6 +532,8 @@ if __name__ == '__main__':
     for i in sorted(deer_id_list):
         for model in model_list:
             args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
+
+            print('Running deer_id:', i, 'model:', model)
 
             try:
                 run_experiment(args)
