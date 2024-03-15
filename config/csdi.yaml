@@ -1,5 +1,5 @@
 epochs: 200
-val_len: 0.5
+val_len: 0.2
 test_len: 0.2
 window: 72
 stride: 36
