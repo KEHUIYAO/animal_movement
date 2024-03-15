@@ -465,57 +465,57 @@ def run_experiment(args):
         f.write(f'Number of observed data points: {n_observed}\n')
 
 
-    # save output to file
-    output = {}
-    output['y_hat'] = y_hat_original
-    output['y'] = y_true_original
-    output['eval_mask'] = eval_mask_original
-    output['observed_mask'] = observed_mask_original
-
-    if enable_multiple_imputation:
-        output['imputed_samples'] = y_hat_multiple_imputation
-
-    # save it to a npz file
-    np.savez(f'./results/{args.deer_id}/{args.model_name}/output.npz', **output)
-
-
-    # plot the result and save it
-    all_target_np = y_true_original.squeeze(-2)
-    all_evalpoint_np = eval_mask_original.squeeze(-2)
-    all_observed_np = observed_mask_original.squeeze(-2)
-    if enable_multiple_imputation:
-        samples = y_hat_multiple_imputation.squeeze(-2)
-    else:
-        samples = y_hat_original.squeeze(-2)[np.newaxis, ...]
-    qlist = [0.05, 0.25, 0.5, 0.75, 0.95]
-    quantiles_imp = []
-    for q in qlist:
-        tmp = np.quantile(samples, q, axis=0)
-        quantiles_imp.append(tmp * (1 - all_observed_np) + all_target_np * all_observed_np)
-
-
-    #######################################
-    plt.rcParams["font.size"] = 16
-    fig, axes = plt.subplots(nrows=C, ncols=1, figsize=(36, 24.0))
-
-    start = 0
-    end = all_target_np.shape[0] - 1
-
-    for k in range(C):
-        df = pd.DataFrame(
-            {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_evalpoint_np[start:end, k]})
-        df = df[df.y != 0]
-        df2 = pd.DataFrame(
-            {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_observed_np[start:end, k]})
-        df2 = df2[df2.y != 0]
-        axes[k].plot(range(0, end - start), quantiles_imp[2][start:end, k], color='g', linestyle='solid', label='CSDI')
-        axes[k].fill_between(range(0, end - start), quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
-                             color='g', alpha=0.3)
-        axes[k].plot(df2.x, df2.val, color='r', marker='x', linestyle='None')
-        axes[k].plot(df.x, df.val, color='b', marker='o', linestyle='None')
-
-    # save the plot
-    plt.savefig(f'./results/{args.deer_id}/{args.model_name}/prediction.png')
+    # # save output to file
+    # output = {}
+    # output['y_hat'] = y_hat_original
+    # output['y'] = y_true_original
+    # output['eval_mask'] = eval_mask_original
+    # output['observed_mask'] = observed_mask_original
+    #
+    # if enable_multiple_imputation:
+    #     output['imputed_samples'] = y_hat_multiple_imputation
+    #
+    # # save it to a npz file
+    # np.savez(f'./results/{args.deer_id}/{args.model_name}/output.npz', **output)
+    #
+    #
+    # # plot the result and save it
+    # all_target_np = y_true_original.squeeze(-2)
+    # all_evalpoint_np = eval_mask_original.squeeze(-2)
+    # all_observed_np = observed_mask_original.squeeze(-2)
+    # if enable_multiple_imputation:
+    #     samples = y_hat_multiple_imputation.squeeze(-2)
+    # else:
+    #     samples = y_hat_original.squeeze(-2)[np.newaxis, ...]
+    # qlist = [0.05, 0.25, 0.5, 0.75, 0.95]
+    # quantiles_imp = []
+    # for q in qlist:
+    #     tmp = np.quantile(samples, q, axis=0)
+    #     quantiles_imp.append(tmp * (1 - all_observed_np) + all_target_np * all_observed_np)
+    #
+    #
+    # #######################################
+    # plt.rcParams["font.size"] = 16
+    # fig, axes = plt.subplots(nrows=C, ncols=1, figsize=(36, 24.0))
+    #
+    # start = 0
+    # end = all_target_np.shape[0] - 1
+    #
+    # for k in range(C):
+    #     df = pd.DataFrame(
+    #         {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_evalpoint_np[start:end, k]})
+    #     df = df[df.y != 0]
+    #     df2 = pd.DataFrame(
+    #         {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_observed_np[start:end, k]})
+    #     df2 = df2[df2.y != 0]
+    #     axes[k].plot(range(0, end - start), quantiles_imp[2][start:end, k], color='g', linestyle='solid', label='CSDI')
+    #     axes[k].fill_between(range(0, end - start), quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
+    #                          color='g', alpha=0.3)
+    #     axes[k].plot(df2.x, df2.val, color='r', marker='x', linestyle='None')
+    #     axes[k].plot(df.x, df.val, color='b', marker='o', linestyle='None')
+    #
+    # # save the plot
+    # plt.savefig(f'./results/{args.deer_id}/{args.model_name}/prediction.png')
 
 
 
