@@ -2,12 +2,12 @@ epochs: 200
 val_len: 0.5
 test_len: 0.2
 window: 72
-stride: 2
+stride: 36
 lr_scheduler: magic
 loss_fn: mse_loss
 n_samples: 10
 hidden_dim: 64
-whiten_prob: [0.2, 0.5]
+whiten_prob: [0.2]
 batch_size: 16
 batch_inference: 16
 check_val_every_n_epoch: 10
