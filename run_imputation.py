@@ -298,22 +298,19 @@ def run_experiment(args):
          **imputer_kwargs)
 
 
-    ########################################
+    #######################################
     # testing                              #
-    ########################################
-    # if require_training:
-    #     imputer.load_model(checkpoint_callback.best_model_path)
-    # imputer.freeze()
-    # trainer.test(imputer, dataloaders=dm.test_dataloader(
-    #     batch_size=args.batch_inference))
-
-
-    ########################################
-    # testing                              #
-    ########################################
+    #######################################
     if require_training:
         imputer.load_model(checkpoint_callback.best_model_path)
     imputer.freeze()
+    trainer.test(imputer, dataloaders=dm.test_dataloader(
+        batch_size=args.batch_inference))
+
+
+    ########################################
+    # testing                              #
+    ########################################
     if args.model_name in ['csdi', 'diffgrin']:
         enable_multiple_imputation = True
     else:
@@ -525,7 +522,7 @@ if __name__ == '__main__':
     # make all files under Female/TagData
     deer_id_list = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')]
 
-    model_list = ['interpolation', 'transformer', 'csdi']
+    model_list = ['interpolation', 'transformer']
 
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5004, 5006, 5016,5022,5037, 5043]

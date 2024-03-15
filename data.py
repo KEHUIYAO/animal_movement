@@ -138,25 +138,27 @@ class AnimalMovement():
         eval_mask = eval_mask & mask
 
 
-        if mode == 'train':
-            y[time_points_to_eval, :] = np.nan
-            X[time_points_to_eval, 3:] = 0
+        # if mode == 'train':
+        #     y[time_points_to_eval, :] = np.nan
+        #     X[time_points_to_eval, 3:] = 0
+        #
+        #     # randomly set 20% of data to be missing as val data
+        #     mask = np.ones_like(y)
+        #     mask[np.isnan(y)] = 0
+        #     mask = mask.astype(int)
+        #     # impute missing values with 0
+        #     y[np.isnan(y)] = 0
+        #     p_missing = 0.1
+        #     time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
+        #     eval_mask = np.zeros_like(y)
+        #     eval_mask[time_points_to_eval, ...] = 1
+        #     eval_mask = eval_mask.astype(int)
+        #     eval_mask = eval_mask & mask
+        # else:
+        #     # impute missing values with 0
+        #     y[np.isnan(y)] = 0
 
-            # randomly set 20% of data to be missing as val data
-            mask = np.ones_like(y)
-            mask[np.isnan(y)] = 0
-            mask = mask.astype(int)
-            # impute missing values with 0
-            y[np.isnan(y)] = 0
-            p_missing = 0.1
-            time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
-            eval_mask = np.zeros_like(y)
-            eval_mask[time_points_to_eval, ...] = 1
-            eval_mask = eval_mask.astype(int)
-            eval_mask = eval_mask & mask
-        else:
-            # impute missing values with 0
-            y[np.isnan(y)] = 0
+        y[np.isnan(y)] = 0
 
         self.eval_mask = eval_mask
         self.training_mask = mask & (1 - eval_mask)

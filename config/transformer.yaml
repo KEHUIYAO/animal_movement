@@ -1,10 +1,10 @@
 #### Dataset params ###########################################################
 #dataset_name: [la_point, bay_point, la_bock, bay_bock, air, air36]
-val_len: 0.8
-test_len: 0.8
+val_len: 0.2
+test_len: 0.2
 
 window: 72  # [24, 36]
-stride: 36
+stride: 72
 
 #### Training params ##########################################################
 whiten_prob: [0.2]
