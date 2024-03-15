@@ -30,8 +30,10 @@ class AnimalMovement():
         for deer_id in deer_id_list:
             num = deer_id
 
-
-            df = self.load_data(num)
+            try:
+                df = self.load_data(num)
+            except:
+                continue
 
 
 
