@@ -1,4 +1,4 @@
-epochs: 200
+epochs: 300
 val_len: 0.2
 test_len: 0.2
 window: 72
@@ -7,7 +7,7 @@ lr_scheduler: magic
 loss_fn: mse_loss
 n_samples: 10
 hidden_dim: 64
-whiten_prob: [0.2]
+whiten_prob: [0.2, 0.5]
 batch_size: 16
 batch_inference: 16
 check_val_every_n_epoch: 10
@@ -15,5 +15,5 @@ covariate_dim: 11
 spatial_dim: 1
 diffusion_embedding_dim: 128
 l2_reg: 0
-lr: 0.0005
+lr: 0.001
 batches_epoch: 1000
