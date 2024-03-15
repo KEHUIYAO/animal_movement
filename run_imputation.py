@@ -486,7 +486,7 @@ def run_experiment(args):
     if enable_multiple_imputation:
         samples = y_hat_multiple_imputation.squeeze(-2)
     else:
-        samples = y_hat_original.squezze(-2).unsqueeze(0)
+        samples = y_hat_original.squeeze(-2)[np.newaxis, ...]
     qlist = [0.05, 0.25, 0.5, 0.75, 0.95]
     quantiles_imp = []
     for q in qlist:
@@ -529,17 +529,19 @@ if __name__ == '__main__':
 
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5004, 5006, 5016,5022,5037, 5043]
-    for i in sorted(deer_id_list):
-        for model in model_list:
-            args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
+    # for i in sorted(deer_id_list):
+    #     for model in model_list:
+    #         args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
+    #
+    #         print('Running deer_id:', i, 'model:', model)
+    #
+    #         try:
+    #             run_experiment(args)
+    #         except:
+    #             pass
+    #
+    #         torch.cuda.empty_cache()
 
-            print('Running deer_id:', i, 'model:', model)
-
-            try:
-                run_experiment(args)
-            except:
-                pass
-
-            torch.cuda.empty_cache()
-
-
+    for model in model_list:
+        args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=0)
+        run_experiment(args)

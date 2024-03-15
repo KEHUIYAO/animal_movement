@@ -21,67 +21,91 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class AnimalMovement():
-    def __init__(self, mode='train', deer_id=5016):
+    def __init__(self, mode='train', deer_id=0):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        num = deer_id
-        df = self.load_data(num)
-
-        y = df.loc[:, ['X', 'Y']].values
-
-        L = y.shape[0]
-        C = y.shape[1]
+        deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])[:20]
+        y_list = []
+        X_list = []
+        for deer_id in deer_id_list:
+            num = deer_id
 
 
-        # covariates
-        X = df.loc[:, ['month', 'day', 'hour', 'covariate']].values
-        # replace missing values with 0
-        X[np.isnan(X)] = 0
-
-        # how many non-missing rows
-        non_missing = np.sum(~np.isnan(y), axis=0)
-
-        # remove outliers using IQR
-        # set those values that are outside of the range to be nan
-        y = y.astype(float)
-        Q1 = np.nanpercentile(y, 25, axis=0)
-        Q3 = np.nanpercentile(y, 75, axis=0)
-        IQR = Q3 - Q1
-        lower_bound = Q1 - 1.5 * IQR
-        upper_bound = Q3 + 1.5 * IQR
+            df = self.load_data(num)
 
 
-        for i in range(y.shape[1]):
-            y[(y[:, i] < lower_bound[i]) | (y[:, i] > upper_bound[i]), :] = np.nan
-            X[(y[:, i] < lower_bound[i]) | (y[:, i] > upper_bound[i]), 3] = 0
+
+            y = df.loc[:, ['X', 'Y']].values
 
 
-        # count how many outliers are removed
-        removed = non_missing - np.sum(~np.isnan(y), axis=0)
+            # covariates
+            X = df.loc[:, ['month', 'day', 'hour', 'covariate']].values
+            # replace missing values with 0
+            X[np.isnan(X)] = 0
+
+            # how many non-missing rows
+            non_missing = np.sum(~np.isnan(y), axis=0)
+
+            # remove outliers using IQR
+            # set those values that are outside of the range to be nan
+            y = y.astype(float)
+            Q1 = np.nanpercentile(y, 25, axis=0)
+            Q3 = np.nanpercentile(y, 75, axis=0)
+            IQR = Q3 - Q1
+            lower_bound = Q1 - 1.5 * IQR
+            upper_bound = Q3 + 1.5 * IQR
 
 
-        print('Removed outliers:', removed[0])
-
-        # write the print message to a file
-        with open(f'results/{num}/outlier_removed.txt', 'w') as f:
-            f.write(f'Removed outliers: {removed[0]}\n')
-            f.write(f'Original data shape: {non_missing[0]}\n')
-            f.write(f'After removing outliers: {np.sum(~np.isnan(y), axis=0)[0]}\n')
+            for i in range(y.shape[1]):
+                y[(y[:, i] < lower_bound[i]) | (y[:, i] > upper_bound[i]), :] = np.nan
+                X[(y[:, i] < lower_bound[i]) | (y[:, i] > upper_bound[i]), 3] = 0
 
 
-        fig, axs = plt.subplots(2)
-        axs[0].plot(y[:, 0], 'o', markersize=1)
-        axs[1].plot(y[:, 1], 'o', markersize=1)
-        plt.show()
+            # count how many outliers are removed
+            removed = non_missing - np.sum(~np.isnan(y), axis=0)
 
-        # create a folder called result to save the figure
-        if not os.path.exists(f'results/{num}'):
-            os.makedirs(f'results/{num}')
 
-        # save fig to file, file name is the deer id
-        fig.savefig(f'results/{num}/outlier_removed.png')
+            print('Removed outliers:', removed[0])
+
+            # write the print message to a file
+            with open(f'results/{num}/outlier_removed.txt', 'w') as f:
+                f.write(f'Removed outliers: {removed[0]}\n')
+                f.write(f'Original data shape: {non_missing[0]}\n')
+                f.write(f'After removing outliers: {np.sum(~np.isnan(y), axis=0)[0]}\n')
+
+
+            fig, axs = plt.subplots(2)
+            axs[0].plot(y[:, 0], 'o', markersize=1)
+            axs[1].plot(y[:, 1], 'o', markersize=1)
+            plt.show()
+
+            # create a folder called result to save the figure
+            if not os.path.exists(f'results/{num}'):
+                os.makedirs(f'results/{num}')
+
+            # save fig to file, file name is the deer id
+            fig.savefig(f'results/{num}/outlier_removed.png')
+
+
+            # standardize the data
+            y_mean = np.nanmean(y, axis=0)
+            y_std = np.nanstd(y, axis=0)
+            y = (y - y_mean) / y_std
+
+            y_list.append(y)
+            X_list.append(X)
+            # append 100 rows of np.nan to the list
+            y_list.append(np.full((100, 2), np.nan))
+            X_list.append(np.full((100, 4), 0))
+
+
+
+        y = np.concatenate(y_list, axis=0)
+        X = np.concatenate(X_list, axis=0)
 
         # reshape y
+        L = y.shape[0]
+        C = y.shape[1]
         y = y.reshape(L, 1, C)
 
         # one-hot encoding for covariates
@@ -218,7 +242,7 @@ class AnimalMovement():
         fig, axs = plt.subplots(2)
         axs[0].plot(df_matched['X'], 'o', markersize=1)
         axs[1].plot(df_matched['Y'], 'o', markersize=1)
-        plt.show()
+        # plt.show()
 
         # create a folder called result to save the figure
         if not os.path.exists(f'results/{num}'):
