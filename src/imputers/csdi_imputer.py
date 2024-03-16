@@ -152,9 +152,6 @@ class CsdiImputer(Imputer):
 
         epsilon_hat, epsilon, loss = self.shared_step(batch, mask=batch.eval_mask)
 
-        self.train_metrics.update(epsilon_hat, epsilon, batch.original_mask)
-        self.log_metrics(self.train_metrics, batch_size=batch.batch_size)
-        self.log_loss('train', loss, batch_size=batch.batch_size)
         self.log('train_mse', loss, on_step=False, on_epoch=True, prog_bar=True)
 
         return loss
