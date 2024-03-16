@@ -82,6 +82,8 @@ class CsdiModel(nn.Module):
             embedding_dim=diffusion_embedding_dim,
         )
 
+        self.diffusion_projection = nn.Linear(diffusion_embedding_dim, hidden_dim)
+
 
 
 
@@ -100,6 +102,7 @@ class CsdiModel(nn.Module):
 
         # diffusion embedding
         diffusion_emb = self.diffusion_embedding(diffusion_step)
+        diffusion_emb = self.diffusion_projection(diffusion_emb)
         x = x + diffusion_emb.unsqueeze(1).unsqueeze(2)
 
 
