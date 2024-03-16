@@ -55,44 +55,44 @@ class CsdiImputer(Imputer):
         self.alpha_torch = torch.tensor(self.alpha).float().unsqueeze(1).unsqueeze(1).unsqueeze(1)
         self.n_samples = n_samples
 
-    # def on_train_batch_start(self, batch, batch_idx: int,
-    #                          unused: Optional[int] = 0) -> None:
-    #
-    #     observed_data = batch.input.x
-    #     B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
-    #     device = self.device
-    #     t = torch.randint(0, self.num_steps, [B])
-    #     current_alpha = self.alpha_torch[t].to(device)  # (B,1,1)
-    #     noise = torch.randn_like(observed_data)
-    #     noisy_data = (current_alpha ** 0.5) * observed_data + (1.0 - current_alpha) ** 0.5 * noise
-    #     batch['noise'] = noise
-    #     batch.input['noisy_data'] = noisy_data
-    #     batch.input['diffusion_step'] = t.to(device)
-    #
-    #     # randomly mask out value with probability p = whiten_prob
-    #     batch.original_mask = mask = batch.input.mask
-    #     p = self.whiten_prob
-    #     if isinstance(p, Tensor):
-    #         p_size = [mask.size(0)] + [1] * (mask.ndim - 1)
-    #         p = p[torch.randint(len(p), p_size)].to(device=mask.device)
-    #
-    #     whiten_mask = torch.zeros(mask.size(), device=mask.device).bool()
-    #     time_points_observed = torch.rand(mask.size(0), mask.size(1), 1, 1, device=mask.device) > p
-    #
-    #     # repeat along the spatial dimensions
-    #     time_points_observed = time_points_observed.repeat(1, 1, mask.size(2), mask.size(3))
-    #
-    #     whiten_mask[time_points_observed] = True
-    #
-    #     batch.input.mask = mask & whiten_mask
-    #     # whiten missing values
-    #     if 'x' in batch.input:
-    #         batch.input.x = batch.input.x * batch.input.mask
-    #
-    #     # also whiten the exogenous variables
-    #     if 'u' in batch.input:
-    #         temp_mask = batch.input.mask[:, :, :, 0].unsqueeze(-1)
-    #         batch.input.u[:, :, :, 3:] = batch.input.u[:, :, :, 3:] * temp_mask
+    def on_train_batch_start(self, batch, batch_idx: int,
+                             unused: Optional[int] = 0) -> None:
+
+        observed_data = batch.input.x
+        B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
+        device = self.device
+        t = torch.randint(0, self.num_steps, [B])
+        current_alpha = self.alpha_torch[t].to(device)  # (B,1,1)
+        noise = torch.randn_like(observed_data)
+        noisy_data = (current_alpha ** 0.5) * observed_data + (1.0 - current_alpha) ** 0.5 * noise
+        batch['noise'] = noise
+        batch.input['noisy_data'] = noisy_data
+        batch.input['diffusion_step'] = t.to(device)
+
+        # randomly mask out value with probability p = whiten_prob
+        batch.original_mask = mask = batch.input.mask
+        p = self.whiten_prob
+        if isinstance(p, Tensor):
+            p_size = [mask.size(0)] + [1] * (mask.ndim - 1)
+            p = p[torch.randint(len(p), p_size)].to(device=mask.device)
+
+        whiten_mask = torch.zeros(mask.size(), device=mask.device).bool()
+        time_points_observed = torch.rand(mask.size(0), mask.size(1), 1, 1, device=mask.device) > p
+
+        # repeat along the spatial dimensions
+        time_points_observed = time_points_observed.repeat(1, 1, mask.size(2), mask.size(3))
+
+        whiten_mask[time_points_observed] = True
+
+        batch.input.mask = mask & whiten_mask
+        # whiten missing values
+        if 'x' in batch.input:
+            batch.input.x = batch.input.x * batch.input.mask
+
+        # also whiten the exogenous variables
+        if 'u' in batch.input:
+            temp_mask = batch.input.mask[:, :, :, 0].unsqueeze(-1)
+            batch.input.u[:, :, :, 3:] = batch.input.u[:, :, :, 3:] * temp_mask
 
     # def on_validation_batch_start(self, batch, batch_idx: int,
     #                          unused: Optional[int] = 0) -> None:
@@ -109,52 +109,52 @@ class CsdiImputer(Imputer):
         return epsilon_hat.detach(), epsilon, loss
 
 
-    # def training_step(self, batch, batch_idx):
-    #
-    #     # ########################################################
-    #     # batch.input.x = torch.zeros_like(batch.input.x)
-    #     # batch.input.mask = torch.zeros_like(batch.input.mask)
-    #     # ########################################################
-    #
-    #     injected_missing = (batch.original_mask - batch.mask)
-    #     epsilon_hat, epsilon, loss = self.shared_step(batch, mask=injected_missing)
-    #     # epsilon_hat, epsilon, loss = self.shared_step(batch, mask=batch.original_mask)
-    #     # Logging
-    #     # self.train_metrics.update(epsilon_hat, epsilon, batch.original_mask)
-    #     # self.log_metrics(self.train_metrics, batch_size=batch.batch_size)
-    #     # self.log_loss('train', loss, batch_size=batch.batch_size)
-    #     self.log('train_mse', loss, on_step=False, on_epoch=True, prog_bar=True)
-    #
-    #     return loss
-
     def training_step(self, batch, batch_idx):
+
         # ########################################################
         # batch.input.x = torch.zeros_like(batch.input.x)
         # batch.input.mask = torch.zeros_like(batch.input.mask)
         # ########################################################
 
-        observed_data = batch.y
-
-        # scale target
-        if not self.scale_target:
-            observed_data = batch.transform['y'].transform(observed_data)
-
-        observed_data[(batch.input.mask == 0) & (batch.eval_mask == 0)] = 0
-        B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
-        device = self.device
-        t = torch.randint(0, self.num_steps, [B])
-        current_alpha = self.alpha_torch[t].to(device)  # (B,1,1)
-        noise = torch.randn_like(observed_data)
-        noisy_data = (current_alpha ** 0.5) * observed_data + (1.0 - current_alpha) ** 0.5 * noise
-        batch['noise'] = noise
-        batch.input['noisy_data'] = noisy_data
-        batch.input['diffusion_step'] = t.to(device)
-
-        epsilon_hat, epsilon, loss = self.shared_step(batch, mask=batch.eval_mask)
-
+        injected_missing = (batch.original_mask - batch.mask)
+        epsilon_hat, epsilon, loss = self.shared_step(batch, mask=injected_missing)
+        # epsilon_hat, epsilon, loss = self.shared_step(batch, mask=batch.original_mask)
+        # Logging
+        # self.train_metrics.update(epsilon_hat, epsilon, batch.original_mask)
+        # self.log_metrics(self.train_metrics, batch_size=batch.batch_size)
+        # self.log_loss('train', loss, batch_size=batch.batch_size)
         self.log('train_mse', loss, on_step=False, on_epoch=True, prog_bar=True)
 
         return loss
+
+    # def training_step(self, batch, batch_idx):
+    #     # ########################################################
+    #     # batch.input.x = torch.zeros_like(batch.input.x)
+    #     # batch.input.mask = torch.zeros_like(batch.input.mask)
+    #     # ########################################################
+    #
+    #     observed_data = batch.y
+    #
+    #     # scale target
+    #     if not self.scale_target:
+    #         observed_data = batch.transform['y'].transform(observed_data)
+    #
+    #     observed_data[(batch.input.mask == 0) & (batch.eval_mask == 0)] = 0
+    #     B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
+    #     device = self.device
+    #     t = torch.randint(0, self.num_steps, [B])
+    #     current_alpha = self.alpha_torch[t].to(device)  # (B,1,1)
+    #     noise = torch.randn_like(observed_data)
+    #     noisy_data = (current_alpha ** 0.5) * observed_data + (1.0 - current_alpha) ** 0.5 * noise
+    #     batch['noise'] = noise
+    #     batch.input['noisy_data'] = noisy_data
+    #     batch.input['diffusion_step'] = t.to(device)
+    #
+    #     epsilon_hat, epsilon, loss = self.shared_step(batch, mask=batch.eval_mask)
+    #
+    #     self.log('train_mse', loss, on_step=False, on_epoch=True, prog_bar=True)
+    #
+    #     return loss
 
 
     def validation_step(self, batch, batch_idx):
