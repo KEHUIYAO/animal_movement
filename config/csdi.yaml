@@ -10,7 +10,7 @@ hidden_dim: 64
 whiten_prob: [0.2, 0.5]
 batch_size: 16
 batch_inference: 16
-check_val_every_n_epoch: 20
+check_val_every_n_epoch: 10
 covariate_dim: 11
 spatial_dim: 1
 diffusion_embedding_dim: 128
