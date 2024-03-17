@@ -114,6 +114,9 @@ class AnimalMovement():
         covariates = X[:, 3]
         # print unique values of covariates
         print(np.unique(covariates))
+        covariates[covariates==31] = 0
+        covariates[covariates==128] = 1
+
         covariates = pd.get_dummies(covariates).values
 
         # normalize month, day, and hour to [0, 1]
@@ -171,7 +174,7 @@ class AnimalMovement():
         self.attributes['st_coords'] = st_coords
 
         X[time_points_to_eval, 3:] = 0
-        # self.attributes['covariates'] = X
+        self.attributes['covariates'] = X
 
     def load_data(self, num):
 
