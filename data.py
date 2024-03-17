@@ -115,7 +115,7 @@ class AnimalMovement():
         # print unique values of covariates
         print(np.unique(covariates))
         covariates[covariates==31] = 0
-        covariates[covariates==128] = 1
+        covariates[covariates==128] = 0
 
         covariates = pd.get_dummies(covariates).values
 
