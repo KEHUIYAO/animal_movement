@@ -24,7 +24,7 @@ class AnimalMovement():
     def __init__(self, mode='train', deer_id=0):
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
-        deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])[200:300]
+        deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])[:200]
         y_list = []
         X_list = []
         for deer_id in deer_id_list:
@@ -112,6 +112,8 @@ class AnimalMovement():
 
         # one-hot encoding for covariates
         covariates = X[:, 3]
+        # print unique values of covariates
+        print(np.unique(covariates))
         covariates = pd.get_dummies(covariates).values
 
         # normalize month, day, and hour to [0, 1]
