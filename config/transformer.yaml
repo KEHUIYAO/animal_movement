@@ -27,3 +27,4 @@ u_size: 9
 spatial_dim: 1
 # load_from_pretrained: 'log/animal_movement/transformer/20240317T052357_27929863/epoch=80-step=56699.ckpt'
 # load_from_pretrained: 'log/animal_movement/transformer/20240317T160305_125763804/epoch=90-step=63699.ckpt'
+load_from_pretrained: 'log/animal_movement/transformer/20240317T202812_484482454/epoch=82-step=59593.ckpt'
