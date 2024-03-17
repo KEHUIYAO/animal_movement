@@ -10,8 +10,8 @@ stride: 72
 whiten_prob: [0.2]
 scale_target: False
 epochs: 200
-batch_size: 16
-batch_inference: 16
+batch_size: 32
+batch_inference: 32
 
 loss_fn: l1_loss
 lr_scheduler: magic
