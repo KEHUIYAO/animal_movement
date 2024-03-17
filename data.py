@@ -129,7 +129,7 @@ class AnimalMovement():
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-        p_missing = 0.5
+        p_missing = 0.2
         rng = np.random.RandomState(42)
         time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
         eval_mask = np.zeros_like(y)
