@@ -93,7 +93,7 @@ class AnimalMovement():
             # standardize the data
             y_mean = np.nanmean(y, axis=0)
             y_std = np.nanstd(y, axis=0)
-            y = (y - y_mean) / y_std
+            # y = (y - y_mean) / y_std
 
             y_list.append(y)
             X_list.append(X)
