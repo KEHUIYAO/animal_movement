@@ -25,7 +25,7 @@ class AnimalMovement():
         # df = pd.read_csv(os.path.join(current_dir,
         # 'Female/Processed/deer_movement_all.csv'))
         deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])
-        deer_id_list = [5016]
+        deer_id_list = [5000]
         y_list = []
         X_list = []
         for deer_id in deer_id_list:
