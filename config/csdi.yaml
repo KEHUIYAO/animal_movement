@@ -1,4 +1,4 @@
-epochs: 300
+epochs: 600
 val_len: 0.2
 test_len: 0.2
 window: 72
