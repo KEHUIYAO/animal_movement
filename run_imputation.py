@@ -416,7 +416,7 @@ def run_experiment(args):
 
                 if enable_multiple_imputation:
                     y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] = y_hat_multiple_imputation[:, ts_pos[0], ts_pos[1]] + multiple_imputations[b, :, l, k]
-                    count_multiple_imputation[0, ts_pos[0], ts_pos[1]] = count_multiple_imputation[0, ts_pos[0], ts_pos[1]] + 1
+                    count_multiple_imputation[:, ts_pos[0], ts_pos[1]] = count_multiple_imputation[:, ts_pos[0], ts_pos[1]] + 1
 
     # for those positions that count is not 0, we divide the sum by count to get the average
     y_hat_original[count != 0] = y_hat_original[count != 0] / count[count != 0]
