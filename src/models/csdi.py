@@ -92,6 +92,8 @@ class CsdiModel(nn.Module):
         side_info = u
         x = x * mask + noisy_data * (1-mask)
         x = torch.cat([x, mask], dim=-1)
+        # convert x to double
+        x = x.float()
         x = self.input_projection(x)
 
         if side_info is not None:
