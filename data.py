@@ -25,7 +25,7 @@ class AnimalMovement():
         if mode == 'train':
             deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])
         else:
-            deer_id_list = deer_id
+            deer_id_list = [deer_id]
 
         y_list = []
         X_list = []
@@ -69,6 +69,10 @@ class AnimalMovement():
 
             print('Removed outliers:', removed[0])
 
+
+            if not os.path.exists(f'results/{num}'):
+                os.makedirs(f'results/{num}')
+
             # write the print message to a file
             with open(f'results/{num}/outlier_removed.txt', 'w') as f:
                 f.write(f'Removed outliers: {removed[0]}\n')
@@ -80,10 +84,6 @@ class AnimalMovement():
             axs[0].plot(y[:, 0], 'o', markersize=1)
             axs[1].plot(y[:, 1], 'o', markersize=1)
             plt.show()
-
-            # create a folder called result to save the figure
-            if not os.path.exists(f'results/{num}'):
-                os.makedirs(f'results/{num}')
 
             # save fig to file, file name is the deer id
             fig.savefig(f'results/{num}/outlier_removed.png')
