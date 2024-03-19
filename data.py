@@ -37,6 +37,10 @@ class AnimalMovement():
             except:
                 continue
 
+            # print proportion of missing values in df['X']
+            print('Proportion of missing values in X:', np.sum(df['X'].isna()) / len(df['X']))
+
+
             y = df.loc[:, ['X', 'Y']].values
 
 
@@ -188,8 +192,8 @@ class AnimalMovement():
         # idx = deer_data['jul'].diff().idxmin()
 
 
-        time_interval = 0.08
-        tolerance = 0.04
+        time_interval = 0.16
+        tolerance = 0.08
 
         T_values = np.arange(start_time, end_time, time_interval)
         df = pd.DataFrame(T_values, columns=['T'])
