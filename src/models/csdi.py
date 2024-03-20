@@ -198,6 +198,9 @@ class CsdiModel(nn.Module):
         feature_emb = feature_emb.expand(B, L, K, self.emb_feature_dim) # (B,L,K,emb_feature_dim)
 
         if side_info is not None:
+
+            if side_info.shape[2] != K: # the shape must be (B, L, 1, cond_dim), so we need to expand it to (B, L, K, cond_dim)
+                side_info = side_info.expand(B, L, K, side_info.shape[3])
             cond_info = torch.cat([cond_mask, side_info], dim=3)  # (B,L,K,cond_dim+input_dim)
             cond_info = cond_info.float()
         else:
@@ -210,6 +213,13 @@ class CsdiModel(nn.Module):
         return cond_info
 
     def forward(self, x, mask, noisy_data, diffusion_step, u=None, **kwargs):
+
+        ############################################
+        x = x.permute(0, 1, 3, 2)
+        mask = mask.permute(0, 1, 3, 2)
+        noisy_data = noisy_data.permute(0, 1, 3, 2)
+        ############################################
+
         side_info = u
         hidden_dim = self.hidden_dim
 
@@ -239,12 +249,16 @@ class CsdiModel(nn.Module):
         x = x.reshape(B, -1, K, L)  # (B,input_dim,K,L)
         x = x.permute(0, 3, 2, 1)  # (B,L,K,input_dim)
 
+        ############################################
+        x = x.permute(0, 1, 3, 2)
+        ############################################
+
         return x
 
     @staticmethod
     def add_model_specific_args(parser):
         parser.add_argument('--covariate_dim', type=int, default=0)
-        parser.add_argument('--input_dim', type=int, default=2)
+        parser.add_argument('--input_dim', type=int, default=1)
         parser.add_argument('--hidden_dim', type=int, default=64)
         parser.add_argument('--diffusion_embedding_dim', type=int, default=128)
         return parser

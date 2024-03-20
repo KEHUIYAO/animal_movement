@@ -6,7 +6,6 @@ stride: 72
 lr_scheduler: magic
 loss_fn: mse_loss
 n_samples: 50
-hidden_dim: 64
 whiten_prob: [0.2]
 batch_size: 32
 batch_inference: 32
