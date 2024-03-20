@@ -23,7 +23,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 class AnimalMovement():
     def __init__(self, mode='train', deer_id=0):
         if mode == 'train':
-            deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])
+            deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])[0:1]
         else:
             deer_id_list = [deer_id]
 
@@ -45,7 +45,7 @@ class AnimalMovement():
 
 
             # covariates
-            X = df.loc[:, ['month', 'day', 'hour', 'covariate']].values
+            X = df.loc[:, ['jul', 'month', 'day', 'hour', 'covariate']].values
             # replace missing values with 0
             X[np.isnan(X)] = 0
 
@@ -84,10 +84,12 @@ class AnimalMovement():
                 f.write(f'After removing outliers: {np.sum(~np.isnan(y), axis=0)[0]}\n')
 
 
-            fig, axs = plt.subplots(2)
-            axs[0].plot(y[:, 0], 'o', markersize=1)
-            axs[1].plot(y[:, 1], 'o', markersize=1)
-            plt.show()
+            fig, axs = plt.subplots(2, figsize=(10, 5))
+            axs[0].plot(df['date'], df['X'], 'o', markersize=1)
+            axs[1].plot(df['date'], df['Y'], 'o', markersize=1)
+            plt.tight_layout()
+
+            # plt.show()
 
             # save fig to file, file name is the deer id
             fig.savefig(f'results/{num}/outlier_removed.png')
@@ -103,7 +105,7 @@ class AnimalMovement():
             X_list.append(X)
             # append 100 rows of np.nan to the list
             y_list.append(np.full((100, 2), np.nan))
-            X_list.append(np.full((100, 4), 0))
+            X_list.append(np.full((100, 5), 0))
 
         y = np.concatenate(y_list, axis=0)
         X = np.concatenate(X_list, axis=0)
@@ -114,7 +116,7 @@ class AnimalMovement():
         y = y.reshape(L, 1, C)
 
         # one-hot encoding for covariates
-        covariates = X[:, 3]
+        covariates = X[:, 4]
         # print unique values of covariates
         print(np.unique(covariates))
 
@@ -124,12 +126,13 @@ class AnimalMovement():
         covariates = encoder.transform(covariates.reshape(-1, 1))
 
         # normalize month, day, and hour to [0, 1]
-        month = X[:, 0] / 12
-        day = X[:, 1] / 31
-        hour = X[:, 2] / 24
+        jul = X[:, 0]
+        month = X[:, 1]
+        day = X[:, 2]
+        hour = X[:, 3]
 
         # concatenate month, day, hour and covariates
-        X = np.concatenate([month.reshape(-1, 1), day.reshape(-1, 1), hour.reshape(-1, 1), covariates], axis=1)
+        X = np.concatenate([jul.reshape(-1, 1), month.reshape(-1, 1), day.reshape(-1, 1), hour.reshape(-1, 1), covariates], axis=1)
 
         X = X.reshape(L, 1, X.shape[1])
 
@@ -154,7 +157,7 @@ class AnimalMovement():
         st_coords = np.stack([space_coords, time_coords], axis=-1)
         self.attributes['st_coords'] = st_coords
 
-        X[time_points_to_eval, 3:] = 0
+        X[time_points_to_eval, 4:] = 0
         self.attributes['covariates'] = X
 
     def load_data(self, num):
@@ -183,56 +186,23 @@ class AnimalMovement():
 
         deer_data['covariate'] = values
 
-        start_time, end_time = deer_data['jul'].min(), deer_data['jul'].max()
 
-        # calculate the smallest time interval
-        smallest_time_interval = deer_data['jul'].diff().min()
-
-        # # index of the smallest time interval
-        # idx = deer_data['jul'].diff().idxmin()
-
-
-        time_interval = 0.16
-        tolerance = 0.08
-
-        T_values = np.arange(start_time, end_time, time_interval)
-        df = pd.DataFrame(T_values, columns=['T'])
-
-
-
-        # Function to find nearest row within tolerance
-        def find_nearest_row_within_tolerance(value, tolerance, dataframe, column_name):
-            nearest_idx = (dataframe[column_name] - value).abs().argsort()[:1]
-            nearest_value = dataframe[column_name].iloc[nearest_idx].values[0]
-            if abs(nearest_value - value) <= tolerance:
-                return dataframe.iloc[nearest_idx]
-            return pd.DataFrame(columns=dataframe.columns)
-
-        # Initialize a list to store dictionaries
-        data_list = []
-
-        # Merge data
-        for t_value in df['T']:
-            matched_row = find_nearest_row_within_tolerance(t_value, tolerance, deer_data, 'jul')
-            if not matched_row.empty:
-                row_data = {'T': t_value, **matched_row.iloc[0].to_dict()}
-            else:
-                row_data = {'T': t_value, **{col: np.nan for col in deer_data.columns}}
-            data_list.append(row_data)
-
-        # Create DataFrame from list of dictionaries
-        df_matched = pd.DataFrame(data_list)
 
         base_date = datetime(2017, 1, 1, 0, 0, 0)
-        df_matched['date'] = [base_date + timedelta(days=x) for x in df_matched['T']]
-        df_matched['month'] = [x.month for x in df_matched['date']]
-        df_matched['day'] = [x.day for x in df_matched['date']]
-        df_matched['hour'] = [x.hour for x in df_matched['date']]
+        deer_data['date'] = [base_date + timedelta(days=x) for x in deer_data['jul']]
+        deer_data['month'] = [x.month for x in deer_data['date']]
+        deer_data['day'] = [x.day for x in deer_data['date']]
+        deer_data['hour'] = [x.hour for x in deer_data['date']]
 
-        fig, axs = plt.subplots(2)
-        axs[0].plot(df_matched['X'], 'o', markersize=1)
-        axs[1].plot(df_matched['Y'], 'o', markersize=1)
-        # plt.show()
+        fig, axs = plt.subplots(2, figsize=(10, 5))
+
+        # x axis is the year-month-day, y axis is the X or Y coordinates
+        axs[0].plot(deer_data['date'], deer_data['X'], 'o', markersize=1)
+        axs[1].plot(deer_data['date'], deer_data['Y'], 'o', markersize=1)
+
+        # don't make x axis label overlap
+        plt.tight_layout()
+
 
         # create a folder called result to save the figure
         if not os.path.exists(f'results/{num}'):
@@ -246,9 +216,9 @@ class AnimalMovement():
         if not os.path.exists(f'Female/Processed'):
             os.makedirs(f'Female/Processed')
 
-        df_matched.to_csv(f'Female/Processed/{num}.csv', index=False)
+        deer_data.to_csv(f'Female/Processed/{num}.csv', index=False)
 
-        return df_matched
+        return deer_data
 
     def get_splitter(self, val_len, test_len):
         return AnimalMovementSplitter(val_len, test_len)

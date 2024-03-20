@@ -8,21 +8,6 @@ import torch.nn as nn
 
 
 
-def positional_encoding(max_len, hidden_dim):
-    position = torch.arange(max_len).unsqueeze(1)
-    div_term = torch.exp(torch.arange(0, hidden_dim, 2) * (-math.log(10000.0) / hidden_dim))
-    pe = torch.zeros(max_len, hidden_dim)
-    pe[:, 0::2] = torch.sin(position * div_term)
-    pe[:, 1::2] = torch.cos(position * div_term)
-    return pe
-
-
-def generate_positional_encoding(B, hidden_dim, K, L):
-    pe = positional_encoding(L, hidden_dim)  # (L, hidden_dim)
-    pe = pe.permute(1, 0)  # (hidden_dim, L)
-    pe = pe.unsqueeze(0).unsqueeze(2)  # (1, hidden_dim, 1, L)
-    pe = pe.expand(B, hidden_dim, K, L)  # (B, hidden_dim, K, L)
-    return pe
 
 def get_torch_trans(heads=8, layers=1, channels=64):
     encoder_layer = nn.TransformerEncoderLayer(
@@ -181,6 +166,15 @@ class CsdiModel(nn.Module):
             ]
         )
 
+    def time_embedding(self, pos, d_model=128):
+        pe = torch.zeros(pos.shape[0], pos.shape[1], d_model).to(pos.device)
+        position = pos.unsqueeze(2)
+        div_term = 1 / torch.pow(
+            10000.0, torch.arange(0, d_model, 2).to(pos.device) / d_model
+        )
+        pe[:, :, 0::2] = torch.sin(position * div_term)
+        pe[:, :, 1::2] = torch.cos(position * div_term)
+        return pe
     def set_input_to_diffmodel(self, noisy_data, observed_data, cond_mask):
 
         cond_obs = cond_mask * observed_data
@@ -191,21 +185,24 @@ class CsdiModel(nn.Module):
 
     def get_side_info(self, cond_mask, side_info):
         B, L, K, input_dim = cond_mask.shape
-        time_emb = generate_positional_encoding(B, self.emb_time_dim, K, L).to(cond_mask.device)
-        time_emb = time_emb.permute(0, 3, 2, 1)  # (B,K,L,emb_time_dim)
+        observed_tp = side_info[:, :, 0, 0]  # (B,L,1)
+        # convert julian time to hours and set the first date to be 0
+        observed_tp = observed_tp - observed_tp[:, 0].unsqueeze(1)
+        observed_tp = observed_tp * 24
+
+
+        time_emb = self.time_embedding(observed_tp, self.emb_time_dim)  # (B,L,emb_time_dim)
+        time_emb = time_emb.unsqueeze(2)  # (B,L,1,emb_time_dim)
+        time_emb = time_emb.expand(B, L, K, self.emb_time_dim)
+
         feature_emb = self.embed_layer(torch.arange(K).to(cond_mask.device))  # (K,emb_feature_dim)
         feature_emb = feature_emb.unsqueeze(0).unsqueeze(0)  # (1,1,K,emb_feature_dim)
         feature_emb = feature_emb.expand(B, L, K, self.emb_feature_dim) # (B,L,K,emb_feature_dim)
 
-        if side_info is not None:
-
-            if side_info.shape[2] != K: # the shape must be (B, L, 1, cond_dim), so we need to expand it to (B, L, K, cond_dim)
-                side_info = side_info.expand(B, L, K, side_info.shape[3])
-            cond_info = torch.cat([cond_mask, side_info], dim=3)  # (B,L,K,cond_dim+input_dim)
-            cond_info = cond_info.float()
-        else:
-            cond_info = cond_mask.float()
-
+        side_info[:, :, :, 0] = 0  # time is not used as side info
+        side_info = side_info.expand(B, L, K, side_info.shape[3])
+        cond_info = torch.cat([cond_mask, side_info], dim=3)  # (B,L,K,cond_dim+input_dim)
+        cond_info = cond_info.float()
         cond_info = torch.cat([cond_info, time_emb, feature_emb], dim=3)  # (B,L,K,cond_dim+input_dim+emb_time_dim+emb_feature_dim)
 
 
@@ -221,6 +218,8 @@ class CsdiModel(nn.Module):
         ############################################
 
         side_info = u
+
+
         hidden_dim = self.hidden_dim
 
         x = self.set_input_to_diffmodel(noisy_data, x, mask)
