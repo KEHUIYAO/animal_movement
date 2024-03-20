@@ -84,15 +84,15 @@ class AnimalMovement():
                 f.write(f'After removing outliers: {np.sum(~np.isnan(y), axis=0)[0]}\n')
 
 
-            fig, axs = plt.subplots(2, figsize=(10, 5))
-            axs[0].plot(df['date'], df['X'], 'o', markersize=1)
-            axs[1].plot(df['date'], df['Y'], 'o', markersize=1)
-            plt.tight_layout()
-
-            # plt.show()
-
-            # save fig to file, file name is the deer id
-            fig.savefig(f'results/{num}/outlier_removed.png')
+            # fig, axs = plt.subplots(2, figsize=(10, 5))
+            # axs[0].plot(df['date'], df['X'], 'o', markersize=1)
+            # axs[1].plot(df['date'], df['Y'], 'o', markersize=1)
+            # plt.tight_layout()
+            #
+            # # plt.show()
+            #
+            # # save fig to file, file name is the deer id
+            # fig.savefig(f'results/{num}/outlier_removed.png')
 
 
             if mode == 'train':
@@ -194,22 +194,22 @@ class AnimalMovement():
         deer_data['day'] = [x.day for x in deer_data['date']]
         deer_data['hour'] = [x.hour for x in deer_data['date']]
 
-        fig, axs = plt.subplots(2, figsize=(10, 5))
-
-        # x axis is the year-month-day, y axis is the X or Y coordinates
-        axs[0].plot(deer_data['date'], deer_data['X'], 'o', markersize=1)
-        axs[1].plot(deer_data['date'], deer_data['Y'], 'o', markersize=1)
-
-        # don't make x axis label overlap
-        plt.tight_layout()
-
-
-        # create a folder called result to save the figure
-        if not os.path.exists(f'results/{num}'):
-            os.makedirs(f'results/{num}')
-
-        # save fig to file, file name is the deer id
-        fig.savefig(f'results/{num}/original.png')
+        # fig, axs = plt.subplots(2, figsize=(10, 5))
+        #
+        # # x axis is the year-month-day, y axis is the X or Y coordinates
+        # axs[0].plot(deer_data['date'], deer_data['X'], 'o', markersize=1)
+        # axs[1].plot(deer_data['date'], deer_data['Y'], 'o', markersize=1)
+        #
+        # # don't make x axis label overlap
+        # plt.tight_layout()
+        #
+        #
+        # # create a folder called result to save the figure
+        # if not os.path.exists(f'results/{num}'):
+        #     os.makedirs(f'results/{num}')
+        #
+        # # save fig to file, file name is the deer id
+        # fig.savefig(f'results/{num}/original.png')
 
         # save the dataframe to a csv file
         # if the folder is not existed, create it
