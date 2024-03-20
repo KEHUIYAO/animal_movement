@@ -66,25 +66,6 @@ class DiffusionEmbedding(nn.Module):
         return table
 
 
-class SpatialEmbedding(nn.Module):
-    def __init__(self, K, channel):
-        super(SpatialEmbedding, self).__init__()
-
-        self.K = K
-        self.channel = channel
-
-        # Trainable embedding layer
-        self.embedding = nn.Embedding(K, channel)
-
-    def forward(self, B, L):
-        # Generate embeddings for [0, 1, ..., K-1]
-        x = torch.arange(self.K).to(self.embedding.weight.device)
-        embed = self.embedding(x)  # (K, channel)
-        embed = embed.permute(1, 0)  # (channel, K)
-        embed = embed.unsqueeze(0).unsqueeze(3)  # (1, channel, K, 1)
-        embed = embed.expand(B, self.channel, self.K, L)  # (B, channel, K, L)
-        return embed
-
 
 class ResidualBlock(nn.Module):
     def __init__(self, cond_dim, hidden_dim, diffusion_embedding_dim, nheads):
@@ -156,26 +137,32 @@ class ResidualBlock(nn.Module):
 class CsdiModel(nn.Module):
     def __init__(self,
                  input_dim=1,
+                 feature_dim=2,
                  hidden_dim=64,
                  covariate_dim=0,
                  diffusion_embedding_dim=128,
                  num_steps=50,
                  nheads=8,
                  nlayers=4,
-                 spatial_dim=1
+                 emb_time_dim=128,
+                 emb_feature_dim=16
                  ):
 
 
         super().__init__()
-
+        self.feature_dim = feature_dim
         self.hidden_dim = hidden_dim
-
-        self.spatial_embedding_layer = SpatialEmbedding(spatial_dim, hidden_dim)
+        self.emb_time_dim = emb_time_dim
+        self.emb_feature_dim = emb_feature_dim
 
         self.input_projection = Conv1d_with_init(input_dim*2, hidden_dim, 1)
         self.output_projection1 = Conv1d_with_init(hidden_dim, hidden_dim, 1)
         self.output_projection2 = Conv1d_with_init(hidden_dim, input_dim, 1)
         nn.init.zeros_(self.output_projection2.weight)
+
+        self.embed_layer = nn.Embedding(
+            num_embeddings=self.feature_dim, embedding_dim=self.emb_feature_dim
+        )
 
         self.diffusion_embedding = DiffusionEmbedding(
             num_steps=num_steps,
@@ -185,7 +172,7 @@ class CsdiModel(nn.Module):
         self.residual_layers = nn.ModuleList(
             [
                 ResidualBlock(
-                    cond_dim=covariate_dim + input_dim,
+                    cond_dim=covariate_dim + input_dim + emb_time_dim + emb_feature_dim,
                     hidden_dim=hidden_dim,
                     diffusion_embedding_dim=diffusion_embedding_dim,
                     nheads=nheads
@@ -203,11 +190,20 @@ class CsdiModel(nn.Module):
         return total_input
 
     def get_side_info(self, cond_mask, side_info):
+        B, L, K, input_dim = cond_mask.shape
+        time_emb = generate_positional_encoding(B, self.emb_time_dim, K, L).to(cond_mask.device)
+        time_emb = time_emb.permute(0, 3, 2, 1)  # (B,K,L,emb_time_dim)
+        feature_emb = self.embed_layer(torch.arange(K).to(cond_mask.device))  # (K,emb_feature_dim)
+        feature_emb = feature_emb.unsqueeze(0).unsqueeze(0)  # (1,1,K,emb_feature_dim)
+        feature_emb = feature_emb.expand(B, L, K, self.emb_feature_dim) # (B,L,K,emb_feature_dim)
+
         if side_info is not None:
             cond_info = torch.cat([cond_mask, side_info], dim=3)  # (B,L,K,cond_dim+input_dim)
             cond_info = cond_info.float()
         else:
             cond_info = cond_mask.float()
+
+        cond_info = torch.cat([cond_info, time_emb, feature_emb], dim=3)  # (B,L,K,cond_dim+input_dim+emb_time_dim+emb_feature_dim)
 
 
         cond_info = cond_info.permute(0, 3, 2, 1)  # (B,cond_dim,K,L)
@@ -227,13 +223,6 @@ class CsdiModel(nn.Module):
         x = F.relu(x)
         x = x.reshape(B, hidden_dim, K, L)
 
-        # time encoding
-        time_emb = generate_positional_encoding(B, hidden_dim, K, L).to(x.device)
-        x = x + time_emb
-
-        # # space encoding
-        # spatial_emb = self.spatial_embedding_layer(B, L)
-        # x = x + spatial_emb
 
         diffusion_emb = self.diffusion_embedding(diffusion_step)
 
@@ -258,6 +247,4 @@ class CsdiModel(nn.Module):
         parser.add_argument('--input_dim', type=int, default=2)
         parser.add_argument('--hidden_dim', type=int, default=64)
         parser.add_argument('--diffusion_embedding_dim', type=int, default=128)
-        parser.add_argument('--spatial_dim', type=int, default=1)
-
         return parser
