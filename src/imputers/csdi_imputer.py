@@ -90,14 +90,14 @@ class CsdiImputer(Imputer):
 
         whiten_mask[time_points_observed] = True
 
-        batch.eval_mask = mask & whiten_mask
+        batch.cond_mask = mask & whiten_mask
         # whiten missing values
         if 'x' in batch.input:
-            batch.input.x = batch.input.x * batch.eval_mask
+            batch.input.x = batch.input.x * batch.cond_mask
 
         # also whiten the exogenous variables
         if 'u' in batch.input:
-            temp_mask = batch.eval_mask[:, :, :, 0].unsqueeze(-1)
+            temp_mask = batch.cond_mask[:, :, :, 0].unsqueeze(-1)
             batch.input.u[:, :, :, 4:] = batch.input.u[:, :, :, 4:] * temp_mask
 
     # def on_validation_batch_start(self, batch, batch_idx: int,
@@ -122,8 +122,8 @@ class CsdiImputer(Imputer):
         # batch.input.mask = torch.zeros_like(batch.input.mask)
         # ########################################################
 
-        injected_missing = (batch.original_mask - batch.mask)
-        epsilon_hat, epsilon, loss = self.shared_step(batch, mask=injected_missing)
+        eval_mask = batch.original_mask - batch.cond_mask
+        epsilon_hat, epsilon, loss = self.shared_step(batch, mask=eval_mask)
         # epsilon_hat, epsilon, loss = self.shared_step(batch, mask=batch.original_mask)
         # Logging
         # self.train_metrics.update(epsilon_hat, epsilon, batch.original_mask)
