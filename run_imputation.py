@@ -428,6 +428,7 @@ def run_experiment(args):
 
     # use hold-out test-set
     y_true_original = dataset.y
+    jul = dataset.attributes['covariates'][:, 0, 0]
     eval_mask_original = dataset.eval_mask
 
     eval_mask_original = eval_mask_original & (count != 0)
@@ -512,13 +513,13 @@ def run_experiment(args):
 
         for k in range(C):
             df = pd.DataFrame(
-                {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_evalpoint_np[start:end, k]})
+                {"x": jul[start:end], "val": all_target_np[start:end, k], "y": all_evalpoint_np[start:end, k]})
             df = df[df.y != 0]
             df2 = pd.DataFrame(
-                {"x": np.arange(0, end - start), "val": all_target_np[start:end, k], "y": all_observed_np[start:end, k]})
+                {"x": jul[start:end], "val": all_target_np[start:end, k], "y": all_observed_np[start:end, k]})
             df2 = df2[df2.y != 0]
-            axes[k].plot(range(0, end - start), quantiles_imp[2][start:end, k], color='g', linestyle='solid', label='CSDI')
-            axes[k].fill_between(range(0, end - start), quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
+            axes[k].plot(jul[start:end], quantiles_imp[2][start:end, k], color='g', linestyle='solid', label='CSDI')
+            axes[k].fill_between(jul[start:end], quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
                                  color='g', alpha=0.3)
             axes[k].plot(df2.x, df2.val, color='r', marker='x', linestyle='None')
             axes[k].plot(df.x, df.val, color='b', marker='o', linestyle='None')
@@ -536,7 +537,7 @@ if __name__ == '__main__':
     # make all files under Female/TagData
     deer_id_list = [int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')]
 
-    model_list = ['csdi']
+    model_list = ['interpolation', 'csdi']
 
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5004, 5006, 5016,5022,5037, 5043]
@@ -546,11 +547,11 @@ if __name__ == '__main__':
 
             print('Running deer_id:', i, 'model:', model)
 
-            try:
-                run_experiment(args)
-            except:
-                pass
-            #run_experiment(args)
+            # try:
+            #     run_experiment(args)
+            # except:
+            #     pass
+            run_experiment(args)
 
             torch.cuda.empty_cache()
 
