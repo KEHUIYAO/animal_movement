@@ -23,7 +23,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 class AnimalMovement():
     def __init__(self, mode='train', deer_id=0):
         if mode == 'train':
-            deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])
+            deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])[0:10]
         else:
             deer_id_list = [deer_id]
 
