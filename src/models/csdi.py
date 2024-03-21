@@ -189,6 +189,8 @@ class CsdiModel(nn.Module):
         # convert julian time to hours and set the first date to be 0
         observed_tp = observed_tp - observed_tp[:, 0].unsqueeze(1)
         observed_tp = observed_tp * 24
+        # round to the nearest hour
+        observed_tp = torch.round(observed_tp)
 
 
         time_emb = self.time_embedding(observed_tp, self.emb_time_dim)  # (B,L,emb_time_dim)
