@@ -1,3 +1,0 @@
-Removed outliers: 178
-Original data shape: 2303
-After removing outliers: 2125
