@@ -187,7 +187,8 @@ class CsdiModel(nn.Module):
         B, L, K, input_dim = cond_mask.shape
         observed_tp = side_info[:, :, 0, 0]  # (B,L,1)
         # convert julian time to hours and set the first date to be 0
-        observed_tp = observed_tp - observed_tp[:, 0].unsqueeze(1)
+        observed_tp[:, 1:] = observed_tp[:, 1:] - observed_tp[:, 0:-1]
+        observed_tp[:, 0] = 0
         observed_tp = observed_tp * 24
         # round to the nearest hour
         observed_tp = torch.round(observed_tp)
