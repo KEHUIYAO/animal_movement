@@ -6,7 +6,7 @@ stride: 72
 lr_scheduler: magic
 loss_fn: mse_loss
 n_samples: 50
-whiten_prob: [0.2]
+whiten_prob: [0.2, 0.5, 0.8]
 batch_size: 32
 batch_inference: 32
 check_val_every_n_epoch: 10
@@ -17,4 +17,4 @@ lr: 0.001
 batches_epoch: 1000
 # load_from_pretrained: 'log/animal_movement/csdi/20240319T192239_612893598/epoch=699-step=254099.ckpt'
 # load_from_pretrained: 'log/animal_movement/csdi/20240320T043753_727102948/epoch=779-step=283139.ckpt'
-load_from_pretrained: 'log/animal_movement/csdi/20240320T191012_868923931/epoch=749-step=188999.ckpt'
+# load_from_pretrained: 'log/animal_movement/csdi/20240320T191012_868923931/epoch=749-step=188999.ckpt'
