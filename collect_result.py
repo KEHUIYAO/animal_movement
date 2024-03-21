@@ -13,9 +13,9 @@ for deer_id in sorted(deer_id_list):
             mae = f.read()
             print(mae)
 
-        with open(f'./results/{deer_id}/transformer/mae.txt') as f:
-            mae = f.read()
-            print(mae)
+        # with open(f'./results/{deer_id}/transformer/mae.txt') as f:
+        #     mae = f.read()
+        #     print(mae)
 
         with open(f'./results/{deer_id}/csdi/mae.txt') as f:
             mae = f.read()
