@@ -76,7 +76,7 @@ class CsdiImputer(Imputer):
         batch.input['diffusion_step'] = t.to(device)
 
         # randomly mask out value with probability p = whiten_prob
-        batch.original_mask = mask = batch.input.mask & batch.eval_mask
+        batch.original_mask = mask = batch.input.mask | batch.eval_mask
         p = self.whiten_prob
         if isinstance(p, Tensor):
             p_size = [mask.size(0)] + [1] * (mask.ndim - 1)
