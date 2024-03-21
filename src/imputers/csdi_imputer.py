@@ -90,14 +90,14 @@ class CsdiImputer(Imputer):
 
         whiten_mask[time_points_observed] = True
 
-        batch.input.mask = mask & whiten_mask
+        batch.eval_mask = mask & whiten_mask
         # whiten missing values
         if 'x' in batch.input:
-            batch.input.x = batch.input.x * batch.input.mask
+            batch.input.x = batch.input.x * batch.eval_mask
 
         # also whiten the exogenous variables
         if 'u' in batch.input:
-            temp_mask = batch.input.mask[:, :, :, 0].unsqueeze(-1)
+            temp_mask = batch.eval_mask[:, :, :, 0].unsqueeze(-1)
             batch.input.u[:, :, :, 4:] = batch.input.u[:, :, :, 4:] * temp_mask
 
     # def on_validation_batch_start(self, batch, batch_idx: int,
