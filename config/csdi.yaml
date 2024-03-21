@@ -15,5 +15,4 @@ diffusion_embedding_dim: 128
 l2_reg: 0
 lr: 0.001
 batches_epoch: 1000
-
 load_from_pretrained: 'log/animal_movement/csdi/20240320T043753_727102948/epoch=779-step=283139.ckpt'
