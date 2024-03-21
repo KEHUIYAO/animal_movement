@@ -63,6 +63,7 @@ class CsdiImputer(Imputer):
         if not self.scale_target:
             observed_data = batch.transform['y'].transform(observed_data)
         observed_data[(batch.input.mask == 0) & (batch.eval_mask == 0)] = 0
+        batch.input.x = observed_data
         B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
         device = self.device
         t = torch.randint(0, self.num_steps, [B])
