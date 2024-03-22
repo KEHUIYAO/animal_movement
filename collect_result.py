@@ -1,4 +1,5 @@
 import os
+import re
 import pandas as pd
 deer_id_list = os.listdir('./results/')
 
@@ -15,18 +16,22 @@ for deer_id in sorted(deer_id_list):
     # enter the interpolation folder, and read mae.txt file
     try:
         with open(f'./results/{deer_id}/interpolation/mae.txt') as f:
-            mae_interpolation = f.read()
+            text = f.read()
 
-            # extract the mae value from 'Test MAE: 123.456'
-            mae_interpolation = mae_interpolation.split(': ')[1]
+            # extract the mae value from 'Test MAE: 123.456\nTest MRE' using regex
+            specific_number = re.search(r'Test MAE: (\d+\.\d+|\d+)', text)
+            mae_interpolation = float(specific_number.group(1)) if specific_number else None
+
 
         # with open(f'./results/{deer_id}/transformer/mae.txt') as f:
         #     mae = f.read()
         #     print(mae)
 
         with open(f'./results/{deer_id}/csdi/mae.txt') as f:
-            mae_csdi = f.read()
-            mae_csdi = mae_csdi.split(': ')[1]
+            text = f.read()
+            # extract the mae value from 'Test MAE: 123.456\nTest MRE' using regex
+            specific_number = re.search(r'Test MAE: (\d+\.\d+|\d+)', text)
+            mae_csdi = float(specific_number.group(1)) if specific_number else None
 
         deer_list.append(deer_id)
         mae_interpolation_list.append(mae_interpolation)
