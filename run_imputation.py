@@ -547,11 +547,11 @@ if __name__ == '__main__':
 
             print('Running deer_id:', i, 'model:', model)
 
-            # try:
-            #     run_experiment(args)
-            # except:
-            #     pass
-            run_experiment(args)
+            try:
+                run_experiment(args)
+            except:
+                pass
+            # run_experiment(args)
 
             torch.cuda.empty_cache()
 
