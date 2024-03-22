@@ -1,0 +1,2528 @@
+5000
+Test MAE: 158.890444
+Test MRE: 0.000063
+Max residual: 1004.287985
+Number of observed data points: 6030.0
+
+Test MAE: 144.035805
+Test MRE: 0.000057
+Max residual: 849.333877
+Number of observed data points: 6030.0
+
+5004
+Test MAE: 82.401488
+Test MRE: 0.000033
+Max residual: 479.166076
+Number of observed data points: 4206.0
+
+Test MAE: 74.420770
+Test MRE: 0.000030
+Max residual: 469.802056
+Number of observed data points: 4206.0
+
+5006
+Test MAE: 151.001700
+Test MRE: 0.000060
+Max residual: 924.488845
+Number of observed data points: 5376.0
+
+Test MAE: 141.627689
+Test MRE: 0.000056
+Max residual: 992.517107
+Number of observed data points: 5376.0
+
+5016
+Test MAE: 129.965460
+Test MRE: 0.000052
+Max residual: 1191.666585
+Number of observed data points: 7608.0
+
+Test MAE: 113.721709
+Test MRE: 0.000045
+Max residual: 880.890552
+Number of observed data points: 7608.0
+
+5022
+Test MAE: 87.819094
+Test MRE: 0.000035
+Max residual: 492.780276
+Number of observed data points: 5060.0
+
+Test MAE: 80.201441
+Test MRE: 0.000032
+Max residual: 540.644348
+Number of observed data points: 5060.0
+
+5043
+Test MAE: 104.096803
+Test MRE: 0.000042
+Max residual: 608.071532
+Number of observed data points: 3108.0
+
+Test MAE: 90.422644
+Test MRE: 0.000036
+Max residual: 478.840809
+Number of observed data points: 3108.0
+
+5058
+Test MAE: 108.411261
+Test MRE: 0.000044
+Max residual: 623.332019
+Number of observed data points: 2384.0
+
+Test MAE: 96.962559
+Test MRE: 0.000039
+Max residual: 553.906444
+Number of observed data points: 2384.0
+
+5070
+Test MAE: 117.019708
+Test MRE: 0.000047
+Max residual: 6184.077398
+Number of observed data points: 5194.0
+
+Test MAE: 552.541939
+Test MRE: 0.000221
+Max residual: 10699.311191
+Number of observed data points: 5194.0
+
+5076
+Test MAE: 117.579639
+Test MRE: 0.000047
+Max residual: 714.946597
+Number of observed data points: 5724.0
+
+Test MAE: 95.717630
+Test MRE: 0.000038
+Max residual: 517.124374
+Number of observed data points: 5724.0
+
+5078
+Test MAE: 140.466247
+Test MRE: 0.000056
+Max residual: 840.631206
+Number of observed data points: 4396.0
+
+Test MAE: 117.455474
+Test MRE: 0.000047
+Max residual: 644.857739
+Number of observed data points: 4396.0
+
+5082
+Test MAE: 136.735424
+Test MRE: 0.000055
+Max residual: 787.229028
+Number of observed data points: 2706.0
+
+Test MAE: 115.286759
+Test MRE: 0.000046
+Max residual: 920.876614
+Number of observed data points: 2706.0
+
+5086
+Test MAE: 99.489389
+Test MRE: 0.000040
+Max residual: 1313.230783
+Number of observed data points: 510.0
+
+Test MAE: 115.966377
+Test MRE: 0.000046
+Max residual: 2641.308908
+Number of observed data points: 510.0
+
+5088
+Test MAE: 91.147030
+Test MRE: 0.000036
+Max residual: 356.758251
+Number of observed data points: 2462.0
+
+Test MAE: 78.863875
+Test MRE: 0.000031
+Max residual: 332.258256
+Number of observed data points: 2462.0
+
+5094
+Test MAE: 90.072628
+Test MRE: 0.000036
+Max residual: 598.368254
+Number of observed data points: 4354.0
+
+Test MAE: 85.206789
+Test MRE: 0.000034
+Max residual: 602.682320
+Number of observed data points: 4354.0
+
+5096
+Test MAE: 139.513539
+Test MRE: 0.000056
+Max residual: 721.453903
+Number of observed data points: 4746.0
+
+Test MAE: 123.874042
+Test MRE: 0.000049
+Max residual: 656.103712
+Number of observed data points: 4746.0
+
+5098
+Test MAE: 83.800062
+Test MRE: 0.000033
+Max residual: 579.348540
+Number of observed data points: 4938.0
+
+Test MAE: 71.589997
+Test MRE: 0.000028
+Max residual: 502.631269
+Number of observed data points: 4938.0
+
+5100
+Test MAE: 83.135400
+Test MRE: 0.000033
+Max residual: 505.701361
+Number of observed data points: 4046.0
+
+Test MAE: 70.905632
+Test MRE: 0.000028
+Max residual: 437.772222
+Number of observed data points: 4046.0
+
+5107
+Test MAE: 100.018690
+Test MRE: 0.000040
+Max residual: 705.902468
+Number of observed data points: 1012.0
+
+Test MAE: 79.668356
+Test MRE: 0.000032
+Max residual: 595.353842
+Number of observed data points: 1012.0
+
+5115
+Test MAE: 87.074670
+Test MRE: 0.000035
+Max residual: 614.694304
+Number of observed data points: 3906.0
+
+Test MAE: 78.609711
+Test MRE: 0.000031
+Max residual: 612.560300
+Number of observed data points: 3906.0
+
+5117
+Test MAE: 91.163998
+Test MRE: 0.000036
+Max residual: 439.312576
+Number of observed data points: 2716.0
+
+Test MAE: 82.500994
+Test MRE: 0.000033
+Max residual: 400.059834
+Number of observed data points: 2716.0
+
+5121
+Test MAE: 96.101939
+Test MRE: 0.000038
+Max residual: 455.821624
+Number of observed data points: 1222.0
+
+Test MAE: 86.789199
+Test MRE: 0.000035
+Max residual: 426.568603
+Number of observed data points: 1222.0
+
+5129
+Test MAE: 79.432339
+Test MRE: 0.000032
+Max residual: 531.677095
+Number of observed data points: 3440.0
+
+Test MAE: 68.014713
+Test MRE: 0.000027
+Max residual: 428.199716
+Number of observed data points: 3440.0
+
+5131
+Test MAE: 133.848171
+Test MRE: 0.000053
+Max residual: 856.313847
+Number of observed data points: 7560.0
+
+Test MAE: 111.171670
+Test MRE: 0.000044
+Max residual: 1096.916711
+Number of observed data points: 7560.0
+
+5133
+Test MAE: 98.104193
+Test MRE: 0.000039
+Max residual: 771.671679
+Number of observed data points: 4974.0
+
+Test MAE: 88.235260
+Test MRE: 0.000035
+Max residual: 718.163722
+Number of observed data points: 4974.0
+
+5135
+Test MAE: 135.905953
+Test MRE: 0.000054
+Max residual: 1063.066296
+Number of observed data points: 6412.0
+
+Test MAE: 119.047858
+Test MRE: 0.000048
+Max residual: 847.112937
+Number of observed data points: 6412.0
+
+5139
+Test MAE: 164.109840
+Test MRE: 0.000065
+Max residual: 985.900139
+Number of observed data points: 3300.0
+
+Test MAE: 145.005555
+Test MRE: 0.000058
+Max residual: 823.149310
+Number of observed data points: 3300.0
+
+5143
+Test MAE: 108.758265
+Test MRE: 0.000043
+Max residual: 813.189642
+Number of observed data points: 6144.0
+
+Test MAE: 94.444672
+Test MRE: 0.000038
+Max residual: 566.710338
+Number of observed data points: 6144.0
+
+5145
+Test MAE: 90.038550
+Test MRE: 0.000036
+Max residual: 494.729135
+Number of observed data points: 2248.0
+
+Test MAE: 85.019383
+Test MRE: 0.000034
+Max residual: 489.083227
+Number of observed data points: 2248.0
+
+5149
+Test MAE: 111.172010
+Test MRE: 0.000044
+Max residual: 882.046936
+Number of observed data points: 4702.0
+
+Test MAE: 100.869105
+Test MRE: 0.000040
+Max residual: 827.703190
+Number of observed data points: 4702.0
+
+5155
+Test MAE: 95.593204
+Test MRE: 0.000038
+Max residual: 779.291204
+Number of observed data points: 5214.0
+
+Test MAE: 83.238601
+Test MRE: 0.000033
+Max residual: 653.499665
+Number of observed data points: 5214.0
+
+5159
+Test MAE: 121.558284
+Test MRE: 0.000048
+Max residual: 834.122226
+Number of observed data points: 5568.0
+
+Test MAE: 103.984143
+Test MRE: 0.000041
+Max residual: 727.090968
+Number of observed data points: 5568.0
+
+5165
+Test MAE: 69.142184
+Test MRE: 0.000028
+Max residual: 395.001437
+Number of observed data points: 566.0
+
+Test MAE: 48.956762
+Test MRE: 0.000020
+Max residual: 516.345185
+Number of observed data points: 566.0
+
+5171
+Test MAE: 65.946057
+Test MRE: 0.000026
+Max residual: 433.549764
+Number of observed data points: 566.0
+
+Test MAE: 56.289592
+Test MRE: 0.000022
+Max residual: 414.601112
+Number of observed data points: 566.0
+
+5173
+Test MAE: 116.221180
+Test MRE: 0.000046
+Max residual: 602.445186
+Number of observed data points: 3862.0
+
+Test MAE: 106.508126
+Test MRE: 0.000042
+Max residual: 581.952896
+Number of observed data points: 3862.0
+
+5175
+Test MAE: 86.058959
+Test MRE: 0.000034
+Max residual: 498.544188
+Number of observed data points: 4000.0
+
+Test MAE: 79.618637
+Test MRE: 0.000032
+Max residual: 450.473111
+Number of observed data points: 4000.0
+
+5177
+Test MAE: 68.790592
+Test MRE: 0.000027
+Max residual: 841.305835
+Number of observed data points: 2882.0
+
+Test MAE: 68.219157
+Test MRE: 0.000027
+Max residual: 937.583961
+Number of observed data points: 2882.0
+
+5179
+Test MAE: 155.049617
+Test MRE: 0.000062
+Max residual: 833.191388
+Number of observed data points: 636.0
+
+Test MAE: 139.160638
+Test MRE: 0.000055
+Max residual: 775.058581
+Number of observed data points: 636.0
+
+5181
+Test MAE: 129.875026
+Test MRE: 0.000052
+Max residual: 889.713802
+Number of observed data points: 2476.0
+
+Test MAE: 96.430153
+Test MRE: 0.000039
+Max residual: 651.255739
+Number of observed data points: 2476.0
+
+5183
+Test MAE: 254.900108
+Test MRE: 0.000101
+Max residual: 1217.765493
+Number of observed data points: 136.0
+
+Test MAE: 217.055714
+Test MRE: 0.000086
+Max residual: 917.577978
+Number of observed data points: 136.0
+
+5189
+Test MAE: 177.482233
+Test MRE: 0.000070
+Max residual: 1011.507600
+Number of observed data points: 3160.0
+
+Test MAE: 145.282345
+Test MRE: 0.000057
+Max residual: 934.606282
+Number of observed data points: 3160.0
+
+5193
+Test MAE: 120.858523
+Test MRE: 0.000048
+Max residual: 758.820549
+Number of observed data points: 1914.0
+
+Test MAE: 117.554547
+Test MRE: 0.000047
+Max residual: 816.685393
+Number of observed data points: 1914.0
+
+5209
+Test MAE: 103.093904
+Test MRE: 0.000041
+Max residual: 478.356832
+Number of observed data points: 2190.0
+
+Test MAE: 83.066189
+Test MRE: 0.000033
+Max residual: 486.697592
+Number of observed data points: 2190.0
+
+5221
+Test MAE: 125.949863
+Test MRE: 0.000050
+Max residual: 698.514666
+Number of observed data points: 716.0
+
+Test MAE: 123.056848
+Test MRE: 0.000049
+Max residual: 492.670920
+Number of observed data points: 716.0
+
+5225
+Test MAE: 117.680141
+Test MRE: 0.000047
+Max residual: 378.787095
+Number of observed data points: 280.0
+
+Test MAE: 101.182197
+Test MRE: 0.000040
+Max residual: 411.766264
+Number of observed data points: 280.0
+
+5227
+Test MAE: 147.601013
+Test MRE: 0.000059
+Max residual: 758.018039
+Number of observed data points: 6202.0
+
+Test MAE: 116.476409
+Test MRE: 0.000047
+Max residual: 839.209510
+Number of observed data points: 6202.0
+
+5235
+Test MAE: 92.801401
+Test MRE: 0.000037
+Max residual: 695.691075
+Number of observed data points: 6438.0
+
+Test MAE: 86.056012
+Test MRE: 0.000034
+Max residual: 644.838509
+Number of observed data points: 6438.0
+
+5239
+Test MAE: 146.747740
+Test MRE: 0.000059
+Max residual: 824.287725
+Number of observed data points: 6100.0
+
+Test MAE: 115.677412
+Test MRE: 0.000046
+Max residual: 1166.697284
+Number of observed data points: 6100.0
+
+5249
+Test MAE: 260.683701
+Test MRE: 0.000103
+Max residual: 2247.723595
+Number of observed data points: 1740.0
+
+Test MAE: 1997.194338
+Test MRE: 0.000789
+Max residual: 16569.699451
+Number of observed data points: 1740.0
+
+5253
+Test MAE: 168.701339
+Test MRE: 0.000067
+Max residual: 1133.945401
+Number of observed data points: 5792.0
+
+Test MAE: 157.092483
+Test MRE: 0.000063
+Max residual: 859.159952
+Number of observed data points: 5792.0
+
+5259
+Test MAE: 116.197322
+Test MRE: 0.000046
+Max residual: 556.205424
+Number of observed data points: 2082.0
+
+Test MAE: 94.999598
+Test MRE: 0.000038
+Max residual: 501.129554
+Number of observed data points: 2082.0
+
+5265
+Test MAE: 150.183253
+Test MRE: 0.000060
+Max residual: 664.707975
+Number of observed data points: 5600.0
+
+Test MAE: 131.300264
+Test MRE: 0.000052
+Max residual: 776.309569
+Number of observed data points: 5600.0
+
+5267
+Test MAE: 136.919358
+Test MRE: 0.000055
+Max residual: 800.654176
+Number of observed data points: 5826.0
+
+Test MAE: 124.156510
+Test MRE: 0.000049
+Max residual: 940.797032
+Number of observed data points: 5826.0
+
+5269
+Test MAE: 125.019443
+Test MRE: 0.000050
+Max residual: 605.565724
+Number of observed data points: 5944.0
+
+Test MAE: 112.864523
+Test MRE: 0.000045
+Max residual: 622.932003
+Number of observed data points: 5944.0
+
+5271
+Test MAE: 129.814400
+Test MRE: 0.000052
+Max residual: 872.172035
+Number of observed data points: 5412.0
+
+Test MAE: 110.850805
+Test MRE: 0.000044
+Max residual: 701.268806
+Number of observed data points: 5412.0
+
+5273
+Test MAE: 131.802568
+Test MRE: 0.000053
+Max residual: 870.213147
+Number of observed data points: 4078.0
+
+Test MAE: 110.234460
+Test MRE: 0.000044
+Max residual: 746.143790
+Number of observed data points: 4078.0
+
+5275
+Test MAE: 149.272728
+Test MRE: 0.000060
+Max residual: 898.932613
+Number of observed data points: 5966.0
+
+Test MAE: 106.265346
+Test MRE: 0.000042
+Max residual: 972.617606
+Number of observed data points: 5966.0
+
+5281
+Test MAE: 187.008814
+Test MRE: 0.000075
+Max residual: 1484.915603
+Number of observed data points: 2720.0
+
+Test MAE: 139.042080
+Test MRE: 0.000056
+Max residual: 886.264589
+Number of observed data points: 2720.0
+
+5291
+Test MAE: 136.456164
+Test MRE: 0.000054
+Max residual: 800.368185
+Number of observed data points: 1940.0
+
+Test MAE: 121.493934
+Test MRE: 0.000048
+Max residual: 708.802068
+Number of observed data points: 1940.0
+
+5293
+Test MAE: 115.400028
+Test MRE: 0.000046
+Max residual: 480.437096
+Number of observed data points: 2096.0
+
+Test MAE: 103.386062
+Test MRE: 0.000041
+Max residual: 524.833415
+Number of observed data points: 2096.0
+
+5519
+Test MAE: 127.201314
+Test MRE: 0.000051
+Max residual: 902.249725
+Number of observed data points: 5404.0
+
+Test MAE: 108.351297
+Test MRE: 0.000043
+Max residual: 731.981010
+Number of observed data points: 5404.0
+
+5521
+Test MAE: 147.556529
+Test MRE: 0.000059
+Max residual: 906.910853
+Number of observed data points: 6304.0
+
+Test MAE: 125.764958
+Test MRE: 0.000050
+Max residual: 825.406140
+Number of observed data points: 6304.0
+
+5526
+Test MAE: 119.488413
+Test MRE: 0.000048
+Max residual: 826.392199
+Number of observed data points: 6672.0
+
+Test MAE: 112.208295
+Test MRE: 0.000045
+Max residual: 873.147052
+Number of observed data points: 6672.0
+
+5528
+Test MAE: 129.026843
+Test MRE: 0.000051
+Max residual: 940.684406
+Number of observed data points: 6514.0
+
+Test MAE: 117.543446
+Test MRE: 0.000047
+Max residual: 932.068525
+Number of observed data points: 6514.0
+
+5540
+Test MAE: 96.751315
+Test MRE: 0.000039
+Max residual: 623.337909
+Number of observed data points: 4494.0
+
+Test MAE: 90.611520
+Test MRE: 0.000036
+Max residual: 548.783913
+Number of observed data points: 4494.0
+
+5551
+Test MAE: 172.463420
+Test MRE: 0.000069
+Max residual: 611.882100
+Number of observed data points: 1132.0
+
+Test MAE: 115.329673
+Test MRE: 0.000046
+Max residual: 623.007420
+Number of observed data points: 1132.0
+
+5553
+Test MAE: 121.945866
+Test MRE: 0.000049
+Max residual: 660.380319
+Number of observed data points: 1786.0
+
+Test MAE: 96.859405
+Test MRE: 0.000039
+Max residual: 688.796990
+Number of observed data points: 1786.0
+
+5561
+Test MAE: 67.311579
+Test MRE: 0.000027
+Max residual: 527.485678
+Number of observed data points: 1066.0
+
+Test MAE: 63.184815
+Test MRE: 0.000025
+Max residual: 493.118491
+Number of observed data points: 1066.0
+
+5563
+Test MAE: 146.855780
+Test MRE: 0.000058
+Max residual: 1106.989665
+Number of observed data points: 7772.0
+
+Test MAE: 138.623022
+Test MRE: 0.000055
+Max residual: 1068.739668
+Number of observed data points: 7772.0
+
+5569
+Test MAE: 124.836410
+Test MRE: 0.000050
+Max residual: 651.738949
+Number of observed data points: 3226.0
+
+Test MAE: 117.836399
+Test MRE: 0.000047
+Max residual: 726.942825
+Number of observed data points: 3226.0
+
+5575
+Test MAE: 191.349979
+Test MRE: 0.000076
+Max residual: 1159.767131
+Number of observed data points: 2212.0
+
+Test MAE: 130.317828
+Test MRE: 0.000052
+Max residual: 966.326062
+Number of observed data points: 2212.0
+
+5577
+Test MAE: 133.850641
+Test MRE: 0.000053
+Max residual: 710.098193
+Number of observed data points: 1544.0
+
+Test MAE: 104.458169
+Test MRE: 0.000041
+Max residual: 529.674251
+Number of observed data points: 1544.0
+
+5583
+Test MAE: 142.044063
+Test MRE: 0.000057
+Max residual: 1155.888246
+Number of observed data points: 5090.0
+
+Test MAE: 132.403186
+Test MRE: 0.000053
+Max residual: 1236.169655
+Number of observed data points: 5090.0
+
+5587
+Test MAE: 136.582264
+Test MRE: 0.000054
+Max residual: 895.457911
+Number of observed data points: 7410.0
+
+Test MAE: 112.795479
+Test MRE: 0.000045
+Max residual: 786.280941
+Number of observed data points: 7410.0
+
+5593
+Test MAE: 98.826790
+Test MRE: 0.000039
+Max residual: 827.962219
+Number of observed data points: 2282.0
+
+Test MAE: 101.360055
+Test MRE: 0.000040
+Max residual: 941.279912
+Number of observed data points: 2282.0
+
+5611
+Test MAE: 82.293375
+Test MRE: 0.000033
+Max residual: 577.235540
+Number of observed data points: 4322.0
+
+Test MAE: 73.076617
+Test MRE: 0.000029
+Max residual: 456.966100
+Number of observed data points: 4322.0
+
+5621
+Test MAE: 130.844759
+Test MRE: 0.000053
+Max residual: 691.981949
+Number of observed data points: 4280.0
+
+Test MAE: 104.453603
+Test MRE: 0.000042
+Max residual: 657.473319
+Number of observed data points: 4280.0
+
+5625
+Test MAE: 79.486066
+Test MRE: 0.000032
+Max residual: 471.711881
+Number of observed data points: 270.0
+
+Test MAE: 81.747908
+Test MRE: 0.000033
+Max residual: 544.511890
+Number of observed data points: 270.0
+
+5629
+Test MAE: 159.486542
+Test MRE: 0.000064
+Max residual: 954.693251
+Number of observed data points: 3860.0
+
+Test MAE: 129.112513
+Test MRE: 0.000052
+Max residual: 842.658901
+Number of observed data points: 3860.0
+
+5631
+Test MAE: 93.327024
+Test MRE: 0.000037
+Max residual: 534.306017
+Number of observed data points: 5474.0
+
+Test MAE: 85.304444
+Test MRE: 0.000034
+Max residual: 514.045184
+Number of observed data points: 5474.0
+
+5633
+Test MAE: 53.094721
+Test MRE: 0.000021
+Max residual: 301.317764
+Number of observed data points: 524.0
+
+Test MAE: 43.926978
+Test MRE: 0.000018
+Max residual: 279.454012
+Number of observed data points: 524.0
+
+5645
+Test MAE: 206.856748
+Test MRE: 0.000082
+Max residual: 740.845532
+Number of observed data points: 2330.0
+
+Test MAE: 143.909194
+Test MRE: 0.000057
+Max residual: 607.642404
+Number of observed data points: 2330.0
+
+5657
+Test MAE: 123.497293
+Test MRE: 0.000049
+Max residual: 681.259878
+Number of observed data points: 4436.0
+
+Test MAE: 107.227413
+Test MRE: 0.000043
+Max residual: 650.509875
+Number of observed data points: 4436.0
+
+5659
+Test MAE: 173.596327
+Test MRE: 0.000069
+Max residual: 865.026775
+Number of observed data points: 488.0
+
+Test MAE: 164.269347
+Test MRE: 0.000066
+Max residual: 804.332169
+Number of observed data points: 488.0
+
+5665
+Test MAE: 83.823806
+Test MRE: 0.000033
+Max residual: 627.896703
+Number of observed data points: 1012.0
+
+Test MAE: 66.957556
+Test MRE: 0.000027
+Max residual: 362.493789
+Number of observed data points: 1012.0
+
+5669
+Test MAE: 101.399042
+Test MRE: 0.000040
+Max residual: 580.907736
+Number of observed data points: 2762.0
+
+Test MAE: 89.290063
+Test MRE: 0.000036
+Max residual: 586.839806
+Number of observed data points: 2762.0
+
+5671
+Test MAE: 172.180454
+Test MRE: 0.000068
+Max residual: 1870.189657
+Number of observed data points: 648.0
+
+Test MAE: 212.872446
+Test MRE: 0.000084
+Max residual: 1564.799015
+Number of observed data points: 648.0
+
+5675
+Test MAE: 162.477828
+Test MRE: 0.000065
+Max residual: 678.835546
+Number of observed data points: 188.0
+
+Test MAE: 208.990660
+Test MRE: 0.000083
+Max residual: 869.351934
+Number of observed data points: 188.0
+
+5677
+Test MAE: 190.428604
+Test MRE: 0.000076
+Max residual: 1512.761851
+Number of observed data points: 6922.0
+
+Test MAE: 166.030158
+Test MRE: 0.000066
+Max residual: 1288.384095
+Number of observed data points: 6922.0
+
+5683
+Test MAE: 143.452469
+Test MRE: 0.000057
+Max residual: 995.215455
+Number of observed data points: 1938.0
+
+Test MAE: 121.900447
+Test MRE: 0.000049
+Max residual: 644.017285
+Number of observed data points: 1938.0
+
+5687
+Test MAE: 127.410609
+Test MRE: 0.000051
+Max residual: 897.664818
+Number of observed data points: 1722.0
+
+Test MAE: 108.274413
+Test MRE: 0.000043
+Max residual: 628.039827
+Number of observed data points: 1722.0
+
+5689
+Test MAE: 198.248610
+Test MRE: 0.000079
+Max residual: 1274.496079
+Number of observed data points: 5784.0
+
+Test MAE: 179.618331
+Test MRE: 0.000071
+Max residual: 1410.440756
+Number of observed data points: 5784.0
+
+5693
+Test MAE: 129.281454
+Test MRE: 0.000051
+Max residual: 729.689097
+Number of observed data points: 6296.0
+
+Test MAE: 105.312097
+Test MRE: 0.000042
+Max residual: 528.245388
+Number of observed data points: 6296.0
+
+5695
+Test MAE: 123.977622
+Test MRE: 0.000049
+Max residual: 884.416722
+Number of observed data points: 6402.0
+
+Test MAE: 110.298092
+Test MRE: 0.000044
+Max residual: 828.467436
+Number of observed data points: 6402.0
+
+5697
+Test MAE: 131.676876
+Test MRE: 0.000052
+Max residual: 837.895871
+Number of observed data points: 2508.0
+
+Test MAE: 123.495892
+Test MRE: 0.000049
+Max residual: 1024.244730
+Number of observed data points: 2508.0
+
+5718
+Test MAE: 194.135910
+Test MRE: 0.000077
+Max residual: 2434.943409
+Number of observed data points: 328.0
+
+Test MAE: 175.861225
+Test MRE: 0.000070
+Max residual: 1775.150420
+Number of observed data points: 328.0
+
+5720
+Test MAE: 144.456426
+Test MRE: 0.000057
+Max residual: 957.656214
+Number of observed data points: 5540.0
+
+Test MAE: 126.346659
+Test MRE: 0.000050
+Max residual: 851.575977
+Number of observed data points: 5540.0
+
+5726
+Test MAE: 121.852474
+Test MRE: 0.000049
+Max residual: 951.884223
+Number of observed data points: 10928.0
+
+Test MAE: 114.079372
+Test MRE: 0.000045
+Max residual: 843.504163
+Number of observed data points: 10928.0
+
+5728
+Test MAE: 118.784094
+Test MRE: 0.000048
+Max residual: 1156.775999
+Number of observed data points: 5320.0
+
+Test MAE: 111.967462
+Test MRE: 0.000045
+Max residual: 870.829436
+Number of observed data points: 5320.0
+
+5732
+Test MAE: 141.533404
+Test MRE: 0.000056
+Max residual: 869.210766
+Number of observed data points: 5484.0
+
+Test MAE: 132.022011
+Test MRE: 0.000053
+Max residual: 801.899756
+Number of observed data points: 5484.0
+
+5734
+Test MAE: 101.645904
+Test MRE: 0.000040
+Max residual: 505.464865
+Number of observed data points: 5192.0
+
+Test MAE: 82.936668
+Test MRE: 0.000033
+Max residual: 482.916992
+Number of observed data points: 5192.0
+
+5740
+Test MAE: 115.945529
+Test MRE: 0.000047
+Max residual: 604.487558
+Number of observed data points: 5050.0
+
+Test MAE: 93.799084
+Test MRE: 0.000038
+Max residual: 546.798900
+Number of observed data points: 5050.0
+
+5744
+Test MAE: 126.896397
+Test MRE: 0.000050
+Max residual: 868.230184
+Number of observed data points: 10622.0
+
+Test MAE: 109.593802
+Test MRE: 0.000044
+Max residual: 1035.618023
+Number of observed data points: 10622.0
+
+5825
+Test MAE: 98.224286
+Test MRE: 0.000040
+Max residual: 715.982491
+Number of observed data points: 2054.0
+
+Test MAE: 84.304863
+Test MRE: 0.000034
+Max residual: 509.135105
+Number of observed data points: 2054.0
+
+5852
+Test MAE: 85.526874
+Test MRE: 0.000034
+Max residual: 665.810752
+Number of observed data points: 4284.0
+
+Test MAE: 81.803564
+Test MRE: 0.000033
+Max residual: 878.480488
+Number of observed data points: 4284.0
+
+5856
+Test MAE: 97.986358
+Test MRE: 0.000039
+Max residual: 707.175248
+Number of observed data points: 3430.0
+
+Test MAE: 85.586088
+Test MRE: 0.000034
+Max residual: 527.695814
+Number of observed data points: 3430.0
+
+5859
+Test MAE: 156.258848
+Test MRE: 0.000063
+Max residual: 1260.185547
+Number of observed data points: 4428.0
+
+Test MAE: 131.729115
+Test MRE: 0.000053
+Max residual: 1045.397753
+Number of observed data points: 4428.0
+
+5865
+Test MAE: 123.361296
+Test MRE: 0.000049
+Max residual: 1046.588671
+Number of observed data points: 4170.0
+
+Test MAE: 110.109615
+Test MRE: 0.000044
+Max residual: 877.025747
+Number of observed data points: 4170.0
+
+5867
+Test MAE: 89.029192
+Test MRE: 0.000036
+Max residual: 662.441475
+Number of observed data points: 1158.0
+
+Test MAE: 153.296903
+Test MRE: 0.000061
+Max residual: 1323.116175
+Number of observed data points: 1158.0
+
+5871
+Test MAE: 106.999109
+Test MRE: 0.000043
+Max residual: 1385.265411
+Number of observed data points: 5054.0
+
+Test MAE: 98.937197
+Test MRE: 0.000040
+Max residual: 1547.671675
+Number of observed data points: 5054.0
+
+5876
+Test MAE: 141.249048
+Test MRE: 0.000057
+Max residual: 1292.727552
+Number of observed data points: 4614.0
+
+Test MAE: 215.795177
+Test MRE: 0.000087
+Max residual: 2354.204768
+Number of observed data points: 4614.0
+
+5878
+Test MAE: 86.232950
+Test MRE: 0.000035
+Max residual: 626.589927
+Number of observed data points: 3448.0
+
+Test MAE: 81.462865
+Test MRE: 0.000033
+Max residual: 625.011802
+Number of observed data points: 3448.0
+
+5880
+Test MAE: 108.586094
+Test MRE: 0.000044
+Max residual: 821.045547
+Number of observed data points: 5664.0
+
+Test MAE: 100.445623
+Test MRE: 0.000040
+Max residual: 907.795528
+Number of observed data points: 5664.0
+
+5884
+Test MAE: 124.313464
+Test MRE: 0.000050
+Max residual: 609.529601
+Number of observed data points: 4400.0
+
+Test MAE: 96.039568
+Test MRE: 0.000039
+Max residual: 598.381384
+Number of observed data points: 4400.0
+
+5888
+Test MAE: 121.100409
+Test MRE: 0.000049
+Max residual: 797.744557
+Number of observed data points: 4268.0
+
+Test MAE: 106.155593
+Test MRE: 0.000043
+Max residual: 617.801910
+Number of observed data points: 4268.0
+
+5898
+Test MAE: 95.164821
+Test MRE: 0.000038
+Max residual: 803.022222
+Number of observed data points: 5126.0
+
+Test MAE: 85.675164
+Test MRE: 0.000034
+Max residual: 833.861738
+Number of observed data points: 5126.0
+
+5903
+Test MAE: 94.766744
+Test MRE: 0.000038
+Max residual: 542.743366
+Number of observed data points: 5898.0
+
+Test MAE: 76.823511
+Test MRE: 0.000031
+Max residual: 407.916216
+Number of observed data points: 5898.0
+
+5907
+Test MAE: 132.437317
+Test MRE: 0.000053
+Max residual: 1255.748397
+Number of observed data points: 4694.0
+
+Test MAE: 115.518012
+Test MRE: 0.000046
+Max residual: 1285.396839
+Number of observed data points: 4694.0
+
+5932
+Test MAE: 88.842696
+Test MRE: 0.000036
+Max residual: 579.290857
+Number of observed data points: 3228.0
+
+Test MAE: 78.572438
+Test MRE: 0.000032
+Max residual: 541.378032
+Number of observed data points: 3228.0
+
+5940
+Test MAE: 155.745704
+Test MRE: 0.000062
+Max residual: 875.880854
+Number of observed data points: 2746.0
+
+Test MAE: 115.652482
+Test MRE: 0.000046
+Max residual: 620.722908
+Number of observed data points: 2746.0
+
+5955
+Test MAE: 99.718576
+Test MRE: 0.000040
+Max residual: 769.405875
+Number of observed data points: 4658.0
+
+Test MAE: 90.250821
+Test MRE: 0.000036
+Max residual: 625.438476
+Number of observed data points: 4658.0
+
+5957
+Test MAE: 112.651769
+Test MRE: 0.000045
+Max residual: 620.893741
+Number of observed data points: 3322.0
+
+Test MAE: 84.116603
+Test MRE: 0.000034
+Max residual: 641.810400
+Number of observed data points: 3322.0
+
+5959
+Test MAE: 165.488382
+Test MRE: 0.000066
+Max residual: 954.321139
+Number of observed data points: 4658.0
+
+Test MAE: 130.013144
+Test MRE: 0.000052
+Max residual: 738.663398
+Number of observed data points: 4658.0
+
+5975
+Test MAE: 154.207855
+Test MRE: 0.000061
+Max residual: 993.741022
+Number of observed data points: 4238.0
+
+Test MAE: 136.497165
+Test MRE: 0.000054
+Max residual: 854.561826
+Number of observed data points: 4238.0
+
+5977
+Test MAE: 93.641698
+Test MRE: 0.000037
+Max residual: 1074.640450
+Number of observed data points: 1570.0
+
+Test MAE: 83.438722
+Test MRE: 0.000033
+Max residual: 887.276095
+Number of observed data points: 1570.0
+
+5979
+Test MAE: 89.705666
+Test MRE: 0.000036
+Max residual: 982.550489
+Number of observed data points: 3776.0
+
+Test MAE: 87.937675
+Test MRE: 0.000035
+Max residual: 933.784865
+Number of observed data points: 3776.0
+
+5981
+Test MAE: 108.219619
+Test MRE: 0.000043
+Max residual: 3724.942713
+Number of observed data points: 5616.0
+
+Test MAE: 494.553907
+Test MRE: 0.000196
+Max residual: 5037.324910
+Number of observed data points: 5616.0
+
+5983
+Test MAE: 137.696317
+Test MRE: 0.000055
+Max residual: 861.924699
+Number of observed data points: 3980.0
+
+Test MAE: 116.526480
+Test MRE: 0.000047
+Max residual: 639.323635
+Number of observed data points: 3980.0
+
+5985
+Test MAE: 124.101114
+Test MRE: 0.000049
+Max residual: 593.007814
+Number of observed data points: 3598.0
+
+Test MAE: 101.913143
+Test MRE: 0.000040
+Max residual: 539.366658
+Number of observed data points: 3598.0
+
+5987
+Test MAE: 103.914530
+Test MRE: 0.000042
+Max residual: 827.249495
+Number of observed data points: 4862.0
+
+Test MAE: 85.309709
+Test MRE: 0.000034
+Max residual: 722.785190
+Number of observed data points: 4862.0
+
+5992
+Test MAE: 107.941801
+Test MRE: 0.000043
+Max residual: 638.605849
+Number of observed data points: 2686.0
+
+Test MAE: 88.468048
+Test MRE: 0.000036
+Max residual: 533.465228
+Number of observed data points: 2686.0
+
+6000
+Test MAE: 136.530735
+Test MRE: 0.000054
+Max residual: 1768.586608
+Number of observed data points: 4132.0
+
+Test MAE: 136.213973
+Test MRE: 0.000054
+Max residual: 1572.836621
+Number of observed data points: 4132.0
+
+6002
+Test MAE: 111.811733
+Test MRE: 0.000045
+Max residual: 583.320288
+Number of observed data points: 5572.0
+
+Test MAE: 101.761755
+Test MRE: 0.000041
+Max residual: 551.827446
+Number of observed data points: 5572.0
+
+6010
+Test MAE: 130.436324
+Test MRE: 0.000052
+Max residual: 1388.111345
+Number of observed data points: 6060.0
+
+Test MAE: 100.214006
+Test MRE: 0.000040
+Max residual: 913.494396
+Number of observed data points: 6060.0
+
+6015
+Test MAE: 45.048242
+Test MRE: 0.000018
+Max residual: 293.906548
+Number of observed data points: 1794.0
+
+Test MAE: 44.009594
+Test MRE: 0.000018
+Max residual: 223.298636
+Number of observed data points: 1794.0
+
+6019
+Test MAE: 113.407093
+Test MRE: 0.000045
+Max residual: 603.386955
+Number of observed data points: 4506.0
+
+Test MAE: 101.652352
+Test MRE: 0.000041
+Max residual: 551.824485
+Number of observed data points: 4506.0
+
+6025
+Test MAE: 175.088319
+Test MRE: 0.000070
+Max residual: 954.400417
+Number of observed data points: 1538.0
+
+Test MAE: 159.615078
+Test MRE: 0.000063
+Max residual: 850.727340
+Number of observed data points: 1538.0
+
+6031
+Test MAE: 77.777746
+Test MRE: 0.000031
+Max residual: 587.905867
+Number of observed data points: 4162.0
+
+Test MAE: 70.812222
+Test MRE: 0.000028
+Max residual: 651.913546
+Number of observed data points: 4162.0
+
+6041
+Test MAE: 93.918449
+Test MRE: 0.000037
+Max residual: 694.417151
+Number of observed data points: 6116.0
+
+Test MAE: 91.031279
+Test MRE: 0.000036
+Max residual: 540.248070
+Number of observed data points: 6116.0
+
+6044
+Test MAE: 164.020770
+Test MRE: 0.000066
+Max residual: 1539.336315
+Number of observed data points: 3704.0
+
+Test MAE: 129.520306
+Test MRE: 0.000052
+Max residual: 863.553103
+Number of observed data points: 3704.0
+
+6048
+Test MAE: 81.328588
+Test MRE: 0.000033
+Max residual: 497.724035
+Number of observed data points: 1322.0
+
+Test MAE: 82.407427
+Test MRE: 0.000033
+Max residual: 533.316503
+Number of observed data points: 1322.0
+
+6061
+Test MAE: 118.194973
+Test MRE: 0.000047
+Max residual: 676.905107
+Number of observed data points: 2778.0
+
+Test MAE: 111.321347
+Test MRE: 0.000044
+Max residual: 750.664501
+Number of observed data points: 2778.0
+
+6069
+Test MAE: 139.343023
+Test MRE: 0.000056
+Max residual: 820.761660
+Number of observed data points: 226.0
+
+Test MAE: 139.346148
+Test MRE: 0.000056
+Max residual: 541.461659
+Number of observed data points: 226.0
+
+6071
+Test MAE: 162.752275
+Test MRE: 0.000065
+Max residual: 550.416731
+Number of observed data points: 1306.0
+
+Test MAE: 145.789041
+Test MRE: 0.000058
+Max residual: 593.637179
+Number of observed data points: 1306.0
+
+6073
+Test MAE: 111.207188
+Test MRE: 0.000044
+Max residual: 645.801540
+Number of observed data points: 4984.0
+
+Test MAE: 93.118977
+Test MRE: 0.000037
+Max residual: 544.761430
+Number of observed data points: 4984.0
+
+6161
+Test MAE: 156.302687
+Test MRE: 0.000062
+Max residual: 817.097022
+Number of observed data points: 2040.0
+
+Test MAE: 116.750507
+Test MRE: 0.000046
+Max residual: 671.284871
+Number of observed data points: 2040.0
+
+6204
+Test MAE: 140.622130
+Test MRE: 0.000056
+Max residual: 1158.059911
+Number of observed data points: 4706.0
+
+Test MAE: 122.467486
+Test MRE: 0.000049
+Max residual: 1148.163261
+Number of observed data points: 4706.0
+
+6216
+Test MAE: 151.335689
+Test MRE: 0.000061
+Max residual: 1416.797779
+Number of observed data points: 7340.0
+
+Test MAE: 140.755968
+Test MRE: 0.000057
+Max residual: 1261.801342
+Number of observed data points: 7340.0
+
+6272
+Test MAE: 175.783321
+Test MRE: 0.000070
+Max residual: 979.741684
+Number of observed data points: 1260.0
+
+Test MAE: 178.900367
+Test MRE: 0.000071
+Max residual: 920.117601
+Number of observed data points: 1260.0
+
+6338
+Test MAE: 133.045345
+Test MRE: 0.000053
+Max residual: 966.537990
+Number of observed data points: 4074.0
+
+Test MAE: 115.198348
+Test MRE: 0.000046
+Max residual: 935.937988
+Number of observed data points: 4074.0
+
+6438
+Test MAE: 106.909457
+Test MRE: 0.000043
+Max residual: 544.195221
+Number of observed data points: 2634.0
+
+Test MAE: 103.797741
+Test MRE: 0.000042
+Max residual: 571.501874
+Number of observed data points: 2634.0
+
+6502
+Test MAE: 123.701050
+Test MRE: 0.000049
+Max residual: 726.865860
+Number of observed data points: 3912.0
+
+Test MAE: 103.750650
+Test MRE: 0.000041
+Max residual: 782.149965
+Number of observed data points: 3912.0
+
+6512
+Test MAE: 101.941042
+Test MRE: 0.000041
+Max residual: 586.475959
+Number of observed data points: 4164.0
+
+Test MAE: 88.851871
+Test MRE: 0.000036
+Max residual: 699.903514
+Number of observed data points: 4164.0
+
+6518
+Test MAE: 151.017743
+Test MRE: 0.000060
+Max residual: 915.144786
+Number of observed data points: 2062.0
+
+Test MAE: 133.705312
+Test MRE: 0.000053
+Max residual: 739.910394
+Number of observed data points: 2062.0
+
+6520
+Test MAE: 119.060240
+Test MRE: 0.000048
+Max residual: 598.461370
+Number of observed data points: 422.0
+
+Test MAE: 131.890468
+Test MRE: 0.000053
+Max residual: 711.105661
+Number of observed data points: 422.0
+
+6522
+Test MAE: 181.083246
+Test MRE: 0.000072
+Max residual: 790.254671
+Number of observed data points: 620.0
+
+Test MAE: 226.555942
+Test MRE: 0.000091
+Max residual: 1615.369445
+Number of observed data points: 620.0
+
+6536
+Test MAE: 130.424488
+Test MRE: 0.000052
+Max residual: 731.738095
+Number of observed data points: 7680.0
+
+Test MAE: 111.024256
+Test MRE: 0.000044
+Max residual: 597.154764
+Number of observed data points: 7680.0
+
+6540
+Test MAE: 144.089147
+Test MRE: 0.000057
+Max residual: 771.925510
+Number of observed data points: 2074.0
+
+Test MAE: 129.509314
+Test MRE: 0.000052
+Max residual: 996.970154
+Number of observed data points: 2074.0
+
+6544
+Test MAE: 155.854643
+Test MRE: 0.000062
+Max residual: 696.410710
+Number of observed data points: 710.0
+
+Test MAE: 128.424486
+Test MRE: 0.000051
+Max residual: 664.390424
+Number of observed data points: 710.0
+
+6546
+Test MAE: 148.654069
+Test MRE: 0.000059
+Max residual: 966.609476
+Number of observed data points: 8700.0
+
+Test MAE: 131.579036
+Test MRE: 0.000053
+Max residual: 1005.868331
+Number of observed data points: 8700.0
+
+6548
+Test MAE: 89.056527
+Test MRE: 0.000036
+Max residual: 533.203356
+Number of observed data points: 4304.0
+
+Test MAE: 70.399557
+Test MRE: 0.000028
+Max residual: 417.815859
+Number of observed data points: 4304.0
+
+6554
+Test MAE: 104.381232
+Test MRE: 0.000042
+Max residual: 605.844121
+Number of observed data points: 4512.0
+
+Test MAE: 92.831163
+Test MRE: 0.000037
+Max residual: 581.148983
+Number of observed data points: 4512.0
+
+6558
+Test MAE: 102.783430
+Test MRE: 0.000041
+Max residual: 545.911266
+Number of observed data points: 2988.0
+
+Test MAE: 86.156585
+Test MRE: 0.000034
+Max residual: 474.633448
+Number of observed data points: 2988.0
+
+6560
+Test MAE: 104.428801
+Test MRE: 0.000042
+Max residual: 935.812381
+Number of observed data points: 1314.0
+
+Test MAE: 96.325065
+Test MRE: 0.000038
+Max residual: 848.319154
+Number of observed data points: 1314.0
+
+6566
+Test MAE: 54.139150
+Test MRE: 0.000022
+Max residual: 218.469854
+Number of observed data points: 266.0
+
+Test MAE: 62.836649
+Test MRE: 0.000025
+Max residual: 245.031839
+Number of observed data points: 266.0
+
+6568
+Test MAE: 134.986789
+Test MRE: 0.000054
+Max residual: 664.559828
+Number of observed data points: 1602.0
+
+Test MAE: 118.121436
+Test MRE: 0.000047
+Max residual: 694.559829
+Number of observed data points: 1602.0
+
+6574
+Test MAE: 108.233635
+Test MRE: 0.000043
+Max residual: 717.514964
+Number of observed data points: 8570.0
+
+Test MAE: 91.050479
+Test MRE: 0.000036
+Max residual: 655.274447
+Number of observed data points: 8570.0
+
+6582
+Test MAE: 117.687395
+Test MRE: 0.000047
+Max residual: 706.795509
+Number of observed data points: 3846.0
+
+Test MAE: 86.559021
+Test MRE: 0.000035
+Max residual: 499.814949
+Number of observed data points: 3846.0
+
+6586
+Test MAE: 119.958985
+Test MRE: 0.000048
+Max residual: 573.365920
+Number of observed data points: 2112.0
+
+Test MAE: 115.190095
+Test MRE: 0.000046
+Max residual: 602.394485
+Number of observed data points: 2112.0
+
+6592
+Test MAE: 97.204738
+Test MRE: 0.000039
+Max residual: 676.354240
+Number of observed data points: 4946.0
+
+Test MAE: 87.512362
+Test MRE: 0.000035
+Max residual: 598.354237
+Number of observed data points: 4946.0
+
+6594
+Test MAE: 129.498176
+Test MRE: 0.000051
+Max residual: 923.326304
+Number of observed data points: 5822.0
+
+Test MAE: 120.283869
+Test MRE: 0.000048
+Max residual: 889.971365
+Number of observed data points: 5822.0
+
+6596
+Test MAE: 135.013514
+Test MRE: 0.000054
+Max residual: 807.090695
+Number of observed data points: 3836.0
+
+Test MAE: 119.534692
+Test MRE: 0.000048
+Max residual: 740.023120
+Number of observed data points: 3836.0
+
+6600
+Test MAE: 165.197915
+Test MRE: 0.000066
+Max residual: 968.430442
+Number of observed data points: 2530.0
+
+Test MAE: 117.093970
+Test MRE: 0.000047
+Max residual: 689.006880
+Number of observed data points: 2530.0
+
+6604
+Test MAE: 141.411561
+Test MRE: 0.000056
+Max residual: 844.116497
+Number of observed data points: 4348.0
+
+Test MAE: 115.031858
+Test MRE: 0.000046
+Max residual: 742.954822
+Number of observed data points: 4348.0
+
+6606
+Test MAE: 192.892846
+Test MRE: 0.000077
+Max residual: 1394.324113
+Number of observed data points: 3672.0
+
+Test MAE: 171.077773
+Test MRE: 0.000068
+Max residual: 1494.574113
+Number of observed data points: 3672.0
+
+6608
+Test MAE: 119.592233
+Test MRE: 0.000047
+Max residual: 630.461293
+Number of observed data points: 5372.0
+
+Test MAE: 110.409050
+Test MRE: 0.000044
+Max residual: 613.635882
+Number of observed data points: 5372.0
+
+6612
+Test MAE: 117.790514
+Test MRE: 0.000047
+Max residual: 794.386912
+Number of observed data points: 6112.0
+
+Test MAE: 103.635671
+Test MRE: 0.000041
+Max residual: 809.463495
+Number of observed data points: 6112.0
+
+6616
+Test MAE: 115.963609
+Test MRE: 0.000046
+Max residual: 760.384901
+Number of observed data points: 2696.0
+
+Test MAE: 92.736438
+Test MRE: 0.000037
+Max residual: 729.114077
+Number of observed data points: 2696.0
+
+6618
+Test MAE: 178.200898
+Test MRE: 0.000071
+Max residual: 1007.138428
+Number of observed data points: 1068.0
+
+Test MAE: 160.477722
+Test MRE: 0.000064
+Max residual: 775.325590
+Number of observed data points: 1068.0
+
+6629
+Test MAE: 191.563627
+Test MRE: 0.000076
+Max residual: 1738.111833
+Number of observed data points: 6232.0
+
+Test MAE: 171.578701
+Test MRE: 0.000068
+Max residual: 1600.361824
+Number of observed data points: 6232.0
+
+6640
+Test MAE: 148.524508
+Test MRE: 0.000059
+Max residual: 1037.959761
+Number of observed data points: 2082.0
+
+Test MAE: 127.038040
+Test MRE: 0.000051
+Max residual: 895.040413
+Number of observed data points: 2082.0
+
+6642
+Test MAE: 169.682810
+Test MRE: 0.000067
+Max residual: 895.212914
+Number of observed data points: 2264.0
+
+Test MAE: 130.590882
+Test MRE: 0.000052
+Max residual: 712.841769
+Number of observed data points: 2264.0
+
+6650
+Test MAE: 180.910219
+Test MRE: 0.000072
+Max residual: 1272.689621
+Number of observed data points: 5660.0
+
+Test MAE: 170.371316
+Test MRE: 0.000068
+Max residual: 939.250142
+Number of observed data points: 5660.0
+
+6656
+Test MAE: 146.614338
+Test MRE: 0.000058
+Max residual: 1005.326894
+Number of observed data points: 5952.0
+
+Test MAE: 122.465411
+Test MRE: 0.000049
+Max residual: 811.379804
+Number of observed data points: 5952.0
+
+6659
+Test MAE: 124.077317
+Test MRE: 0.000049
+Max residual: 757.667420
+Number of observed data points: 5062.0
+
+Test MAE: 111.931495
+Test MRE: 0.000044
+Max residual: 658.391413
+Number of observed data points: 5062.0
+
+6675
+Test MAE: 160.289518
+Test MRE: 0.000064
+Max residual: 1041.012282
+Number of observed data points: 6030.0
+
+Test MAE: 120.121729
+Test MRE: 0.000048
+Max residual: 833.551399
+Number of observed data points: 6030.0
+
+6679
+Test MAE: 151.808826
+Test MRE: 0.000060
+Max residual: 1163.271401
+Number of observed data points: 4768.0
+
+Test MAE: 151.804520
+Test MRE: 0.000060
+Max residual: 981.178760
+Number of observed data points: 4768.0
+
+6681
+Test MAE: 138.564736
+Test MRE: 0.000055
+Max residual: 815.895249
+Number of observed data points: 6630.0
+
+Test MAE: 125.339886
+Test MRE: 0.000050
+Max residual: 1021.971561
+Number of observed data points: 6630.0
+
+6690
+Test MAE: 105.000490
+Test MRE: 0.000042
+Max residual: 739.887418
+Number of observed data points: 7074.0
+
+Test MAE: 97.046844
+Test MRE: 0.000039
+Max residual: 680.454258
+Number of observed data points: 7074.0
+
+6694
+Test MAE: 138.108674
+Test MRE: 0.000055
+Max residual: 721.667916
+Number of observed data points: 4444.0
+
+Test MAE: 119.409316
+Test MRE: 0.000048
+Max residual: 765.099065
+Number of observed data points: 4444.0
+
+6696
+Test MAE: 125.636687
+Test MRE: 0.000050
+Max residual: 680.228304
+Number of observed data points: 6720.0
+
+Test MAE: 109.568467
+Test MRE: 0.000044
+Max residual: 662.992772
+Number of observed data points: 6720.0
+
+6700
+Test MAE: 97.190232
+Test MRE: 0.000039
+Max residual: 570.710373
+Number of observed data points: 4540.0
+
+Test MAE: 85.756275
+Test MRE: 0.000034
+Max residual: 554.227111
+Number of observed data points: 4540.0
+
+6702
+Test MAE: 89.572484
+Test MRE: 0.000036
+Max residual: 537.639368
+Number of observed data points: 654.0
+
+Test MAE: 81.812426
+Test MRE: 0.000033
+Max residual: 490.803435
+Number of observed data points: 654.0
+
+6708
+Test MAE: 125.124277
+Test MRE: 0.000050
+Max residual: 985.605433
+Number of observed data points: 4910.0
+
+Test MAE: 109.438974
+Test MRE: 0.000043
+Max residual: 929.211299
+Number of observed data points: 4910.0
+
+6712
+Test MAE: 114.956240
+Test MRE: 0.000046
+Max residual: 752.341821
+Number of observed data points: 4706.0
+
+Test MAE: 98.594537
+Test MRE: 0.000039
+Max residual: 587.341831
+Number of observed data points: 4706.0
+
+6714
+Test MAE: 132.332504
+Test MRE: 0.000053
+Max residual: 785.624293
+Number of observed data points: 10942.0
+
+Test MAE: 110.283464
+Test MRE: 0.000044
+Max residual: 668.848517
+Number of observed data points: 10942.0
+
+6720
+Test MAE: 74.324528
+Test MRE: 0.000030
+Max residual: 458.682484
+Number of observed data points: 3868.0
+
+Test MAE: 70.603624
+Test MRE: 0.000028
+Max residual: 612.208731
+Number of observed data points: 3868.0
+
+6722
+Test MAE: 91.525160
+Test MRE: 0.000036
+Max residual: 739.192071
+Number of observed data points: 2444.0
+
+Test MAE: 88.936288
+Test MRE: 0.000035
+Max residual: 666.847582
+Number of observed data points: 2444.0
+
+6726
+Test MAE: 120.563424
+Test MRE: 0.000048
+Max residual: 673.806503
+Number of observed data points: 2948.0
+
+Test MAE: 113.235437
+Test MRE: 0.000045
+Max residual: 708.772691
+Number of observed data points: 2948.0
+
+6730
+Test MAE: 64.540184
+Test MRE: 0.000026
+Max residual: 429.279254
+Number of observed data points: 4740.0
+
+Test MAE: 65.628181
+Test MRE: 0.000026
+Max residual: 555.087311
+Number of observed data points: 4740.0
+
+6736
+Test MAE: 109.449988
+Test MRE: 0.000044
+Max residual: 649.549268
+Number of observed data points: 1682.0
+
+Test MAE: 75.681417
+Test MRE: 0.000030
+Max residual: 392.014478
+Number of observed data points: 1682.0
+
+6742
+Test MAE: 138.132437
+Test MRE: 0.000055
+Max residual: 515.902707
+Number of observed data points: 156.0
+
+Test MAE: 133.657842
+Test MRE: 0.000053
+Max residual: 566.735235
+Number of observed data points: 156.0
+
+6748
+Test MAE: 121.266629
+Test MRE: 0.000048
+Max residual: 689.028822
+Number of observed data points: 7418.0
+
+Test MAE: 105.908145
+Test MRE: 0.000042
+Max residual: 617.306635
+Number of observed data points: 7418.0
+
+6756
+Test MAE: 80.937121
+Test MRE: 0.000032
+Max residual: 350.828991
+Number of observed data points: 258.0
+
+Test MAE: 74.874693
+Test MRE: 0.000030
+Max residual: 284.073366
+Number of observed data points: 258.0
+
+6758
+Test MAE: 170.315837
+Test MRE: 0.000068
+Max residual: 987.552366
+Number of observed data points: 3446.0
+
+Test MAE: 136.817379
+Test MRE: 0.000054
+Max residual: 752.238960
+Number of observed data points: 3446.0
+
+6760
+Test MAE: 168.345248
+Test MRE: 0.000067
+Max residual: 1052.287955
+Number of observed data points: 5318.0
+
+Test MAE: 144.891209
+Test MRE: 0.000058
+Max residual: 968.353777
+Number of observed data points: 5318.0
+
+6762
+Test MAE: 95.463751
+Test MRE: 0.000038
+Max residual: 851.250746
+Number of observed data points: 2104.0
+
+Test MAE: 85.468789
+Test MRE: 0.000034
+Max residual: 638.563242
+Number of observed data points: 2104.0
+
+6764
+Test MAE: 119.364896
+Test MRE: 0.000048
+Max residual: 843.180587
+Number of observed data points: 7326.0
+
+Test MAE: 103.150626
+Test MRE: 0.000041
+Max residual: 647.209942
+Number of observed data points: 7326.0
+
+6770
+Test MAE: 113.944020
+Test MRE: 0.000045
+Max residual: 1230.607343
+Number of observed data points: 1886.0
+
+Test MAE: 117.125318
+Test MRE: 0.000047
+Max residual: 938.358433
+Number of observed data points: 1886.0
+
+6772
+Test MAE: 139.498528
+Test MRE: 0.000056
+Max residual: 1017.817049
+Number of observed data points: 2718.0
+
+Test MAE: 130.563631
+Test MRE: 0.000052
+Max residual: 850.051433
+Number of observed data points: 2718.0
+
+6774
+Test MAE: 163.101580
+Test MRE: 0.000065
+Max residual: 881.478459
+Number of observed data points: 8660.0
+
+Test MAE: 138.570166
+Test MRE: 0.000055
+Max residual: 851.306586
+Number of observed data points: 8660.0
+
+6780
+Test MAE: 153.238707
+Test MRE: 0.000061
+Max residual: 766.385176
+Number of observed data points: 7608.0
+
+Test MAE: 131.666240
+Test MRE: 0.000052
+Max residual: 688.214874
+Number of observed data points: 7608.0
+
+6782
+Test MAE: 156.998349
+Test MRE: 0.000063
+Max residual: 908.317172
+Number of observed data points: 7672.0
+
+Test MAE: 132.666605
+Test MRE: 0.000053
+Max residual: 942.739045
+Number of observed data points: 7672.0
+
+6784
+Test MAE: 122.916210
+Test MRE: 0.000049
+Max residual: 1205.675629
+Number of observed data points: 680.0
+
+Test MAE: 122.176604
+Test MRE: 0.000049
+Max residual: 1024.050631
+Number of observed data points: 680.0
+
+6788
+Test MAE: 124.111884
+Test MRE: 0.000050
+Max residual: 606.014583
+Number of observed data points: 1036.0
+
+Test MAE: 108.348145
+Test MRE: 0.000043
+Max residual: 655.735513
+Number of observed data points: 1036.0
+
+6794
+Test MAE: 121.974962
+Test MRE: 0.000048
+Max residual: 725.498826
+Number of observed data points: 4166.0
+
+Test MAE: 95.246246
+Test MRE: 0.000038
+Max residual: 740.798125
+Number of observed data points: 4166.0
+
+6796
+Test MAE: 221.207781
+Test MRE: 0.000088
+Max residual: 1752.755332
+Number of observed data points: 6586.0
+
+Test MAE: 188.157431
+Test MRE: 0.000075
+Max residual: 1237.435158
+Number of observed data points: 6586.0
+
+6798
+Test MAE: 118.151160
+Test MRE: 0.000047
+Max residual: 654.037101
+Number of observed data points: 3910.0
+
+Test MAE: 101.561106
+Test MRE: 0.000041
+Max residual: 624.343784
+Number of observed data points: 3910.0
+
+6819
+Test MAE: 112.945103
+Test MRE: 0.000045
+Max residual: 701.976104
+Number of observed data points: 4532.0
+
+Test MAE: 100.569597
+Test MRE: 0.000040
+Max residual: 587.149920
+Number of observed data points: 4532.0
+
+6835
+Test MAE: 102.047823
+Test MRE: 0.000041
+Max residual: 883.115877
+Number of observed data points: 7220.0
+
+Test MAE: 93.270828
+Test MRE: 0.000037
+Max residual: 1060.532539
+Number of observed data points: 7220.0
+
+6843
+Test MAE: 80.641736
+Test MRE: 0.000032
+Max residual: 408.901897
+Number of observed data points: 2740.0
+
+6847
+6855
+6859
+6861
+6865
+6870
+6874
+6884
+6897
+6903
+6911
+6917
+6919
+6923
+6926
+6928
+6930
+6932
+6934
+6942
+6944
+6955
+6961
+6963
+6965
+6975
+6981
+6983
+6989
+6993
+6995
+7008
+7025
+7027
+7029
+7068
+7072
+7098
+7100
+7175
+7179
+7183
+7185
+7193
+7195
+7197
+7214
+7233
+7237
+7241
+7247
+7256
+7258
+7260
+7266
+7268
+7294
+7296
+7358
+7366
+7390
+7394
+7733
+7741
+7745
+7768
+7777
+7779
+7783
+7785
+7826
+7830
+7864
+7866
+7900
+7902
+7906
+7914
+7922
+7932
+7934
+7946
+7948
+7952
+7960
+7968
+7973
+7975
+7977
+7981
+7985
+7987
+7989
+8100
+8121
+8125
+8127
+8137
+8143
+8145
+8157
+8161
+8163
+8165
+8167
+8169
+8177
+8179
+8181
+8183
+8185
+8195
+8197
