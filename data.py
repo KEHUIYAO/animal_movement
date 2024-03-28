@@ -24,6 +24,10 @@ class AnimalMovement():
     def __init__(self, mode='train', deer_id=0):
         if mode == 'train':
             deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])
+            # randomly select 80& of the deer ids as training data
+            rng = np.random.RandomState(42)
+            rng.shuffle(deer_id_list)
+            deer_id_list = deer_id_list[:int(0.8 * len(deer_id_list))]
         else:
             deer_id_list = [deer_id]
 
@@ -142,7 +146,7 @@ class AnimalMovement():
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-        p_missing = 0.8
+        p_missing = 0.2
         rng = np.random.RandomState(42)
         time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
         eval_mask = np.zeros_like(y)

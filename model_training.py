@@ -78,6 +78,9 @@ def parse_args(model_name='transformer', config_file='transformer.yaml', deer_id
         for arg in config_args:
             setattr(args, arg, config_args[arg])
 
+    # since model is in training stage, we don't load from pretrained model
+    args.load_from_pretrained = None
+
     return args
 
 
