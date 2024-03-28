@@ -192,7 +192,7 @@ class CsdiImputer(Imputer):
         observed_data = batch.y
         mask = batch.input.mask | batch.eval_mask
         observed_data, _, _ = self.normalize_observed_data(observed_data, mask)
-        batch.input.x = observed_data
+        batch.input.x = observed_data.clone()
         batch.input.x[batch.input.mask == 0] = 0
 
         B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
