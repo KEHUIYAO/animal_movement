@@ -198,7 +198,8 @@ def run_experiment(args):
 
 
     # scalers = {'data': StandardScaler(axis=(0, 1))}
-    scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
+    # scalers = {'data': MinMaxScaler(axis=(0, 1), out_range=(-1, 1))}
+    scalers = None
 
     # get train/val/test indices
     splitter = dataset.get_splitter(val_len=args.val_len,

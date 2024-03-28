@@ -319,12 +319,12 @@ def run_experiment(args):
 
     dataset = AnimalMovement(mode='test', deer_id=args.deer_id)
     # scaler = StandardScaler(axis=(0, 1))
-    scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
-
-    scaler.fit(dataset.y, dataset.training_mask)
-    scaler.bias = torch.tensor(scaler.bias)
-    scaler.scale = torch.tensor(scaler.scale)
-    scalers = {'data': scaler}
+    # scaler = MinMaxScaler(axis=(0, 1), out_range=(-1, 1))
+    # scaler.fit(dataset.y, dataset.training_mask)
+    # scaler.bias = torch.tensor(scaler.bias)
+    # scaler.scale = torch.tensor(scaler.scale)
+    # scalers = {'data': scaler}
+    scalers = None
 
     # instantiate dataset
     if enable_multiple_imputation:

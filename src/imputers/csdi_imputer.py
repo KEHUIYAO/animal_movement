@@ -55,14 +55,32 @@ class CsdiImputer(Imputer):
         self.alpha_torch = torch.tensor(self.alpha).float().unsqueeze(1).unsqueeze(1).unsqueeze(1)
         self.n_samples = n_samples
 
+    def normalize_observed_data(self, observed_data, mask, epsilon=1e-8):
+        # Calculate mean and std only on observed data
+        observed_masked = observed_data * mask
+        num_observed = torch.sum(mask, dim=1, keepdim=True)
+        mean = torch.sum(observed_masked, dim=1, keepdim=True) / (num_observed + epsilon)
+        mean = mean.expand_as(observed_data)
+
+        squared_diff = (observed_data - mean) ** 2 * mask
+        var = torch.sum(squared_diff, dim=1, keepdim=True) / (num_observed + epsilon)
+        std = torch.sqrt(var)
+
+        # Normalize the observed data
+        normalized_data = (observed_data - mean) / (std + epsilon)
+
+        # mask out the missing values
+        normalized_data = normalized_data * mask
+
+        return normalized_data, mean, std
+
     def on_train_batch_start(self, batch, batch_idx: int,
                              unused: Optional[int] = 0) -> None:
 
         observed_data = batch.y
-        # scale target
-        if not self.scale_target:
-            observed_data = batch.transform['y'].transform(observed_data)
-        observed_data[(batch.input.mask == 0) & (batch.eval_mask == 0)] = 0
+        mask = batch.input.mask | batch.eval_mask
+        observed_data, _, _ = self.normalize_observed_data(observed_data, mask)
+
         batch.input.x = observed_data
 
         B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
@@ -172,12 +190,11 @@ class CsdiImputer(Imputer):
         # ########################################################
 
         observed_data = batch.y
+        mask = batch.input.mask | batch.eval_mask
+        observed_data, _, _ = self.normalize_observed_data(observed_data, mask)
+        batch.input.x = observed_data
+        batch.input.x[batch.input.mask == 0] = 0
 
-        # scale target
-        if not self.scale_target:
-            observed_data = batch.transform['y'].transform(observed_data)
-
-        observed_data[(batch.input.mask == 0) & (batch.eval_mask == 0)] = 0
         B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
         device = self.device
         val_loss_sum = 0
@@ -209,16 +226,17 @@ class CsdiImputer(Imputer):
 
         # batch.input.target_mask = batch.eval_mask
         # Compute outputs and rescale
-        observed_data = batch.input.x
-        B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
+
+        batch.input.x, mean, std = self.normalize_observed_data(batch.input.x, batch.input.mask)
+
+
+        B, L, K, C = batch.input.x.shape  # [batch, steps, nodes, channels]
         device = self.device
         n_samples = self.n_samples
         imputed_samples = torch.zeros(n_samples, B, L, K, C).to(device)
 
-        trans = batch.transform.get('y')
-
         for i in range(n_samples):
-            current_sample = torch.randn_like(observed_data)
+            current_sample = torch.randn_like(batch.input.x)
 
             for t in range(self.num_steps-1, -1, -1):
                 noisy_data = current_sample
@@ -237,17 +255,14 @@ class CsdiImputer(Imputer):
                                     (1.0 - self.alpha[t - 1]) / (1.0 - self.alpha[t]) * self.beta[t]
                             ) ** 0.5
                     current_sample += sigma * noise
-            if trans is not None:
-               current_sample = trans.inverse_transform(current_sample)
+
+            current_sample = current_sample * std + mean
             imputed_samples[i, ...] = current_sample
 
 
 
         y, eval_mask = batch.y, batch.eval_mask
         y_hat = imputed_samples.median(dim=0).values
-
-
-
 
 
         eval_points = (eval_mask == 1).sum()
@@ -266,24 +281,16 @@ class CsdiImputer(Imputer):
 
     def predict_step(self, batch, batch_idx, dataloader_idx=None):
 
-        # ########################################################
-        # batch.input.x = torch.zeros_like(batch.input.x)
-        # batch.input.mask = torch.zeros_like(batch.input.mask)
-        # ########################################################
-
-
-        # batch.input.target_mask = batch.eval_mask
-        # Compute outputs and rescale
-        observed_data = batch.input.x
-        B, L, K, C = observed_data.shape  # [batch, steps, nodes, channels]
+        batch.input.x, mean, std = self.normalize_observed_data(batch.input.x, batch.input.mask)
+        B, L, K, C = batch.input.x.shape  # [batch, steps, nodes, channels]
         device = self.device
         n_samples = self.n_samples
         imputed_samples = torch.zeros(n_samples, B, L, K, C).to(device)
 
-        trans = batch.transform.get('y')
+
 
         for i in range(n_samples):
-            current_sample = torch.randn_like(observed_data)
+            current_sample = torch.randn_like(batch.input.x)
 
             for t in range(self.num_steps - 1, -1, -1):
                 noisy_data = current_sample
@@ -302,8 +309,8 @@ class CsdiImputer(Imputer):
                                     (1.0 - self.alpha[t - 1]) / (1.0 - self.alpha[t]) * self.beta[t]
                             ) ** 0.5
                     current_sample += sigma * noise
-            if trans:
-                current_sample = batch.transform['y'].inverse_transform(current_sample)
+
+            current_sample = current_sample * std + mean
             imputed_samples[i, ...] = current_sample
 
         y_hat = imputed_samples.median(dim=0).values
