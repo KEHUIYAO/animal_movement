@@ -74,12 +74,22 @@ class CsdiImputer(Imputer):
 
         return normalized_data, mean, std
 
+
+    def min_max_scale(self, observed_data, mask):
+        observed_masked = observed_data * mask
+        min = torch.min(observed_masked, dim=1, keepdim=True).values
+        max = torch.max(observed_masked, dim=1, keepdim=True).values
+        scaled_data = (observed_data - min) / (max - min)
+        scaled_data = scaled_data * mask
+        return scaled_data, min, max-min
+
     def on_train_batch_start(self, batch, batch_idx: int,
                              unused: Optional[int] = 0) -> None:
 
         observed_data = batch.y
         mask = batch.input.mask | batch.eval_mask
-        observed_data, _, _ = self.normalize_observed_data(observed_data, mask)
+        # observed_data, _, _ = self.normalize_observed_data(observed_data, mask)
+        observed_data, _, _ = self.min_max_scale(observed_data, mask)
 
         batch.input.x = observed_data
 
@@ -191,7 +201,8 @@ class CsdiImputer(Imputer):
 
         observed_data = batch.y
         mask = batch.input.mask | batch.eval_mask
-        observed_data, _, _ = self.normalize_observed_data(observed_data, mask)
+        # observed_data, _, _ = self.normalize_observed_data(observed_data, mask)
+        observed_data, _, _ = self.min_max_scale(observed_data, mask)
         batch.input.x = observed_data.clone()
         batch.input.x[batch.input.mask == 0] = 0
 
@@ -227,7 +238,8 @@ class CsdiImputer(Imputer):
         # batch.input.target_mask = batch.eval_mask
         # Compute outputs and rescale
 
-        batch.input.x, mean, std = self.normalize_observed_data(batch.input.x, batch.input.mask)
+        # batch.input.x, mean, std = self.normalize_observed_data(batch.input.x, batch.input.mask)
+        batch.input.x, mean, std = self.min_max_scale(batch.input.x, batch.input.mask)
 
 
         B, L, K, C = batch.input.x.shape  # [batch, steps, nodes, channels]
@@ -281,7 +293,8 @@ class CsdiImputer(Imputer):
 
     def predict_step(self, batch, batch_idx, dataloader_idx=None):
 
-        batch.input.x, mean, std = self.normalize_observed_data(batch.input.x, batch.input.mask)
+        # batch.input.x, mean, std = self.normalize_observed_data(batch.input.x, batch.input.mask)
+        batch.input.x, mean, std = self.min_max_scale(batch.input.x, batch.input.mask)
         B, L, K, C = batch.input.x.shape  # [batch, steps, nodes, channels]
         device = self.device
         n_samples = self.n_samples
