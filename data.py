@@ -41,6 +41,9 @@ class AnimalMovement():
             except:
                 continue
 
+            if mode == 'imputation':
+                df = self.data_augmentation(df)
+
 
             y = df.loc[:, ['X', 'Y']].values
             y = y.astype(float)
@@ -96,7 +99,9 @@ class AnimalMovement():
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-        p_missing = 0.8
+        p_missing = 0.2
+        if mode == 'imputation':
+            p_missing = 0.0
         rng = np.random.RandomState(42)
         time_points_to_eval = rng.choice(L, int(p_missing * L), replace=False)
         eval_mask = np.zeros_like(y)
@@ -174,6 +179,48 @@ class AnimalMovement():
         deer_data.to_csv(f'Female/Processed/{num}.csv', index=False)
 
         return deer_data
+
+
+    def data_augmentation(self, deer_data, time_interval=0.16, tolerance=0.08):
+        start_time, end_time = deer_data['jul'].min(), deer_data['jul'].max()
+        T_values = np.arange(start_time, end_time, time_interval)
+        df = pd.DataFrame(T_values, columns=['T'])
+
+
+        # Function to find nearest row within tolerance
+        def find_nearest_row_within_tolerance(value, tolerance, dataframe, column_name):
+            nearest_idx = (dataframe[column_name] - value).abs().argsort()[:1]
+            nearest_value = dataframe[column_name].iloc[nearest_idx].values[0]
+            if abs(nearest_value - value) <= tolerance:
+                return dataframe.iloc[nearest_idx]
+            return pd.DataFrame(columns=dataframe.columns)
+
+        # Initialize a list to store dictionaries
+        data_list = []
+
+        # Merge data
+        for t_value in df['T']:
+            matched_row = find_nearest_row_within_tolerance(t_value, tolerance, deer_data, 'jul')
+            if not matched_row.empty:
+                row_data = {'T': t_value, **matched_row.iloc[0].to_dict()}
+            else:
+                row_data = {'T': t_value, **{col: np.nan for col in deer_data.columns}}
+            data_list.append(row_data)
+
+        # Create DataFrame from list of dictionaries
+        df_matched = pd.DataFrame(data_list)
+
+        base_date = datetime(2017, 1, 1, 0, 0, 0)
+        df_matched['date'] = [base_date + timedelta(days=x) for x in df_matched['T']]
+        df_matched['month'] = [x.month for x in df_matched['date']]
+        df_matched['day'] = [x.day for x in df_matched['date']]
+        df_matched['hour'] = [x.hour for x in df_matched['date']]
+
+        df_matched['jul'] = df_matched['T']
+        df_matched = df_matched.drop(columns=['T'])
+
+        return df_matched
+
 
     def get_splitter(self, val_len, test_len):
         return AnimalMovementSplitter(val_len, test_len)
