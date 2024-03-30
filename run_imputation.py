@@ -327,11 +327,7 @@ def run_experiment(args):
     scalers = None
 
     # instantiate dataset
-    if enable_multiple_imputation:
-        # stride = int(args.window / 2)
-        stride = 12
-    else:
-        stride = args.stride
+    stride = 12
     torch_dataset = ImputationDataset(dataset.y,
                                       training_mask=dataset.training_mask,
                                       eval_mask=dataset.eval_mask,
@@ -548,7 +544,7 @@ if __name__ == '__main__':
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5004, 5006, 5016,5022,5037, 5043]
 
-    deer_id_list = [5171]
+    # deer_id_list = [5171]
 
 
     for i in deer_id_list:
