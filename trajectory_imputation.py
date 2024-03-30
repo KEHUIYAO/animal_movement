@@ -521,7 +521,7 @@ if __name__ == '__main__':
     # randomly select 20% of the deer ids as testing data
     rng = np.random.RandomState(42)
     rng.shuffle(deer_id_list)
-    deer_id_list = deer_id_list[int(0.8 * len(deer_id_list)):][0:1]
+    deer_id_list = deer_id_list[int(0.8 * len(deer_id_list)):]
 
 
 
@@ -535,11 +535,11 @@ if __name__ == '__main__':
 
             print('Running deer_id:', i, 'model:', model)
 
-            try:
-                run_experiment(args)
-            except:
-                pass
-            # run_experiment(args)
+            # try:
+            #     run_experiment(args)
+            # except:
+            #     pass
+            run_experiment(args)
 
             torch.cuda.empty_cache()
 
