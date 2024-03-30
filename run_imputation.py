@@ -328,7 +328,8 @@ def run_experiment(args):
 
     # instantiate dataset
     if enable_multiple_imputation:
-        stride = int(args.window / 2)
+        # stride = int(args.window / 2)
+        stride = 12
     else:
         stride = args.stride
     torch_dataset = ImputationDataset(dataset.y,
@@ -504,12 +505,10 @@ def run_experiment(args):
 
         fig, axes = plt.subplots(nrows=C, ncols=1, figsize=(36, 24.0))
 
-        start = offset
-        end = all_target_np.shape[0] - offset
 
         # randomly pick a time period of 100 steps between start and end
-        start = rng.choice(np.arange(start, end - 100))
-        end = start + 100
+        start = rng.choice(np.arange(0, all_target_np.shape[0] - offset))
+        end = start + offset
 
         for k in range(C):
             df = pd.DataFrame(
@@ -548,17 +547,21 @@ if __name__ == '__main__':
 
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5004, 5006, 5016,5022,5037, 5043]
+
+    deer_id_list = [5171]
+
+
     for i in deer_id_list:
         for model in model_list:
             args = parse_args(model_name=model, config_file=f'{model}.yaml', deer_id=i)
 
             print('Running deer_id:', i, 'model:', model)
 
-            try:
-                run_experiment(args)
-            except:
-                pass
-            # run_experiment(args)
+            # try:
+            #     run_experiment(args)
+            # except:
+            #     pass
+            run_experiment(args)
 
             torch.cuda.empty_cache()
 
