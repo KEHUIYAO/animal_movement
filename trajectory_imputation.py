@@ -525,7 +525,7 @@ if __name__ == '__main__':
 
 
 
-    model_list = ['interpolation']
+    model_list = ['interpolation', 'csdi']
 
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5004, 5006, 5016,5022,5037, 5043]
@@ -535,11 +535,11 @@ if __name__ == '__main__':
 
             print('Running deer_id:', i, 'model:', model)
 
-            # try:
-            #     run_experiment(args)
-            # except:
-            #     pass
-            run_experiment(args)
+            try:
+                run_experiment(args)
+            except:
+                pass
+            # run_experiment(args)
 
             torch.cuda.empty_cache()
 
