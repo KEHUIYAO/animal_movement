@@ -500,8 +500,8 @@ def run_experiment(args):
             df2 = df2[df2.y != 0]
             # axes[k].plot(jul[start:end], quantiles_imp[2][start:end, k], color='g', linestyle='solid', label='CSDI')
             axes[k].plot(jul[start:end], quantiles_imp[2][start:end, k], color='g', marker='o', label='CSDI',)
-            # axes[k].fill_between(jul[start:end], quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
-            #                      color='g', alpha=0.3)
+            axes[k].fill_between(jul[start:end], quantiles_imp[0][start:end, k], quantiles_imp[4][start:end, k],
+                                 color='g', alpha=0.3)
             axes[k].plot(df2.x, df2.val, color='r', marker='x', linestyle='None')
             axes[k].plot(df.x, df.val, color='b', marker='o', linestyle='None')
 
