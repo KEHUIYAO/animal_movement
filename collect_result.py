@@ -57,6 +57,9 @@ for i in range(len(df)):
 print('CSDI is better than interpolation:', count, 'out of', len(df), 'times')
 print('Average decrease in MAE:', decrease / count)
 
+# what is the mean of the difference between mae_interpolation and mae_csdi
+df['mae_diff'] = df['mae_interpolation'] - df['mae_csdi']
+print('Mean of the difference between mae_interpolation and mae_csdi:', df['mae_diff'].mean())
 
 
 # save the dataframe to a csv file
