@@ -99,7 +99,7 @@ class AnimalMovement():
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-        p_missing = 0.2
+        p_missing = 0.5
         if mode == 'imputation':
             p_missing = 0.0
         rng = np.random.RandomState(42)
