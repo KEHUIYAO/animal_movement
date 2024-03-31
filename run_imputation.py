@@ -447,6 +447,9 @@ def run_experiment(args):
     # number of observed data points
     n_observed = np.sum(observed_mask_original)
 
+    # number of evaluated data points
+    n_evaluated = np.sum(eval_mask_original)
+
 
     # create a folder called results/deer_id and save the result
     if not os.path.exists(f'./results/{args.deer_id}/{args.model_name}'):
@@ -458,6 +461,7 @@ def run_experiment(args):
         f.write(f'Test MRE: {check_mre:.6f}\n')
         f.write(f'Max residual: {max_residual:.6f}\n')
         f.write(f'Number of observed data points: {n_observed}\n')
+        f.write(f'Number of evaluated data points: {n_evaluated}\n')
 
 
     # save output to file
