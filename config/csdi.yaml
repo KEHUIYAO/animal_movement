@@ -20,4 +20,5 @@ batches_epoch: 1000
 # load_from_pretrained: 'log/animal_movement/csdi/20240321T231146_557701516/epoch=399-step=100799.ckpt'
 # load_from_pretrained: 'log/animal_movement/csdi/20240328T034138_119757171/epoch=199-step=40599.ckpt'
 # load_from_pretrained: 'log/animal_movement/csdi/20240328T210044_354424313/epoch=269-step=52379.ckpt'
-load_from_pretrained: 'log/animal_movement/csdi/20240330T181730_350117732/epoch=379-step=91959.ckpt'
+# load_from_pretrained: 'log/animal_movement/csdi/20240330T181730_350117732/epoch=379-step=91959.ckpt'
+load_from_pretrained: 'log/animal_movement/csdi/20240330T232414_906854731/epoch=399-step=96799.ckpt'
