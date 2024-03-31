@@ -9,6 +9,7 @@ deer_list = []
 mae_interpolation_list = []
 mae_transformer_list = []
 mae_csdi_list = []
+num_eval_points_list = []
 
 for deer_id in sorted(deer_id_list):
     # print(deer_id)
@@ -32,34 +33,43 @@ for deer_id in sorted(deer_id_list):
             # extract the mae value from 'Test MAE: 123.456\nTest MRE' using regex
             specific_number = re.search(r'Test MAE: (\d+\.\d+|\d+)', text)
             mae_csdi = float(specific_number.group(1)) if specific_number else None
+            num_eval_points = re.search(r'Number of evaluated data points: (\d+)', text)
+            num_eval_points = int(num_eval_points.group(1)) if num_eval_points else None
+
+
+
+
 
         deer_list.append(deer_id)
         mae_interpolation_list.append(mae_interpolation)
         mae_csdi_list.append(mae_csdi)
+        num_eval_points_list.append(num_eval_points)
 
     except:
         pass
 
 
 # make a dataframe using deer_list, mae_interpolation_list, mae_csdi_list
-df = pd.DataFrame({'deer_id': deer_list, 'mae_interpolation': mae_interpolation_list, 'mae_csdi': mae_csdi_list})
+df = pd.DataFrame({'deer_id': deer_list, 'mae_interpolation': mae_interpolation_list, 'mae_csdi': mae_csdi_list, 'num_eval_points': num_eval_points_list})
 
 # count how many times mae_csdi is smaller than mae_interpolation, and average decrease in mae
 
 count = 0
-decrease = 0
 for i in range(len(df)):
     if float(df['mae_csdi'][i]) < float(df['mae_interpolation'][i]):
         count += 1
-        decrease += float(df['mae_interpolation'][i]) - float(df['mae_csdi'][i])
 
 # print the count
 print('CSDI is better than interpolation:', count, 'out of', len(df), 'times')
-print('Average decrease in MAE:', decrease / count)
 
-# what is the mean of the difference between mae_interpolation and mae_csdi
-df['mae_diff'] = df['mae_interpolation'] - df['mae_csdi']
-print('Mean of the difference between mae_interpolation and mae_csdi:', df['mae_diff'].mean())
+
+df['mae_interpolation_total'] = df['mae_interpolation'] * df['num_eval_points']
+df['mae_csdi_total'] = df['mae_csdi'] * df['num_eval_points']
+
+df['mae_total_diff']=  df['mae_interpolation_total'] - df['mae_csdi_total']
+
+
+print('Mean of the difference between mae_interpolation and mae_csdi:', df['mae_total_diff'].sum() / df['num_eval_points'].sum())
 
 
 # save the dataframe to a csv file
