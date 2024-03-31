@@ -77,8 +77,10 @@ class CsdiImputer(Imputer):
 
     def min_max_scale(self, observed_data, mask):
         observed_masked = observed_data * mask
-        min = torch.min(observed_masked, dim=1, keepdim=True).values
         max = torch.max(observed_masked, dim=1, keepdim=True).values
+        observed_masked[mask==0] = float('inf')
+        min = torch.min(observed_masked, dim=1, keepdim=True).values
+        observed_masked[mask == 0] = 0
         scaled_data = (observed_data - min) / (max - min)
         scaled_data = scaled_data * mask
         return scaled_data, min, max-min
