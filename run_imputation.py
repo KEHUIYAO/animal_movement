@@ -544,7 +544,7 @@ if __name__ == '__main__':
     # deer_id_list = [5629, 5631, 5633, 5639, 5657]
     # deer_id_list = [5000, 5004, 5006, 5016,5022,5037, 5043]
 
-    # deer_id_list = [5171]
+    deer_id_list = [5171]
 
 
     for i in deer_id_list:
