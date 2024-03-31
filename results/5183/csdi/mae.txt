@@ -1,4 +1,0 @@
-Test MAE: 379.125595
-Test MRE: 0.000151
-Max residual: 1289.280811
-Number of observed data points: 116.0
