@@ -68,7 +68,8 @@ df['mae_csdi_total'] = df['mae_csdi'] * df['num_eval_points']
 
 df['mae_total_diff']=  df['mae_interpolation_total'] - df['mae_csdi_total']
 
-
+print('mae for CSDI:', df['mae_csdi_total'].sum() / df['num_eval_points'].sum())
+print('mae for interpolation:', df['mae_interpolation_total'].sum() / df['num_eval_points'].sum())
 print('Mean of the difference between mae_interpolation and mae_csdi:', df['mae_total_diff'].sum() / df['num_eval_points'].sum())
 
 
