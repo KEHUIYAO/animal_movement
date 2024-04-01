@@ -27,8 +27,20 @@ from tqdm import tqdm
 
 def quantile_loss(quantiles, true_value):
     alpha_levels = np.arange(0.05, 1, 0.05)
-    losses = (alpha_levels - (true_value < quantiles)) * (true_value - quantiles)
-    return np.mean(2 * losses)
+    # Reshape true_value and alpha_levels for broadcasting
+    true_value_expanded = np.expand_dims(true_value, axis=0)
+    quantiles_expanded = np.expand_dims(quantiles, axis=1)
+    alpha_levels_expanded = np.expand_dims(alpha_levels, axis=0)
+
+    # Calculate indicator function array for quantiles less than true_value
+    indicator = true_value_expanded < quantiles_expanded
+
+    # Broadcast alpha_levels against indicator results
+    losses = (alpha_levels_expanded - indicator) * (true_value_expanded - quantiles_expanded)
+
+    # Mean over the quantiles dimension (axis=0) after summing over the samples dimension (axis=1)
+    return np.mean(2 * np.mean(losses, axis=1), axis=0)
+
 
 def crps_loss(Y_hat, Y, mask):
     n_samples, seq_len, num_nodes, C = Y_hat.shape
