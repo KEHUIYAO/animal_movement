@@ -55,7 +55,8 @@ def crps_loss(Y_hat, Y, mask):
 
     # Apply mask and compute the overall CRPS loss
     masked_crps_scores = crps_scores * (mask)
-    return np.sum(masked_crps_scores) / np.sum(mask)
+    masked_Y = Y * (mask)
+    return np.sum(masked_crps_scores) / np.sum(masked_Y)
 
 
 
