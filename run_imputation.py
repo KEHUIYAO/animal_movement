@@ -54,8 +54,8 @@ def crps_loss(Y_hat, Y, mask):
                     crps_scores[i, j, k] = quantile_loss(samples, Y[i, j, k])
 
     # Apply mask and compute the overall CRPS loss
-    masked_crps_scores = crps_scores * (1 - mask)
-    return np.sum(masked_crps_scores) / np.sum(1 - mask)
+    masked_crps_scores = crps_scores * (mask)
+    return np.sum(masked_crps_scores) / np.sum(mask)
 
 
 
