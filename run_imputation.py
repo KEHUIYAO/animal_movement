@@ -24,6 +24,30 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from tqdm import tqdm
 
+
+def quantile_loss(quantiles, true_value):
+    alpha_levels = np.arange(0.05, 1, 0.05)
+    losses = (alpha_levels - (true_value < quantiles)) * (true_value - quantiles)
+    return np.mean(2 * losses)
+
+def crps_loss(Y_hat, Y, mask):
+    n_samples, seq_len, num_nodes, C = Y_hat.shape
+    crps_scores = np.zeros((seq_len, num_nodes, C))
+
+    for i in range(seq_len):
+        for j in range(num_nodes):
+            for k in range(C):
+                if mask[i, j, k] == 1:  # Compute CRPS only for missing values
+                    samples = np.sort(Y_hat[:, i, j, k])  # Sorted samples for quantile estimation
+                    crps_scores[i, j, k] = quantile_loss(samples, Y[i, j, k])
+
+    # Apply mask and compute the overall CRPS loss
+    masked_crps_scores = crps_scores * (1 - mask)
+    return np.sum(masked_crps_scores) / np.sum(1 - mask)
+
+
+
+
 def parse_args(model_name='transformer', config_file='transformer.yaml', deer_id=5004):
     # Argument parser
     ########################################
@@ -450,6 +474,11 @@ def run_experiment(args):
     # number of evaluated data points
     n_evaluated = np.sum(eval_mask_original)
 
+    # crps loss
+    if enable_multiple_imputation:
+        crps = crps_loss(y_hat_multiple_imputation, y_true_original, eval_mask_original)
+        print(f'CRPS: {crps:.6f}')
+
 
     # create a folder called results/deer_id and save the result
     if not os.path.exists(f'./results/{args.deer_id}/{args.model_name}'):
@@ -459,6 +488,8 @@ def run_experiment(args):
     with open(f'./results/{args.deer_id}/{args.model_name}/mae.txt', 'w') as f:
         f.write(f'Test MAE: {check_mae:.6f}\n')
         f.write(f'Test MRE: {check_mre:.6f}\n')
+        if enable_multiple_imputation:
+            f.write(f'CRPS: {crps:.6f}\n')
         f.write(f'Max residual: {max_residual:.6f}\n')
         f.write(f'Number of observed data points: {n_observed}\n')
         f.write(f'Number of evaluated data points: {n_evaluated}\n')
