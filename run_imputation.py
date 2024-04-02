@@ -39,7 +39,7 @@ def quantile_loss(quantiles, true_value):
     losses = (alpha_levels_expanded - indicator) * (true_value_expanded - quantiles_expanded)
 
     # Mean over the quantiles dimension (axis=0) after summing over the samples dimension (axis=1)
-    return np.mean(2 * np.sum(losses, axis=1), axis=0)
+    return np.mean(2 * np.sum(losses, axis=0))
 
 
 def crps_loss(Y_hat, Y, mask):
