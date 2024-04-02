@@ -1,6 +1,5 @@
-Test MAE: 111.796399
-Test MRE: 0.000045
-CRPS: 0.000038
-Max residual: 1982.732186
-Number of observed data points: 5070.0
-Number of evaluated data points: 1266
+Test MAE: 123.008863
+Test MRE: 0.000049
+Max residual: 1988.565519
+Number of observed data points: 3168.0
+Number of evaluated data points: 3168
