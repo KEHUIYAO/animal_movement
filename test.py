@@ -54,6 +54,7 @@ if __name__ == '__main__':
                 y = data['y']
                 eval_mask = data['eval_mask']
                 imputed_samples = data['imputed_samples']
+                print(y_hat.shape, y.shape, eval_mask.shape, imputed_samples.shape)
                 crps = crps_loss(imputed_samples, y, eval_mask)
                 crps_list.append(crps)
 
