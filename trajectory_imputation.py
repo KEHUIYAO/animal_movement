@@ -521,7 +521,8 @@ if __name__ == '__main__':
     # randomly select 20% of the deer ids as testing data
     rng = np.random.RandomState(42)
     rng.shuffle(deer_id_list)
-    deer_id_list = deer_id_list[int(0.8 * len(deer_id_list)):]
+    # deer_id_list = deer_id_list[int(0.8 * len(deer_id_list)):]
+    deer_id_list = [5094]
 
 
 
