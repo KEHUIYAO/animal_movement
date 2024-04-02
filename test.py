@@ -48,18 +48,27 @@ if __name__ == '__main__':
 
             print('Running deer_id:', i, 'model:', model)
 
-            try:
-                data = np.load(f'./results/{i}/{model}/output.npz')
-                y_hat = data['y_hat']
-                y = data['y']
-                eval_mask = data['eval_mask']
-                imputed_samples = data['imputed_samples']
-                print(y_hat.shape, y.shape, eval_mask.shape, imputed_samples.shape)
-                crps = crps_loss(imputed_samples, y, eval_mask)
-                crps_list.append(crps)
+            data = np.load(f'./results/{i}/{model}/output.npz')
+            y_hat = data['y_hat']
+            y = data['y']
+            eval_mask = data['eval_mask']
+            imputed_samples = data['imputed_samples']
+            print(y_hat.shape, y.shape, eval_mask.shape, imputed_samples.shape)
+            crps = crps_loss(imputed_samples, y, eval_mask)
+            crps_list.append(crps)
 
-
-            except:
-                pass
+            # try:
+            #     data = np.load(f'./results/{i}/{model}/output.npz')
+            #     y_hat = data['y_hat']
+            #     y = data['y']
+            #     eval_mask = data['eval_mask']
+            #     imputed_samples = data['imputed_samples']
+            #     print(y_hat.shape, y.shape, eval_mask.shape, imputed_samples.shape)
+            #     crps = crps_loss(imputed_samples, y, eval_mask)
+            #     crps_list.append(crps)
+            #
+            #
+            # except:
+            #     pass
 
     print('Average CRPS:', np.mean(crps_list))
