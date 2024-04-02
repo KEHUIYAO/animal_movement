@@ -21,7 +21,7 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 
 
 class AnimalMovement():
-    def __init__(self, mode='train', deer_id=0):
+    def __init__(self, mode='train', deer_id=0, p_missing=0.2):
         if mode == 'train':
             deer_id_list = sorted([int(f.split('.')[0][-4:]) for f in os.listdir('Female/TagData') if f.endswith('.csv')])
             # randomly select 80& of the deer ids as training data
@@ -99,7 +99,7 @@ class AnimalMovement():
         mask = np.ones_like(y)
         mask[np.isnan(y)] = 0
         mask = mask.astype(int)
-        p_missing = 0.8
+
         if mode == 'imputation':
             p_missing = 0.0
         rng = np.random.RandomState(42)
