@@ -29,22 +29,24 @@ def crps_loss(Y_samples, Y_true, mask):
     B, L, K, C = Y_samples.shape
     numerator = 0
     denominator = 0
-    for i in range(1, 20):
-        for l in range(L):
-            for k in range(K):
-                for c in range(C):
-                    if mask[l, k, c] == 1:
-                        samples = Y_samples[:, l, k, c]
 
+    for l in range(L):
+        for k in range(K):
+            for c in range(C):
+                if mask[l, k, c] == 1:
+                    samples = Y_samples[:, l, k, c]
+                    z = Y_true[l, k, c]
+                    crps = 0
+                    for i in range(1, 20):
                         q = np.quantile(samples, i * 0.05)
-                        z = Y_true[l, k, c]
                         if z < q:
                             indicator = 1
                         else:
                             indicator = 0
                         loss = 2 * (i * 0.05  - indicator) * (z - q) / 19
-                        numerator += loss
-                        denominator += np.abs(z)
+                        crps += loss
+                    numerator += crps
+                    denominator += np.abs(z)
 
     return numerator / denominator
 
