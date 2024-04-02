@@ -25,38 +25,28 @@ import pandas as pd
 from tqdm import tqdm
 
 
-def quantile_loss(quantiles, true_value):
-    alpha_levels = np.arange(0.05, 1, 0.05)
-    # Reshape true_value and alpha_levels for broadcasting
-    true_value_expanded = np.expand_dims(true_value, axis=0)
-    quantiles_expanded = np.expand_dims(quantiles, axis=1)
-    alpha_levels_expanded = np.expand_dims(alpha_levels, axis=0)
+def crps_loss(Y_samples, Y_true, mask):
+    B, L, K, C = Y_samples.shape
+    numerator = 0
+    denominator = 0
+    for i in range(1, 20):
+        for l in range(L):
+            for k in range(K):
+                for c in range(C):
+                    if mask[l, k, c] == 1:
+                        samples = Y_samples[:, l, k, c]
 
-    # Calculate indicator function array for quantiles less than true_value
-    indicator = true_value_expanded < quantiles_expanded
+                        q = np.quantile(samples, i * 0.05)
+                        z = Y_true[l, k, c]
+                        if z < q:
+                            indicator = 1
+                        else:
+                            indicator = 0
+                        loss = 2 * (i * 0.05  - indicator) * (z - q) / 19
+                        numerator += loss
+                        denominator += np.abs(z)
 
-    # Broadcast alpha_levels against indicator results
-    losses = (alpha_levels_expanded - indicator) * (true_value_expanded - quantiles_expanded)
-
-    # Mean over the quantiles dimension (axis=0) after summing over the samples dimension (axis=1)
-    return np.mean(2 * np.sum(losses, axis=0))
-
-
-def crps_loss(Y_hat, Y, mask):
-    n_samples, seq_len, num_nodes, C = Y_hat.shape
-    crps_scores = np.zeros((seq_len, num_nodes, C))
-
-    for i in range(seq_len):
-        for j in range(num_nodes):
-            for k in range(C):
-                if mask[i, j, k] == 1:  # Compute CRPS only for missing values
-                    samples = np.sort(Y_hat[:, i, j, k])  # Sorted samples for quantile estimation
-                    crps_scores[i, j, k] = quantile_loss(samples, Y[i, j, k])
-
-    # Apply mask and compute the overall CRPS loss
-    masked_crps_scores = crps_scores * (mask)
-    masked_Y = Y * (mask)
-    return np.sum(masked_crps_scores) / np.sum(masked_Y)
+    return numerator / denominator
 
 
 
