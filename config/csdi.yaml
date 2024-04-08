@@ -27,5 +27,8 @@ batches_epoch: 1000
 # instance norm with min-max normalization
 # load_from_pretrained: 'log/animal_movement/csdi/20240331T054118_350623111/epoch=279-step=67759.ckpt'
 
-# ablation study without covariate
-load_from_pretrained: 'log/animal_movement/csdi/20240406T230641_167334890/epoch=659-step=159719.ckpt'
+# ablation study without landscape covariate
+# load_from_pretrained: 'log/animal_movement/csdi/20240406T230641_167334890/epoch=659-step=159719.ckpt'
+
+# ablation study without landscape covariate and time-related covariates
+load_from_pretrained: 'log/animal_movement/csdi/20240408T024226_991892255/epoch=389-step=94379.ckpt'
